@@ -1,5 +1,5 @@
 {
-    "title": "~app-name~",
+    "title": "pytia-title-block",
     "debug": false,
     "restrictions": {
         "allow_all_users": true,
@@ -16,8 +16,8 @@
         "release": "C:\\pytia\\release"
     },
     "files": {
-        "app": "~app_name~.pyz",
-        "launcher": "~app_name~.catvbs",
+        "app": "pytia_title_block.pyz",
+        "launcher": "pytia_title_block.catvbs",
         "workspace": "workspace.yml"
     },
     "urls": {

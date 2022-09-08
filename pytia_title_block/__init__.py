@@ -3,6 +3,6 @@
 """
 import sys
 
-sys.path.append("./~app_name~/")
+sys.path.append("./pytia_title_block/")
 
 from const import __version__  # pylint: disable=C0413

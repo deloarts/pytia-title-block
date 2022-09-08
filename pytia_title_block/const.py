@@ -7,20 +7,20 @@ import os
 __version__ = "0.1.0"
 
 PYTIA = "pytia"
-~APP_NAME~ = "~app_name~"
+PYTIA_TITLE_BLOCK = "pytia_title_block"
 PYTIA_BOUNDING_BOX = "pytia_bounding_box"
 
-APP_NAME = "~app-name~"
+APP_NAME = "pytia-title-block"
 APP_VERSION = __version__
 
 LOGON = str(os.environ.get("USERNAME"))
 CNEXT = "win_b64\\code\\bin\\CNEXT.exe"
 TEMP = str(os.environ.get("TEMP"))
-APPDATA = f"{str(os.environ.get('APPDATA'))}\\{PYTIA}\\{~APP_NAME~}"
+APPDATA = f"{str(os.environ.get('APPDATA'))}\\{PYTIA}\\{PYTIA_TITLE_BLOCK}"
 LOGS = f"{APPDATA}\\logs"
 LOG = "app.log"
 PID = os.getpid()
-PID_FILE = f"{TEMP}\\{~APP_NAME~}.pid"
+PID_FILE = f"{TEMP}\\{PYTIA_TITLE_BLOCK}.pid"
 VENV = f"\\.env\\{APP_VERSION}"
 VENV_PYTHON = VENV + "\\Scripts\\python.exe"
 VENV_PYTHONW = VENV + "\\Scripts\\pythonw.exe"

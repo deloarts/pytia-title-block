@@ -1,11 +1,7 @@
-# pytia template
-
-A template repo for pytia apps. The placeholder for the app name is `~app_name~`, `~APP_NAME~` or `~app-name~`. Search and replace this keyword when creating a new project from this repository.
-
-# ~app-name~
+# pytia title block
 
 ![state](https://img.shields.io/badge/State-Alpha-brown.svg?style=for-the-badge)
-![version](https://img.shields.io/badge/Version-0.0.0-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/Version-0.1.0-orange.svg?style=for-the-badge)
 
 [![python](https://img.shields.io/badge/Python-3.10-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
@@ -30,7 +26,7 @@ On the users machine you need to install the following:
 - CATIA
 - [Python](https://www.python.org/downloads/)
 
-When the user starts the app it will automatically install all its requirements. Further the app also updates outdated dependencies if needed. The apps environment will be created in the users appdata-folder: `C:\Users\User\AppData\Roaming\pytia\~app_name~`
+When the user starts the app it will automatically install all its requirements. Further the app also updates outdated dependencies if needed. The apps environment will be created in the users appdata-folder: `C:\Users\User\AppData\Roaming\pytia\pytia_title_block`
 
 Recommended python install options for the user:
 
@@ -56,7 +52,7 @@ On the developers machine (this is you) install the following:
 
 ### 2.1 resource files
 
-All configuration is done via json files inside the [resources folder](/~app_name~/resources/).
+All configuration is done via json files inside the [resources folder](/pytia_title_block/resources/).
 
 #### 2.1.1 default files
 
@@ -76,8 +72,8 @@ Some dependencies are not publicly available on PyPi or GitHub (because they are
 
 | Name               | Link                                         | Version                                                                 |
 | ------------------ | -------------------------------------------- | ----------------------------------------------------------------------- |
-| **pytia**          | <https://github.com/deloarts/pytia>          | [0.0.0](https://github.com/deloarts/pytia/releases/tag/v0.0.0)          |
-| **pytia-ui-tools** | <https://github.com/deloarts/pytia-ui-tools> | [0.0.0](https://github.com/deloarts/pytia-ui-tools/releases/tag/v0.0.0) |
+| **pytia**          | <https://github.com/deloarts/pytia>          | [0.2.2](https://github.com/deloarts/pytia/releases/tag/v0.2.2)          |
+| **pytia-ui-tools** | <https://github.com/deloarts/pytia-ui-tools> | [0.5.2](https://github.com/deloarts/pytia-ui-tools/releases/tag/v0.5.2) |
 
 > ❗️ The folder where you provide the local dependencies must match the **paths.local_dependencies** entry of the **settings.json**. The user must have at least read access on this folder.
 >
@@ -134,13 +130,13 @@ Documentation is done with [pdoc3](https://pdoc3.github.io/pdoc/).
 To update the documentation run:
 
 ```powershell
-python -m pdoc --html --output-dir docs ~app_name~
+python -m pdoc --html --output-dir docs pytia_title_block
 ```
 
 For preview run:
 
 ```powershell
-python -m pdoc --http : ~app_name~
+python -m pdoc --http : pytia_title_block
 ```
 
 You can find the documentation in the [docs folder](/docs).
@@ -151,16 +147,16 @@ On a new revision, do the following:
 
 1. Update **dependency versions** in
    - [pyproject.toml](pyproject.toml)
-   - [dependencies.json](~app_name~/resources/dependencies.json)
+   - [dependencies.json](pytia_title_block/resources/dependencies.json)
    - [README.md](README.md)
 2. Update **dependencies**: `poetry update`
 3. Update the **version** in
    - [pyproject.toml](pyproject.toml)
-   - [__ init __.py](~app_name~/__init__.py)
+   - [__ init __.py](pytia_title_block/__init__.py)
    - [README.md](README.md)
 4. Run all **tests**: `poetry run pytest`
-5. Check **pylint** output: `poetry run pylint ~app_name~/`
-6. Update the **documentation**: `poetry run pdoc --force --html --output-dir docs ~app_name~`
+5. Check **pylint** output: `poetry run pylint pytia_title_block/`
+6. Update the **documentation**: `poetry run pdoc --force --html --output-dir docs pytia_title_block`
 7. Update the **lockfile**: `poetry lock`
 8. Update the **requirements.txt**: `poetry export --dev -f requirements.txt -o requirements.txt`
 

@@ -30,10 +30,7 @@ from app.tooltips import ToolTips
 from app.traces import Traces
 from app.vars import Variables
 from const import APP_VERSION, LOG, LOGON, LOGS
-from decorators import timer
-from handler.properties import Properties
 from helper.lazy_loaders import LazyDocumentHelper
-from helper.messages import show_help
 from resources import resource
 
 
@@ -43,14 +40,12 @@ class GUI(tk.Tk):
     WIDTH = 1100
     HEIGHT = 640
 
-    @timer
     def __init__(self) -> None:
         """Inits the main window."""
         tk.Tk.__init__(self)
 
         # CLASS VARS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         self.doc_helper: LazyDocumentHelper  # Instantiate later for performance improvement
-        self.properties: Properties  # Instantiate later, dependent on doc_helper
         self.workspace: Workspace  # Instantiate later, dependent on doc_helper
         self.set_ui: UISetter  # Instantiate later, dependent on doc_helper
         self.vars = Variables(root=self)
@@ -124,36 +119,25 @@ class GUI(tk.Tk):
 
     def run_controller(self) -> None:
         """Runs all controllers. Initializes all lazy loaders, bindings and traces."""
-        if resource.settings.demo:
-            self.layout.processes.state(tk.NORMAL)
-        else:
-            self.doc_helper = LazyDocumentHelper()
-            self.workspace = Workspace(
-                path=self.doc_helper.path,
-                filename=resource.settings.files.workspace,
-                allow_outside_workspace=resource.settings.restrictions.allow_outside_workspace,
-            )
-            self.workspace.read_yaml()
-            if ws_title := self.workspace.elements.title:
-                self.title(f"{self.title()}  -  {ws_title} (Workspace)")
+        self.doc_helper = LazyDocumentHelper()
+        self.workspace = Workspace(
+            path=self.doc_helper.path,
+            filename=resource.settings.files.workspace,
+            allow_outside_workspace=resource.settings.restrictions.allow_outside_workspace,
+        )
+        self.workspace.read_yaml()
+        if ws_title := self.workspace.elements.title:
+            self.title(f"{self.title()}  -  {ws_title} (Workspace)")
 
-            self.properties = Properties(
-                layout=self.layout,
-                lazy_document_helper=self.doc_helper,
-                variables=self.vars,
-                workspace=self.workspace,
-            )
-            self.set_ui = UISetter(
-                root=self,
-                layout=self.layout,
-                variables=self.vars,
-                lazy_document_helper=self.doc_helper,
-                workspace=self.workspace,
-            )
-            self.callbacks()
-            self.traces()
-            self.bindings()
-            self.main_controller()
+        self.set_ui = UISetter(
+            root=self,
+            layout=self.layout,
+            variables=self.vars,
+        )
+        self.callbacks()
+        self.traces()
+        self.bindings()
+        self.main_controller()
 
     def main_controller(self) -> None:
         """
@@ -162,8 +146,7 @@ class GUI(tk.Tk):
         - Loads all tooltips (some of them depend on some properties).
         - Sets the UI state based on the restrictions of the settings.json and the workspace file.
         """
-        self.set_ui.loading()
-        self.properties.retrieve()
+        self.set_ui.disabled()
         self.tooltips()
 
         if not self.workspace.elements.active:
@@ -199,12 +182,11 @@ class GUI(tk.Tk):
             )
             return
 
-        self.set_ui.reset()
+        self.set_ui.normal()
 
     def bindings(self) -> None:
         """Key bindings."""
         self.bind("<Escape>", lambda _: self.destroy())
-        self.bind("<F1>", lambda _: show_help())
         self.bind("<F5>", lambda _: self.main_controller())
         # FIXME: There is a bug on the middle mouse button, where, when the button is clicked,
         # selected text will be inserted into a widget, when the cursor hovers above the widget.
@@ -216,10 +198,7 @@ class GUI(tk.Tk):
         Callbacks(
             root=self,
             variables=self.vars,
-            lazy_document_helper=self.doc_helper,
             layout=self.layout,
-            properties=self.properties,
-            workspace=self.workspace,
             ui_setter=self.set_ui,
         )
 

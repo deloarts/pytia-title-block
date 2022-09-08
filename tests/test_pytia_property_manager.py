@@ -1,7 +1,7 @@
 import os
 
 import toml
-from ~app_name~.const import APP_VERSION
+from pytia_title_block.const import APP_VERSION
 
 VERSION = "0.1.4"
 

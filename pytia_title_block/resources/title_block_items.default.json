@@ -1,0 +1,16 @@
+{
+    "partnumber": "value.partnumber",
+    "revision": "value.revision",
+    "definition": "value.definition",
+    "machine": "value.machine",
+    "material": "value.material",
+    "base_size": "value.base_size",
+    "tolerance": "value.tolerance",
+    "release_date": "value.release_date",
+    "document_type": "value.document_type",
+    "scale": "value.scale",
+    "creator_3d": "value.creator_3d",
+    "creator_2d": "value.creator_2d",
+    "version": "value.version",
+    "path": "value.path"
+}

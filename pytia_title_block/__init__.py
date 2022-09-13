@@ -1,5 +1,5 @@
 """
-    PYTIA Property Manager - A python app for managing CATIA V5 properties.
+    PYTIA Title block editor - A python app for managing a drawings title block.
 """
 import sys
 

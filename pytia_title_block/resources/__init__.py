@@ -15,8 +15,20 @@ from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import List, Optional
 
-from const import (APP_VERSION, APPDATA, CONFIG_APPDATA, CONFIG_INFOS,
-                   CONFIG_INFOS_DEFAULT, CONFIG_SETTINGS, CONFIG_USERS, LOGON)
+from const import (
+    APP_VERSION,
+    APPDATA,
+    CONFIG_APPDATA,
+    CONFIG_INFOS,
+    CONFIG_INFOS_DEFAULT,
+    CONFIG_PROPS,
+    CONFIG_PROPS_DEFAULT,
+    CONFIG_SETTINGS,
+    CONFIG_TB_ITEMS,
+    CONFIG_TB_ITEMS_DEFAULT,
+    CONFIG_USERS,
+    LOGON,
+)
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)
@@ -27,9 +39,6 @@ class SettingsRestrictions:
     allow_all_editors: bool
     allow_unsaved: bool
     allow_outside_workspace: bool
-    strict_project: bool
-    strict_machine: bool
-    enable_information: bool
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)
@@ -37,7 +46,6 @@ class SettingsPaths:
     """Dataclass for paths (settings.json)."""
 
     catia: Path
-    material: Path
     local_dependencies: Path
     release: Path
 
@@ -48,8 +56,6 @@ class SettingsFiles:
 
     app: str
     launcher: str
-    bounding_box_launcher: Optional[str]
-    material: str
     workspace: str
 
 
@@ -74,6 +80,8 @@ class Settings:  # pylint: disable=R0902
     title: str
     debug: bool
     restrictions: SettingsRestrictions
+    doc_types: List[str]
+    tolerances: List[str]
     paths: SettingsPaths
     files: SettingsFiles
     urls: SettingsUrls
@@ -88,8 +96,47 @@ class Settings:  # pylint: disable=R0902
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)
+class Props:
+    """Dataclass for properties on the part (properties.json)."""
+
+    partnumber: str
+    revision: str
+    definition: str
+
+    machine: str
+    material: str
+    base_size: str
+    tolerance: str
+    creator_3d: str
+
+
+@dataclass(slots=True, kw_only=True)
+class TitleBlockItems:
+    """Dataclass for all possible title block items."""
+
+    partnumber: str
+    revision: str
+    definition: str
+
+    machine: str
+    material: str
+    base_size: str
+    tolerance: str
+
+    release_date: str
+    document_type: str
+    scale: str
+
+    creator_3d: str
+    creator_2d: str
+
+    version: str
+    path: str
+
+
+@dataclass(slots=True, kw_only=True, frozen=True)
 class User:
-    """Dataclass a user (users.json)."""
+    """Dataclass for a user (users.json)."""
 
     logon: str
     id: str
@@ -135,6 +182,8 @@ class Resources:  # pylint: disable=R0902
 
     __slots__ = (
         "_settings",
+        "_title_block_items",
+        "_props",
         "_users",
         "_infos",
         "_appdata",
@@ -142,6 +191,8 @@ class Resources:  # pylint: disable=R0902
 
     def __init__(self) -> None:
         self._read_settings()
+        self._read_title_block_items()
+        self._read_props()
         self._read_users()
         self._read_infos()
         self._read_appdata()
@@ -152,6 +203,16 @@ class Resources:  # pylint: disable=R0902
     def settings(self) -> Settings:
         """settings.json"""
         return self._settings
+
+    @property
+    def props(self) -> Props:
+        """properties.json"""
+        return self._props
+
+    @property
+    def title_block_items(self) -> TitleBlockItems:
+        """title_block_items.json"""
+        return self._title_block_items
 
     @property
     def users(self) -> List[User]:
@@ -168,6 +229,11 @@ class Resources:  # pylint: disable=R0902
         """Property for the appdata config file."""
         return self._appdata
 
+    def get_png(self, name: str) -> bytes:
+        """Returns a png resource by its name."""
+        with importlib.resources.open_binary("resources", name) as f:
+            return f.read()
+
     def _read_settings(self) -> None:
         """Reads the settings json from the resources folder."""
         with importlib.resources.open_binary("resources", CONFIG_SETTINGS) as f:
@@ -178,6 +244,25 @@ class Resources:  # pylint: disable=R0902
         with importlib.resources.open_binary("resources", CONFIG_USERS) as f:
             self._users = [User(**i) for i in json.load(f)]
 
+    def _read_title_block_items(self) -> None:
+        """Reads the title block items json from the resources folder."""
+        tbi_resource = (
+            CONFIG_TB_ITEMS
+            if importlib.resources.is_resource("resources", CONFIG_TB_ITEMS)
+            else CONFIG_TB_ITEMS_DEFAULT
+        )
+        with importlib.resources.open_binary("resources", tbi_resource) as f:
+            self._title_block_items = TitleBlockItems(**json.load(f))
+
+    def _read_props(self) -> None:
+        """Reads the props json from the resources folder."""
+        props_resource = (
+            CONFIG_PROPS
+            if importlib.resources.is_resource("resources", CONFIG_PROPS)
+            else CONFIG_PROPS_DEFAULT
+        )
+        with importlib.resources.open_binary("resources", props_resource) as f:
+            self._props = Props(**json.load(f))
 
     def _read_infos(self) -> None:
         """Reads the information json from the resources folder."""
@@ -212,7 +297,7 @@ class Resources:  # pylint: disable=R0902
         with open(f"{APPDATA}\\{CONFIG_APPDATA}", "w", encoding="utf8") as f:
             json.dump(asdict(self._appdata), f)
 
-    def get_user_by_logon(self, logon: Optional[str] = None) -> User:
+    def get_user_by_logon(self, logon: Optional[str] = None) -> Optional[User]:
         """
         Returns the user dataclass that matches the logon value. Returns the User of the current
         session if logon is omitted.
@@ -220,11 +305,9 @@ class Resources:  # pylint: disable=R0902
         Args:
             logon (Optional[str]): The user to fetch from the dataclass list.
 
-        Raises:
-            PytiaValueError: Raised when the user doesn't exist.
-
         Returns:
-            User: The user from the dataclass list that matches the provided logon name.
+            User: The user from the dataclass list that matches the provided logon name. \
+                Returns None if the logon doesn't exist.
         """
         if logon is None:
             logon = LOGON
@@ -232,7 +315,7 @@ class Resources:  # pylint: disable=R0902
         for index, value in enumerate(self._users):
             if value.logon == logon:
                 return self._users[index]
-        raise ValueError(f"The user {logon} does not exist.")
+        return None
 
     def get_user_by_name(self, name: str) -> Optional[User]:
         """

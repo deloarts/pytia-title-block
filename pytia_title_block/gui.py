@@ -30,22 +30,24 @@ from app.tooltips import ToolTips
 from app.traces import Traces
 from app.vars import Variables
 from const import APP_VERSION, LOG, LOGON, LOGS
-from helper.lazy_loaders import LazyDocumentHelper
+from loader.data_loader import DataLoader
+from loader.doc_loader import DocumentLoader
 from resources import resource
 
 
 class GUI(tk.Tk):
     """The user interface of the app."""
 
-    WIDTH = 1100
-    HEIGHT = 640
+    WIDTH = 400
+    HEIGHT = 475
 
     def __init__(self) -> None:
         """Inits the main window."""
         tk.Tk.__init__(self)
 
         # CLASS VARS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        self.doc_helper: LazyDocumentHelper  # Instantiate later for performance improvement
+        self.doc_loader: DocumentLoader  # Instantiate later for performance improvement
+        self.data_loader: DataLoader  # Instantiate later for
         self.workspace: Workspace  # Instantiate later, dependent on doc_helper
         self.set_ui: UISetter  # Instantiate later, dependent on doc_helper
         self.vars = Variables(root=self)
@@ -104,9 +106,7 @@ class GUI(tk.Tk):
 
         # STYLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         style = ttk.Style(self)
-        style.configure("Left.TLabelframe.Label", foreground="grey")
-        style.configure("Middle.TLabelframe.Label", foreground="grey")
-        style.configure("Right.TLabelframe.Label", foreground="grey")
+        style.configure("Reload.TButton", width=5)
         style.configure("Footer.TButton", width=14)
 
         self.update()
@@ -119,9 +119,12 @@ class GUI(tk.Tk):
 
     def run_controller(self) -> None:
         """Runs all controllers. Initializes all lazy loaders, bindings and traces."""
-        self.doc_helper = LazyDocumentHelper()
+        self.doc_loader = DocumentLoader()
+        self.data_loader = DataLoader(
+            variables=self.vars, doc_loader=self.doc_loader, layout=self.layout
+        )
         self.workspace = Workspace(
-            path=self.doc_helper.path,
+            path=self.doc_loader.path,
             filename=resource.settings.files.workspace,
             allow_outside_workspace=resource.settings.restrictions.allow_outside_workspace,
         )
@@ -182,6 +185,7 @@ class GUI(tk.Tk):
             )
             return
 
+        self.data_loader.load_into_app()
         self.set_ui.normal()
 
     def bindings(self) -> None:
@@ -200,6 +204,8 @@ class GUI(tk.Tk):
             variables=self.vars,
             layout=self.layout,
             ui_setter=self.set_ui,
+            doc_loader=self.doc_loader,
+            data_loader=self.data_loader,
         )
 
     def traces(self) -> None:
@@ -211,4 +217,4 @@ class GUI(tk.Tk):
 
     def tooltips(self) -> None:
         """Instantiates the tooltips class."""
-        ToolTips(layout=self.layout, workspace=self.workspace, variables=self.vars)
+        ToolTips(layout=self.layout)

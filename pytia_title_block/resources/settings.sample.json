@@ -1,15 +1,23 @@
 {
-    "title": "pytia-title-block",
+    "title": "PYTIA Title Block Editor",
     "debug": false,
     "restrictions": {
         "allow_all_users": true,
         "allow_all_editors": true,
         "allow_unsaved": true,
-        "allow_outside_workspace": true,
-        "strict_project": false,
-        "strict_machine": false,
-        "enable_information": true
+        "allow_outside_workspace": true
     },
+    "doc_types": [
+        "Production",
+        "Test",
+        "Assembly"
+    ],
+    "tolerances": [
+        "ISO 2768 1-m 2-K",
+        "ISO 2768 1-f 2-K",
+        "ISO 2768 1-c 2-K",
+        "ISO 2768 1-v 2-K"
+    ],
     "paths": {
         "catia": "C:\\CATIA\\V5-6R2017\\B27",
         "local_dependencies": "C:\\pytia\\local_deps",

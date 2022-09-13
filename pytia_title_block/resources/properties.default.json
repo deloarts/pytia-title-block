@@ -1,0 +1,10 @@
+{
+    "partnumber": "partnumber",
+    "revision": "revision",
+    "definition": "definition",
+    "machine": "pytia.machine",
+    "material": "pytia.material",
+    "base_size": "pytia.base_size",
+    "tolerance": "pytia.tolerance",
+    "creator_3d": "pytia.creator"
+}

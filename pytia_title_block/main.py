@@ -35,7 +35,7 @@ def main() -> None:
         log.set_level_debug()
     log.add_stream_handler()
     log.add_file_handler(folder=LOGS, filename=LOG)
-    log.info(f"Running PYTIA Property Manager {APP_VERSION}, PID={PID}")
+    log.info(f"Running PYTIA Title Block Editor {APP_VERSION}, PID={PID}")
 
     gui = GUI()
     gui.run()

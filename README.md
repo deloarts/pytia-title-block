@@ -56,11 +56,19 @@ All configuration is done via json files inside the [resources folder](/pytia_ti
 
 #### 2.1.1 default files
 
-> TODO
+You can leave the default configuration if it suits your needs, but you can always copy any default json file, rename (get rid of 'default') it and edit its content.
+
+Example: If you want to change the content of the [properties.default.json](/pytia_title_block/resources/properties.default.json) you have to copy this file, and paste it as **properties.json**. Then you can edit the content of your newly generated properties-settings file. Same for any other default-resource file.
+
+> ✏️ For a full description of all default files, see [docs/DEFAULT_FILES.md](/docs/DEFAULT_FILES.md).
 
 #### 2.1.2 sample files
 
-> TODO
+Files that are named like **settings.sample.json** must be copied, renamed and edited. Sample files exists only for you to have a guide, of how the config file must look.
+
+Example: Before you can build the app you have to copy the [settings.sample.json](/pytia_title_block/resources/settings.sample.json) and rename it to **settings.json**. Then you can edit its content to match your requirements.
+
+> ✏️ For a full description of all sample files, see [docs/SAMPLE_FILES.md](/docs/SAMPLE_FILES.md).
 
 #### 2.1.3 static files
 
@@ -85,7 +93,13 @@ To be able to launch the app from within CATIA you need to provide a release fol
 
 > ❗️ Add this release folder to the **settings.json** file as value of the **paths.release** key.
 
-### 2.4 test
+### 2.4 catia drawing setup
+
+The app need to know where to put the data to. Thus you have to match the names of the [title_block_items.json](docs/DEFAULT_FILES.md#2-titleblockitemsdefaultjson) with the component name of the text item.
+
+![Drawing Setup](assets/images/drawing_item.png)
+
+### 2.5 test
 
 Most tests require CATIA running. Test suite is pytest. For testing with poetry run:
 
@@ -95,7 +109,7 @@ poetry run pytest
 
 > ⚠️ Test discovery in VS Code only works when CATIA is running.
 
-### 2.5 build
+### 2.6 build
 
 > ❗️ Do not build the app with poetry! This package is not not meant to be used as an import, it should be used as an app.
 
@@ -105,7 +119,7 @@ To build the app and make it executable for the user run the [_build.py](_build.
 >
 > ✏️ The reason this app isn't compiled to an exe is performance. It takes way too long to load the UI if the app isn't launched as python zipfile.
 
-### 2.6 release
+### 2.7 release
 
 To release the app into the provided release folder run the [_release.py](_release.py) script.
 
@@ -115,7 +129,7 @@ You can always change the path of the release folder by editing the value from t
 
 > ⚠️ Once you built and released the app you cannot move the python app nor the catvbs script to another location, because absolute paths will be written to those files. If you have to move the location of the files you have to change the paths in the **settings.json** config file, build the app again and release it to the new destination.
 
-### 2.7 pre-commit hooks
+### 2.8 pre-commit hooks
 
 Don't forget to install the pre-commit hooks:
 
@@ -123,7 +137,7 @@ Don't forget to install the pre-commit hooks:
 pre-commit install
 ```
 
-### 2.8 docs
+### 2.9 docs
 
 Documentation is done with [pdoc3](https://pdoc3.github.io/pdoc/).
 
@@ -141,7 +155,7 @@ python -m pdoc --http : pytia_title_block
 
 You can find the documentation in the [docs folder](/docs).
 
-### 2.9 new revision checklist
+### 2.10 new revision checklist
 
 On a new revision, do the following:
 
@@ -162,7 +176,23 @@ On a new revision, do the following:
 
 ## 3 usage
 
-> TODO
+Use the launcher (a.k.a the catvbs-file) to launch the app. On the first run all required dependencies will be installed:
+
+![Installer](assets/images/installer.png)
+
+After the installation the app starts automatically:
+
+![App](assets/images/app.png)
+
+The app retrieves all information from the documents properties and writes it to the title block. The user has the option to alter those properties via the app.
+
+If the user runs the app on an existing title block, all data will be fetched from the title block, not from the linked document's properties. If a datum doesn't match (a title block item has a different value than the corresponding property) the corresponding widget will render the text red.
+
+The usage itself is pretty straight forward, as long as all config files are setup properly.
+
+In the assets folder is a [catia drawing file](assets/title_block_templates/A4_ISO_H_EN.CATDrawing), which works with the app straight away.
+
+![Example](assets/images/example.png)
 
 ## 4 workspace
 

@@ -1,12 +1,17 @@
 [
     {
         "name": "pytia",
-        "version": "0.0.0",
+        "version": "0.2.2",
         "local": true
     },
     {
         "name": "pytia_ui_tools",
-        "version": "0.0.0",
+        "version": "0.5.2",
         "local": true
+    },
+    {
+        "name": "tkcalendar",
+        "version": "1.6.1",
+        "local": false
     }
 ]

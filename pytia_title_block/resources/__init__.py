@@ -39,6 +39,7 @@ class SettingsRestrictions:
     allow_all_editors: bool
     allow_unsaved: bool
     allow_outside_workspace: bool
+    allow_locked_view: bool
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)

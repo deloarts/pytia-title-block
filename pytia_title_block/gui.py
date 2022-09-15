@@ -120,7 +120,7 @@ class GUI(tk.Tk):
 
     def run_controller(self) -> None:
         """Runs all controllers. Initializes all lazy loaders, bindings and traces."""
-        self.doc_loader = DocumentLoader()
+        self.doc_loader = DocumentLoader(variables=self.vars)
         self.data_loader = DataLoader(
             variables=self.vars, doc_loader=self.doc_loader, layout=self.layout
         )

@@ -21,7 +21,8 @@ This file contains the basic settings for the app.
         "allow_all_users": true,
         "allow_all_editors": true,
         "allow_unsaved": true,
-        "allow_outside_workspace": true
+        "allow_outside_workspace": true,
+        "allow_locked_view": false
     },
     "doc_types": [
         "Production",
@@ -63,6 +64,7 @@ restrictions.allow_all_users | `bool` | If set to `true` any user can make chang
 restrictions.allow_all_editors | `bool` | If set to `true` any user can make changes to the documents properties. If set to `false` only those users which are declared in the **workspace** file can modify the properties. If no workspace file is found, or no **editors** list-item is inside the workspace file, then this is omitted, and everyone can make changes.
 restrictions.allow_unsaved | `bool` | If set to `false` an unsaved document (a document which doesn't have a path yet) cannot be modified.
 restrictions.allow_outside_workspace | `bool` | If set to `false` a **workspace** file must be provided somewhere in the folder structure where the document is saved. This also means, that an unsaved document (a document which doesn't have a path yet) cannot be modified.
+restrictions.allow_locked_view | `bool` | If set to `false` the user cannot make any changes if the first view is locked. This helps to prevent changes after the document has been released.
 doc_types | `List[str]` | A list of available document types.
 tolerances | `List[str]` | A list of available tolerances.
 paths.catia | `str` | The absolute path to the CATIA executables.

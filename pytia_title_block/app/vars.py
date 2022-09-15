@@ -3,12 +3,14 @@
 """
 
 from dataclasses import dataclass
-from tkinter import StringVar, Tk
+from tkinter import BooleanVar, StringVar, Tk
 
 
 @dataclass(slots=True, kw_only=True)
 class Variables:
     """Dataclass for the main windows variables."""
+
+    locked: BooleanVar
 
     linked_document: StringVar
 
@@ -34,6 +36,7 @@ class Variables:
         Args:
             root (Tk): The main window.
         """
+        self.locked = BooleanVar(master=root, name="locked", value=False)
 
         self.linked_document = StringVar(master=root, name="linked_document", value="-")
 

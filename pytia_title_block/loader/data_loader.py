@@ -65,6 +65,7 @@ class DataLoader:
 
         if (
             text_value is not None
+            and prop_value is not None
             and property_name is not None
             and text_value != prop_value
         ):

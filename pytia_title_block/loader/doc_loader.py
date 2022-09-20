@@ -252,6 +252,7 @@ class DocumentLoader:
                 name=PROP_DRAWING_PATH,
                 value=str(self.path),
             )
+            # FIXME: Save linked document after creating the property.
             log.info(f"Wrote drawing path {str(self.path)!r} to linked document.")
         else:
             tkmsg.showwarning(

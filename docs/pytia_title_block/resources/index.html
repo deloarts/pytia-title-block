@@ -70,6 +70,7 @@ class SettingsRestrictions:
     allow_all_editors: bool
     allow_unsaved: bool
     allow_outside_workspace: bool
+    allow_locked_view: bool
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)
@@ -410,7 +411,7 @@ resource = Resources()</code></pre>
 <dl>
 <dt id="pytia_title_block.resources.AppData"><code class="flex name class">
 <span>class <span class="ident">AppData</span></span>
-<span>(</span><span>*, version: str = '0.1.0', counter: int = 0, save_on_apply: bool = True)</span>
+<span>(</span><span>*, version: str = '0.1.1', counter: int = 0, save_on_apply: bool = True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for appdata settings.</p></div>
@@ -1143,7 +1144,7 @@ class SettingsPaths:
 </dd>
 <dt id="pytia_title_block.resources.SettingsRestrictions"><code class="flex name class">
 <span>class <span class="ident">SettingsRestrictions</span></span>
-<span>(</span><span>*, allow_all_users: bool, allow_all_editors: bool, allow_unsaved: bool, allow_outside_workspace: bool)</span>
+<span>(</span><span>*, allow_all_users: bool, allow_all_editors: bool, allow_unsaved: bool, allow_outside_workspace: bool, allow_locked_view: bool)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for restrictive settings.</p></div>
@@ -1158,7 +1159,8 @@ class SettingsRestrictions:
     allow_all_users: bool
     allow_all_editors: bool
     allow_unsaved: bool
-    allow_outside_workspace: bool</code></pre>
+    allow_outside_workspace: bool
+    allow_locked_view: bool</code></pre>
 </details>
 <h3>Instance variables</h3>
 <dl>
@@ -1167,6 +1169,10 @@ class SettingsRestrictions:
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 <dt id="pytia_title_block.resources.SettingsRestrictions.allow_all_users"><code class="name">var <span class="ident">allow_all_users</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.SettingsRestrictions.allow_locked_view"><code class="name">var <span class="ident">allow_locked_view</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
@@ -1473,6 +1479,7 @@ def values(self) -&gt; List[str]:
 <ul class="">
 <li><code><a title="pytia_title_block.resources.SettingsRestrictions.allow_all_editors" href="#pytia_title_block.resources.SettingsRestrictions.allow_all_editors">allow_all_editors</a></code></li>
 <li><code><a title="pytia_title_block.resources.SettingsRestrictions.allow_all_users" href="#pytia_title_block.resources.SettingsRestrictions.allow_all_users">allow_all_users</a></code></li>
+<li><code><a title="pytia_title_block.resources.SettingsRestrictions.allow_locked_view" href="#pytia_title_block.resources.SettingsRestrictions.allow_locked_view">allow_locked_view</a></code></li>
 <li><code><a title="pytia_title_block.resources.SettingsRestrictions.allow_outside_workspace" href="#pytia_title_block.resources.SettingsRestrictions.allow_outside_workspace">allow_outside_workspace</a></code></li>
 <li><code><a title="pytia_title_block.resources.SettingsRestrictions.allow_unsaved" href="#pytia_title_block.resources.SettingsRestrictions.allow_unsaved">allow_unsaved</a></code></li>
 </ul>

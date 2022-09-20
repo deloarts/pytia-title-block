@@ -4,7 +4,7 @@
 
 import os
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 PYTIA = "pytia"
 PYTIA_TITLE_BLOCK = "pytia_title_block"

@@ -5,7 +5,8 @@
         "allow_all_users": true,
         "allow_all_editors": true,
         "allow_unsaved": true,
-        "allow_outside_workspace": true
+        "allow_outside_workspace": true,
+        "allow_locked_view": false
     },
     "doc_types": [
         "Production",

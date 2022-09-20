@@ -1,7 +1,7 @@
 # pytia title block
 
 ![state](https://img.shields.io/badge/State-Alpha-brown.svg?style=for-the-badge)
-![version](https://img.shields.io/badge/Version-0.1.0-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/Version-0.1.1-orange.svg?style=for-the-badge)
 
 [![python](https://img.shields.io/badge/Python-3.10-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
@@ -33,6 +33,8 @@ Recommended python install options for the user:
 ```powershell
 python-installer.exe /passive PrependPath=1 Include_doc=0 Include_test=0 SimpleInstall=1 SimpleInstallDescription="python for pytia"
 ```
+
+For convenience there is a powershell script that will install the required python version for you, see [assets/python_installer.ps1](assets/python_installer.ps1).
 
 ### 1.2 developer
 
@@ -223,6 +225,7 @@ The filename of the workspace file can be changed in the **settings.json** file,
 
 ## 6 changelog
 
+**v0.1.1**: Fix installer bug. Add locked view restriction.  
 **v0.1.0**: Initial commit.  
 
 ## 7 to dos

@@ -30,6 +30,7 @@ from app.tooltips import ToolTips
 from app.traces import Traces
 from app.vars import Variables
 from const import APP_VERSION, LOG, LOGON, LOGS
+from helper.messages import show_help
 from loader.data_loader import DataLoader
 from loader.doc_loader import DocumentLoader
 from resources import resource
@@ -119,7 +120,7 @@ class GUI(tk.Tk):
 
     def run_controller(self) -> None:
         """Runs all controllers. Initializes all lazy loaders, bindings and traces."""
-        self.doc_loader = DocumentLoader()
+        self.doc_loader = DocumentLoader(variables=self.vars)
         self.data_loader = DataLoader(
             variables=self.vars, doc_loader=self.doc_loader, layout=self.layout
         )
@@ -191,6 +192,7 @@ class GUI(tk.Tk):
     def bindings(self) -> None:
         """Key bindings."""
         self.bind("<Escape>", lambda _: self.destroy())
+        self.bind("<F1>", lambda _: show_help())
         self.bind("<F5>", lambda _: self.main_controller())
         # FIXME: There is a bug on the middle mouse button, where, when the button is clicked,
         # selected text will be inserted into a widget, when the cursor hovers above the widget.

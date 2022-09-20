@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from tkinter import messagebox as tkmsg
 
+from app.vars import Variables
 from const import PROP_DRAWING_PATH
 from pytia.exceptions import PytiaDocumentNotSavedError
 from pytia.framework import framework
@@ -22,8 +23,9 @@ from resources import resource
 class DocumentLoader:
     """Helper class to handle document operations."""
 
-    def __init__(self) -> None:
+    def __init__(self, variables: Variables) -> None:
         """Initialize the document loader."""
+        self.vars = variables
         self.active_document = framework.catia.active_document
 
         self._lock_catia(True)
@@ -50,19 +52,11 @@ class DocumentLoader:
         self.fg_texts = self.foreground_view.texts
         self.bg_texts = self.background_view.texts
 
-        if self.views.count > 2:
-            self._linked_view = self.views.item(3)
-            com_doc = self._linked_view.generative_behavior.document.com_object
-            self._linked_product = Product(com_doc)
-            self._linked_properties = PyProperties(self._linked_product)
-            log.info(f"Linked document {self._linked_product.full_name!r}.")
-        else:
-            self._linked_view = None
-            self._linked_product = None
-            self._linked_properties = None
-            log.info("No document available to link.")
+        self._linked_view = None
+        self._linked_product = None
+        self._linked_properties = None
 
-        self.save_drawing_path_to_linked_document()
+        self.get_linked()
 
     @property
     def path(self) -> Path:
@@ -105,6 +99,38 @@ class DocumentLoader:
             framework.catia.disable_new_undo_redo_transaction()
         else:
             framework.catia.enable_new_undo_redo_transaction()
+
+    def get_linked(self) -> None:
+        """Retrieve the linked view, doc and properties from the first view."""
+        if self.views.count > 2:
+            first_view = self.views.item(3)
+            if (
+                first_view.lock_status
+                and not resource.settings.restrictions.allow_locked_view
+            ):
+                self.vars.locked.set(True)
+                tkmsg.showinfo(
+                    title=resource.settings.title,
+                    message=(
+                        "The settings are set to disable this app if the first view is locked. "
+                        "Unlock the first view to enable editing.\n\n"
+                        "But take into account, there is a reason why the view is locked."
+                    ),
+                )
+
+            if first_view.is_generative():
+                com_doc = first_view.generative_behavior.document.com_object
+                self._linked_view = first_view
+                self._linked_product = Product(com_doc)
+                self._linked_properties = PyProperties(self._linked_product)
+                self.save_drawing_path_to_linked_document()
+                log.info(f"Linked document {self._linked_product.full_name!r}.")
+            else:
+                log.info(
+                    f"Cannot link view {first_view.name!r}: View is not generative."
+                )
+        else:
+            log.info("No document available to link.")
 
     def get_text_by_name(self, name: str) -> DrawingText | None:
         """

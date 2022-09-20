@@ -61,7 +61,7 @@ Sub CATMain()
                 Fso.DeleteFolder(Folder)
             Next
         Else
-            CreateFolder VenvFolderf
+            CreateFolder VenvFolder
         End If
         
         ' Delete old pyversion.txt file

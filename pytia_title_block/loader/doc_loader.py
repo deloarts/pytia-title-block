@@ -13,6 +13,7 @@ from pytia.exceptions import PytiaDocumentNotSavedError
 from pytia.framework import framework
 from pytia.framework.drafting_interfaces.drawing_text import DrawingText
 from pytia.framework.drafting_interfaces.drawing_view import DrawingView
+from pytia.framework.in_interfaces.document import Document
 from pytia.framework.product_structure_interfaces.product import Product
 from pytia.log import log
 from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
@@ -52,6 +53,7 @@ class DocumentLoader:
         self.fg_texts = self.foreground_view.texts
         self.bg_texts = self.background_view.texts
 
+        self._linked_doc = None
         self._linked_view = None
         self._linked_product = None
         self._linked_properties = None
@@ -67,6 +69,11 @@ class DocumentLoader:
     def folder(self) -> Path:
         """Returns the folder as absolute path in which this document is saved."""
         return Path(self.path).parent
+
+    @property
+    def linked_document(self) -> Document | None:
+        """Returns the document object of the linked document."""
+        return self._linked_doc
 
     @property
     def linked_view(self) -> DrawingView | None:
@@ -119,9 +126,11 @@ class DocumentLoader:
                 )
 
             if first_view.is_generative():
-                com_doc = first_view.generative_behavior.document.com_object
                 self._linked_view = first_view
+                com_doc = first_view.generative_behavior.document.com_object
+
                 self._linked_product = Product(com_doc)
+                self._linked_doc = Document(self._linked_product.parent.com_object)
                 self._linked_properties = PyProperties(self._linked_product)
                 self.save_drawing_path_to_linked_document()
                 log.info(f"Linked document {self._linked_product.full_name!r}.")
@@ -226,7 +235,7 @@ class DocumentLoader:
 
     def save_drawing_path_to_linked_document(self) -> None:
         """Writes the drawing path to the linked document."""
-        if self.linked_properties is None:
+        if self.linked_document is None or self.linked_properties is None:
             log.warning("No linked document, skipping saving drawing path.")
             return
 
@@ -252,8 +261,10 @@ class DocumentLoader:
                 name=PROP_DRAWING_PATH,
                 value=str(self.path),
             )
-            # FIXME: Save linked document after creating the property.
-            log.info(f"Wrote drawing path {str(self.path)!r} to linked document.")
+            self.linked_document.save()
+            log.info(
+                f"Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}."
+            )
         else:
             tkmsg.showwarning(
                 title=resource.settings.title,

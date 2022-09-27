@@ -58,6 +58,7 @@ class DocumentLoader:
         self._linked_product = None
         self._linked_properties = None
 
+        self.check_title_block()
         self.get_linked()
 
     @property
@@ -106,6 +107,19 @@ class DocumentLoader:
             framework.catia.disable_new_undo_redo_transaction()
         else:
             framework.catia.enable_new_undo_redo_transaction()
+
+    def check_title_block(self) -> None:
+        for item in resource.title_block_items.values:
+            if self.get_text_by_name(item) is None:
+                tkmsg.showwarning(
+                    title=resource.settings.title,
+                    message=(
+                        "The title block of the current document doesn't have all required items. "
+                        "It is possible, that some information will be lost. Please consider "
+                        "updating the title block."
+                    ),
+                )
+                return
 
     def get_linked(self) -> None:
         """Retrieve the linked view, doc and properties from the first view."""

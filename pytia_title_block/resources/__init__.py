@@ -134,6 +134,16 @@ class TitleBlockItems:
     version: str
     path: str
 
+    @property
+    def keys(self) -> List[str]:
+        """Returns a list of all keys from the TitleBlockItems dataclass."""
+        return [f.name for f in fields(self)]
+
+    @property
+    def values(self) -> List[str]:
+        """Returns a list of all values from the TitleBlockItems dataclass."""
+        return [getattr(self, f.name) for f in fields(self)]
+
 
 @dataclass(slots=True, kw_only=True, frozen=True)
 class User:

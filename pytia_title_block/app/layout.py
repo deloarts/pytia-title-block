@@ -4,6 +4,7 @@
 from datetime import datetime
 from tkinter import DISABLED, Menu, PhotoImage, Tk, ttk
 
+from helper.messages import show_help
 from resources import resource
 from tkcalendar import DateEntry
 
@@ -31,9 +32,11 @@ class Layout:
 
         # region MENU
         menubar = Menu(root)
+
         self._tools_menu = Menu(menubar, tearoff=False)
         self._tools_menu.add_command(label="Tolerance Table")
 
+        menubar.add_cascade(label="Help", command=show_help)
         menubar.add_cascade(label="Tools", menu=self._tools_menu)
         root.configure(menu=menubar)
         # endregion

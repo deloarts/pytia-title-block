@@ -142,6 +142,7 @@ class ToleranceTools:
                 table_y = position.y + len(data) * TOLERANCE_TABLE_CELL_HEIGHT
                 break
 
+        # Add the table to the sheet
         table = self.doc.background_view.tables.add(
             table_x,
             table_y,
@@ -152,6 +153,7 @@ class ToleranceTools:
         )
         table.name = TOLERANCE_TABLE_NAME
 
+        # Fill the table with the data
         for row, datum in enumerate(data):
             table.set_cell_string(row + 1, 1, datum.base)
             table.set_cell_string(row + 1, 2, str(datum.min))
@@ -161,6 +163,11 @@ class ToleranceTools:
                 cell = table.get_cell_object(row + 1, col + 1)
                 cell.set_font_size(0, 0, 2)
                 table.set_cell_alignment(row + 1, col + 1, 4)
+
+        # Fit the notes above the table
+        notes = self.doc.get_text_by_name(resource.title_block_items.notes)
+        if notes and notes.y < table_y + 2.5:
+            notes.y = table_y + 2.5
 
     def remove_table(self) -> None:
         """Removes existing tolerance tables."""

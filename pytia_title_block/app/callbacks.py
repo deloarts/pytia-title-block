@@ -11,6 +11,7 @@ from loader.doc_loader import DocumentLoader
 from pytia.log import log
 from pytia_ui_tools.widgets.tooltips import ToolTip
 from resources import resource
+from tools.tolerance_tools import ToleranceTools
 
 from app.layout import Layout
 from app.state_setter import UISetter
@@ -53,6 +54,7 @@ class Callbacks:
 
         self._bind_button_callbacks()
         self._bind_widget_callbacks()
+        self._bind_menu_callbacks()
         log.info("Callbacks initialized.")
 
     def _bind_button_callbacks(self) -> None:
@@ -82,6 +84,10 @@ class Callbacks:
 
     def _bind_widget_callbacks(self) -> None:
         """Binds all callbacks to the main windows widgets."""
+
+    def _bind_menu_callbacks(self) -> None:
+        """Binds all callbacks to the menubar."""
+        self.layout.tools_menu.entryconfig(0, command=self.on_tools_add_tolerance_table)
 
     def _on_btn_reload(
         self,
@@ -173,6 +179,10 @@ class Callbacks:
             widget=self.layout.input_tolerance,
             property_name=resource.props.tolerance,
         )
+
+    def on_tools_add_tolerance_table(self) -> None:
+        tol_tools = ToleranceTools(doc_loader=self.doc_loader)
+        tol_tools.add_table()
 
     def on_btn_save(self) -> None:
         """

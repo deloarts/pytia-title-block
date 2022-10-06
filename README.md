@@ -1,7 +1,7 @@
 # pytia title block
 
 ![state](https://img.shields.io/badge/State-Alpha-brown.svg?style=for-the-badge)
-![version](https://img.shields.io/badge/Version-0.1.1-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/Version-0.2.0-orange.svg?style=for-the-badge)
 
 [![python](https://img.shields.io/badge/Python-3.10-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
@@ -82,7 +82,7 @@ Some dependencies are not publicly available on PyPi or GitHub (because they are
 
 | Name               | Link                                         | Version                                                                 |
 | ------------------ | -------------------------------------------- | ----------------------------------------------------------------------- |
-| **pytia**          | <https://github.com/deloarts/pytia>          | [0.2.2](https://github.com/deloarts/pytia/releases/tag/v0.2.2)          |
+| **pytia**          | <https://github.com/deloarts/pytia>          | [0.2.4](https://github.com/deloarts/pytia/releases/tag/v0.2.4)          |
 | **pytia-ui-tools** | <https://github.com/deloarts/pytia-ui-tools> | [0.5.2](https://github.com/deloarts/pytia-ui-tools/releases/tag/v0.5.2) |
 
 > ❗️ The folder where you provide the local dependencies must match the **paths.local_dependencies** entry of the **settings.json**. The user must have at least read access on this folder.
@@ -225,6 +225,7 @@ The filename of the workspace file can be changed in the **settings.json** file,
 
 ## 6 changelog
 
+**v0.2.0**: Add tolerance table tool.  
 **v0.1.1**: Fix installer bug. Add locked view restriction.  
 **v0.1.0**: Initial commit.  
 

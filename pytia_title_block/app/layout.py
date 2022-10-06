@@ -2,8 +2,9 @@
     The layout of the app.
 """
 from datetime import datetime
-from tkinter import DISABLED, PhotoImage, Tk, ttk
+from tkinter import DISABLED, Menu, PhotoImage, Tk, ttk
 
+from helper.messages import show_help
 from resources import resource
 from tkcalendar import DateEntry
 
@@ -28,6 +29,17 @@ class Layout:
             variables (Variables): The variables of the main window.
         """
         self.reload_image = PhotoImage(data=resource.get_png("reload.png"))
+
+        # region MENU
+        menubar = Menu(root)
+
+        self._tools_menu = Menu(menubar, tearoff=False)
+        self._tools_menu.add_command(label="Tolerance Table")
+
+        menubar.add_cascade(label="Help", command=show_help)
+        menubar.add_cascade(label="Tools", menu=self._tools_menu)
+        root.configure(menu=menubar)
+        # endregion
 
         lbl_linked_doc = ttk.Label(
             frames.infrastructure,
@@ -511,6 +523,10 @@ class Layout:
             frames.footer, text="Abort", style="Footer.TButton"
         )
         self._btn_abort.grid(row=0, column=2, padx=(2, 10), pady=(5, 5), sticky="e")
+
+    @property
+    def tools_menu(self) -> Menu:
+        return self._tools_menu
 
     @property
     def linked_document(self) -> ttk.Label:

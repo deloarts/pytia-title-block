@@ -40,6 +40,7 @@ from loader.doc_loader import DocumentLoader
 from pytia.log import log
 from pytia_ui_tools.widgets.tooltips import ToolTip
 from resources import resource
+from tools.tolerance_tools import ToleranceTools
 
 from app.layout import Layout
 from app.state_setter import UISetter
@@ -82,6 +83,7 @@ class Callbacks:
 
         self._bind_button_callbacks()
         self._bind_widget_callbacks()
+        self._bind_menu_callbacks()
         log.info(&#34;Callbacks initialized.&#34;)
 
     def _bind_button_callbacks(self) -&gt; None:
@@ -111,6 +113,10 @@ class Callbacks:
 
     def _bind_widget_callbacks(self) -&gt; None:
         &#34;&#34;&#34;Binds all callbacks to the main windows widgets.&#34;&#34;&#34;
+
+    def _bind_menu_callbacks(self) -&gt; None:
+        &#34;&#34;&#34;Binds all callbacks to the menubar.&#34;&#34;&#34;
+        self.layout.tools_menu.entryconfig(0, command=self.on_tools_add_tolerance_table)
 
     def _on_btn_reload(
         self,
@@ -202,6 +208,10 @@ class Callbacks:
             widget=self.layout.input_tolerance,
             property_name=resource.props.tolerance,
         )
+
+    def on_tools_add_tolerance_table(self) -&gt; None:
+        tol_tools = ToleranceTools(doc_loader=self.doc_loader)
+        tol_tools.add_table()
 
     def on_btn_save(self) -&gt; None:
         &#34;&#34;&#34;
@@ -292,6 +302,7 @@ class Callbacks:
 
         self._bind_button_callbacks()
         self._bind_widget_callbacks()
+        self._bind_menu_callbacks()
         log.info(&#34;Callbacks initialized.&#34;)
 
     def _bind_button_callbacks(self) -&gt; None:
@@ -321,6 +332,10 @@ class Callbacks:
 
     def _bind_widget_callbacks(self) -&gt; None:
         &#34;&#34;&#34;Binds all callbacks to the main windows widgets.&#34;&#34;&#34;
+
+    def _bind_menu_callbacks(self) -&gt; None:
+        &#34;&#34;&#34;Binds all callbacks to the menubar.&#34;&#34;&#34;
+        self.layout.tools_menu.entryconfig(0, command=self.on_tools_add_tolerance_table)
 
     def _on_btn_reload(
         self,
@@ -412,6 +427,10 @@ class Callbacks:
             widget=self.layout.input_tolerance,
             property_name=resource.props.tolerance,
         )
+
+    def on_tools_add_tolerance_table(self) -&gt; None:
+        tol_tools = ToleranceTools(doc_loader=self.doc_loader)
+        tol_tools.add_table()
 
     def on_btn_save(self) -&gt; None:
         &#34;&#34;&#34;
@@ -596,6 +615,20 @@ documents properties.</p></div>
     self.root.destroy()</code></pre>
 </details>
 </dd>
+<dt id="pytia_title_block.app.callbacks.Callbacks.on_tools_add_tolerance_table"><code class="name flex">
+<span>def <span class="ident">on_tools_add_tolerance_table</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_tools_add_tolerance_table(self) -&gt; None:
+    tol_tools = ToleranceTools(doc_loader=self.doc_loader)
+    tol_tools.add_table()</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -626,6 +659,7 @@ documents properties.</p></div>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_revision" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_revision">on_btn_reload_revision</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_tolerance" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_tolerance">on_btn_reload_tolerance</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_save" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_save">on_btn_save</a></code></li>
+<li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_tools_add_tolerance_table" href="#pytia_title_block.app.callbacks.Callbacks.on_tools_add_tolerance_table">on_tools_add_tolerance_table</a></code></li>
 </ul>
 </li>
 </ul>

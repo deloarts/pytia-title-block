@@ -42,6 +42,7 @@ from pytia.exceptions import PytiaDocumentNotSavedError
 from pytia.framework import framework
 from pytia.framework.drafting_interfaces.drawing_text import DrawingText
 from pytia.framework.drafting_interfaces.drawing_view import DrawingView
+from pytia.framework.in_interfaces.document import Document
 from pytia.framework.product_structure_interfaces.product import Product
 from pytia.log import log
 from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
@@ -81,10 +82,12 @@ class DocumentLoader:
         self.fg_texts = self.foreground_view.texts
         self.bg_texts = self.background_view.texts
 
+        self._linked_doc = None
         self._linked_view = None
         self._linked_product = None
         self._linked_properties = None
 
+        self.check_title_block()
         self.get_linked()
 
     @property
@@ -96,6 +99,11 @@ class DocumentLoader:
     def folder(self) -&gt; Path:
         &#34;&#34;&#34;Returns the folder as absolute path in which this document is saved.&#34;&#34;&#34;
         return Path(self.path).parent
+
+    @property
+    def linked_document(self) -&gt; Document | None:
+        &#34;&#34;&#34;Returns the document object of the linked document.&#34;&#34;&#34;
+        return self._linked_doc
 
     @property
     def linked_view(self) -&gt; DrawingView | None:
@@ -129,6 +137,19 @@ class DocumentLoader:
         else:
             framework.catia.enable_new_undo_redo_transaction()
 
+    def check_title_block(self) -&gt; None:
+        for item in resource.title_block_items.values:
+            if self.get_text_by_name(item) is None:
+                tkmsg.showwarning(
+                    title=resource.settings.title,
+                    message=(
+                        &#34;The title block of the current document doesn&#39;t have all required items. &#34;
+                        &#34;It is possible, that some information will be lost. Please consider &#34;
+                        &#34;updating the title block.&#34;
+                    ),
+                )
+                return
+
     def get_linked(self) -&gt; None:
         &#34;&#34;&#34;Retrieve the linked view, doc and properties from the first view.&#34;&#34;&#34;
         if self.views.count &gt; 2:
@@ -148,9 +169,11 @@ class DocumentLoader:
                 )
 
             if first_view.is_generative():
-                com_doc = first_view.generative_behavior.document.com_object
                 self._linked_view = first_view
+                com_doc = first_view.generative_behavior.document.com_object
+
                 self._linked_product = Product(com_doc)
+                self._linked_doc = Document(self._linked_product.parent.com_object)
                 self._linked_properties = PyProperties(self._linked_product)
                 self.save_drawing_path_to_linked_document()
                 log.info(f&#34;Linked document {self._linked_product.full_name!r}.&#34;)
@@ -255,7 +278,7 @@ class DocumentLoader:
 
     def save_drawing_path_to_linked_document(self) -&gt; None:
         &#34;&#34;&#34;Writes the drawing path to the linked document.&#34;&#34;&#34;
-        if self.linked_properties is None:
+        if self.linked_document is None or self.linked_properties is None:
             log.warning(&#34;No linked document, skipping saving drawing path.&#34;)
             return
 
@@ -281,7 +304,10 @@ class DocumentLoader:
                 name=PROP_DRAWING_PATH,
                 value=str(self.path),
             )
-            log.info(f&#34;Wrote drawing path {str(self.path)!r} to linked document.&#34;)
+            self.linked_document.save()
+            log.info(
+                f&#34;Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}.&#34;
+            )
         else:
             tkmsg.showwarning(
                 title=resource.settings.title,
@@ -344,10 +370,12 @@ class DocumentLoader:
         self.fg_texts = self.foreground_view.texts
         self.bg_texts = self.background_view.texts
 
+        self._linked_doc = None
         self._linked_view = None
         self._linked_product = None
         self._linked_properties = None
 
+        self.check_title_block()
         self.get_linked()
 
     @property
@@ -359,6 +387,11 @@ class DocumentLoader:
     def folder(self) -&gt; Path:
         &#34;&#34;&#34;Returns the folder as absolute path in which this document is saved.&#34;&#34;&#34;
         return Path(self.path).parent
+
+    @property
+    def linked_document(self) -&gt; Document | None:
+        &#34;&#34;&#34;Returns the document object of the linked document.&#34;&#34;&#34;
+        return self._linked_doc
 
     @property
     def linked_view(self) -&gt; DrawingView | None:
@@ -392,6 +425,19 @@ class DocumentLoader:
         else:
             framework.catia.enable_new_undo_redo_transaction()
 
+    def check_title_block(self) -&gt; None:
+        for item in resource.title_block_items.values:
+            if self.get_text_by_name(item) is None:
+                tkmsg.showwarning(
+                    title=resource.settings.title,
+                    message=(
+                        &#34;The title block of the current document doesn&#39;t have all required items. &#34;
+                        &#34;It is possible, that some information will be lost. Please consider &#34;
+                        &#34;updating the title block.&#34;
+                    ),
+                )
+                return
+
     def get_linked(self) -&gt; None:
         &#34;&#34;&#34;Retrieve the linked view, doc and properties from the first view.&#34;&#34;&#34;
         if self.views.count &gt; 2:
@@ -411,9 +457,11 @@ class DocumentLoader:
                 )
 
             if first_view.is_generative():
-                com_doc = first_view.generative_behavior.document.com_object
                 self._linked_view = first_view
+                com_doc = first_view.generative_behavior.document.com_object
+
                 self._linked_product = Product(com_doc)
+                self._linked_doc = Document(self._linked_product.parent.com_object)
                 self._linked_properties = PyProperties(self._linked_product)
                 self.save_drawing_path_to_linked_document()
                 log.info(f&#34;Linked document {self._linked_product.full_name!r}.&#34;)
@@ -518,7 +566,7 @@ class DocumentLoader:
 
     def save_drawing_path_to_linked_document(self) -&gt; None:
         &#34;&#34;&#34;Writes the drawing path to the linked document.&#34;&#34;&#34;
-        if self.linked_properties is None:
+        if self.linked_document is None or self.linked_properties is None:
             log.warning(&#34;No linked document, skipping saving drawing path.&#34;)
             return
 
@@ -544,7 +592,10 @@ class DocumentLoader:
                 name=PROP_DRAWING_PATH,
                 value=str(self.path),
             )
-            log.info(f&#34;Wrote drawing path {str(self.path)!r} to linked document.&#34;)
+            self.linked_document.save()
+            log.info(
+                f&#34;Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}.&#34;
+            )
         else:
             tkmsg.showwarning(
                 title=resource.settings.title,
@@ -567,6 +618,19 @@ class DocumentLoader:
 def folder(self) -&gt; Path:
     &#34;&#34;&#34;Returns the folder as absolute path in which this document is saved.&#34;&#34;&#34;
     return Path(self.path).parent</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_document"><code class="name">var <span class="ident">linked_document</span> : pytia.framework.in_interfaces.document.Document | None</code></dt>
+<dd>
+<div class="desc"><p>Returns the document object of the linked document.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def linked_document(self) -&gt; Document | None:
+    &#34;&#34;&#34;Returns the document object of the linked document.&#34;&#34;&#34;
+    return self._linked_doc</code></pre>
 </details>
 </dd>
 <dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_product"><code class="name">var <span class="ident">linked_product</span> : pytia.framework.product_structure_interfaces.product.Product | None</code></dt>
@@ -624,6 +688,29 @@ def path(self) -&gt; Path:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.check_title_block"><code class="name flex">
+<span>def <span class="ident">check_title_block</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_title_block(self) -&gt; None:
+    for item in resource.title_block_items.values:
+        if self.get_text_by_name(item) is None:
+            tkmsg.showwarning(
+                title=resource.settings.title,
+                message=(
+                    &#34;The title block of the current document doesn&#39;t have all required items. &#34;
+                    &#34;It is possible, that some information will be lost. Please consider &#34;
+                    &#34;updating the title block.&#34;
+                ),
+            )
+            return</code></pre>
+</details>
+</dd>
 <dt id="pytia_title_block.loader.doc_loader.DocumentLoader.get_linked"><code class="name flex">
 <span>def <span class="ident">get_linked</span></span>(<span>self) ‑> None</span>
 </code></dt>
@@ -652,9 +739,11 @@ def path(self) -&gt; Path:
             )
 
         if first_view.is_generative():
-            com_doc = first_view.generative_behavior.document.com_object
             self._linked_view = first_view
+            com_doc = first_view.generative_behavior.document.com_object
+
             self._linked_product = Product(com_doc)
+            self._linked_doc = Document(self._linked_product.parent.com_object)
             self._linked_properties = PyProperties(self._linked_product)
             self.save_drawing_path_to_linked_document()
             log.info(f&#34;Linked document {self._linked_product.full_name!r}.&#34;)
@@ -811,7 +900,7 @@ Searches for the name in all views.</p>
 </summary>
 <pre><code class="python">def save_drawing_path_to_linked_document(self) -&gt; None:
     &#34;&#34;&#34;Writes the drawing path to the linked document.&#34;&#34;&#34;
-    if self.linked_properties is None:
+    if self.linked_document is None or self.linked_properties is None:
         log.warning(&#34;No linked document, skipping saving drawing path.&#34;)
         return
 
@@ -837,7 +926,10 @@ Searches for the name in all views.</p>
             name=PROP_DRAWING_PATH,
             value=str(self.path),
         )
-        log.info(f&#34;Wrote drawing path {str(self.path)!r} to linked document.&#34;)
+        self.linked_document.save()
+        log.info(
+            f&#34;Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}.&#34;
+        )
     else:
         tkmsg.showwarning(
             title=resource.settings.title,
@@ -902,11 +994,13 @@ Searches for the name in all views.</p>
 <li>
 <h4><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader" href="#pytia_title_block.loader.doc_loader.DocumentLoader">DocumentLoader</a></code></h4>
 <ul class="">
+<li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.check_title_block" href="#pytia_title_block.loader.doc_loader.DocumentLoader.check_title_block">check_title_block</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.folder" href="#pytia_title_block.loader.doc_loader.DocumentLoader.folder">folder</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.get_linked" href="#pytia_title_block.loader.doc_loader.DocumentLoader.get_linked">get_linked</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.get_property_from_linked_doc" href="#pytia_title_block.loader.doc_loader.DocumentLoader.get_property_from_linked_doc">get_property_from_linked_doc</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.get_text_by_name" href="#pytia_title_block.loader.doc_loader.DocumentLoader.get_text_by_name">get_text_by_name</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.get_text_value_by_name" href="#pytia_title_block.loader.doc_loader.DocumentLoader.get_text_value_by_name">get_text_value_by_name</a></code></li>
+<li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.linked_document" href="#pytia_title_block.loader.doc_loader.DocumentLoader.linked_document">linked_document</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.linked_product" href="#pytia_title_block.loader.doc_loader.DocumentLoader.linked_product">linked_product</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.linked_properties" href="#pytia_title_block.loader.doc_loader.DocumentLoader.linked_properties">linked_properties</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.linked_view" href="#pytia_title_block.loader.doc_loader.DocumentLoader.linked_view">linked_view</a></code></li>

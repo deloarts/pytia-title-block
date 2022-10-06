@@ -4,7 +4,7 @@
 
 import os
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 PYTIA = "pytia"
 PYTIA_TITLE_BLOCK = "pytia_title_block"
@@ -38,5 +38,9 @@ CONFIG_TB_ITEMS_DEFAULT = "title_block_items.default.json"
 CONFIG_INFOS = "information.json"
 CONFIG_INFOS_DEFAULT = "information.default.json"
 CONFIG_USERS = "users.json"
+
+TOLERANCE_TABLE_NAME = "tolerance_table"
+TOLERANCE_TABLE_CELL_HEIGHT = 4.5
+TOLERANCE_TABLE_CELL_WIDTH = 32.3333
 
 WEB_PIP = "www.pypi.org"

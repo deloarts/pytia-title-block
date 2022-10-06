@@ -68,6 +68,7 @@ This file contains all possible component names in a catia drawing document.
     "scale": "value.scale",
     "creator_3d": "value.creator_3d",
     "creator_2d": "value.creator_2d",
+    "notes": "value.notes",
     "version": "value.version",
     "path": "value.path"
 }

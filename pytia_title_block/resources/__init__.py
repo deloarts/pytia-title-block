@@ -160,6 +160,8 @@ class TitleBlockItems:
     creator_3d: str
     creator_2d: str
 
+    notes: str
+
     version: str
     path: str
 

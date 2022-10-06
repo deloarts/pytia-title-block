@@ -44,6 +44,7 @@ import tkinter.messagebox as tkmsg
 from dataclasses import asdict, dataclass, field, fields
 from json.decoder import JSONDecodeError
 from pathlib import Path
+from turtle import position
 from typing import List, Optional
 
 from const import (
@@ -71,6 +72,32 @@ class SettingsRestrictions:
     allow_unsaved: bool
     allow_outside_workspace: bool
     allow_locked_view: bool
+
+
+@dataclass(slots=True, kw_only=True)
+class SettingsTablesTolerancesPositions:
+    size: str
+    x: int
+    y: int
+
+
+@dataclass(slots=True, kw_only=True)
+class SettingsTablesTolerances:
+    header_base: str
+    header_min: str
+    header_max: str
+    positions: List[SettingsTablesTolerancesPositions]
+
+    def __post_init__(self) -&gt; None:
+        self.positions = [SettingsTablesTolerancesPositions(**i) for i in self.positions]  # type: ignore
+
+
+@dataclass(slots=True, kw_only=True)
+class SettingsTables:
+    tolerances: SettingsTablesTolerances
+
+    def __post_init__(self) -&gt; None:
+        self.tolerances = SettingsTablesTolerances(**dict(self.tolerances))  # type: ignore
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)
@@ -114,6 +141,7 @@ class Settings:  # pylint: disable=R0902
     restrictions: SettingsRestrictions
     doc_types: List[str]
     tolerances: List[str]
+    tables: SettingsTables
     paths: SettingsPaths
     files: SettingsFiles
     urls: SettingsUrls
@@ -121,6 +149,7 @@ class Settings:  # pylint: disable=R0902
 
     def __post_init__(self) -&gt; None:
         self.restrictions = SettingsRestrictions(**dict(self.restrictions))  # type: ignore
+        self.tables = SettingsTables(**dict(self.tables))  # type: ignore
         self.files = SettingsFiles(**dict(self.files))  # type: ignore
         self.paths = SettingsPaths(**dict(self.paths))  # type: ignore
         self.urls = SettingsUrls(**dict(self.urls))  # type: ignore
@@ -162,8 +191,20 @@ class TitleBlockItems:
     creator_3d: str
     creator_2d: str
 
+    notes: str
+
     version: str
     path: str
+
+    @property
+    def keys(self) -&gt; List[str]:
+        &#34;&#34;&#34;Returns a list of all keys from the TitleBlockItems dataclass.&#34;&#34;&#34;
+        return [f.name for f in fields(self)]
+
+    @property
+    def values(self) -&gt; List[str]:
+        &#34;&#34;&#34;Returns a list of all values from the TitleBlockItems dataclass.&#34;&#34;&#34;
+        return [getattr(self, f.name) for f in fields(self)]
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)
@@ -411,7 +452,7 @@ resource = Resources()</code></pre>
 <dl>
 <dt id="pytia_title_block.resources.AppData"><code class="flex name class">
 <span>class <span class="ident">AppData</span></span>
-<span>(</span><span>*, version: str = '0.1.1', counter: int = 0, save_on_apply: bool = True)</span>
+<span>(</span><span>*, version: str = '0.2.0', counter: int = 0, save_on_apply: bool = True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for appdata settings.</p></div>
@@ -981,7 +1022,7 @@ current session if logon is omitted.</p>
 </dd>
 <dt id="pytia_title_block.resources.Settings"><code class="flex name class">
 <span>class <span class="ident">Settings</span></span>
-<span>(</span><span>*, title: str, debug: bool, restrictions: <a title="pytia_title_block.resources.SettingsRestrictions" href="#pytia_title_block.resources.SettingsRestrictions">SettingsRestrictions</a>, doc_types: List[str], tolerances: List[str], paths: <a title="pytia_title_block.resources.SettingsPaths" href="#pytia_title_block.resources.SettingsPaths">SettingsPaths</a>, files: <a title="pytia_title_block.resources.SettingsFiles" href="#pytia_title_block.resources.SettingsFiles">SettingsFiles</a>, urls: <a title="pytia_title_block.resources.SettingsUrls" href="#pytia_title_block.resources.SettingsUrls">SettingsUrls</a>, mails: <a title="pytia_title_block.resources.SettingsMails" href="#pytia_title_block.resources.SettingsMails">SettingsMails</a>)</span>
+<span>(</span><span>*, title: str, debug: bool, restrictions: <a title="pytia_title_block.resources.SettingsRestrictions" href="#pytia_title_block.resources.SettingsRestrictions">SettingsRestrictions</a>, doc_types: List[str], tolerances: List[str], tables: <a title="pytia_title_block.resources.SettingsTables" href="#pytia_title_block.resources.SettingsTables">SettingsTables</a>, paths: <a title="pytia_title_block.resources.SettingsPaths" href="#pytia_title_block.resources.SettingsPaths">SettingsPaths</a>, files: <a title="pytia_title_block.resources.SettingsFiles" href="#pytia_title_block.resources.SettingsFiles">SettingsFiles</a>, urls: <a title="pytia_title_block.resources.SettingsUrls" href="#pytia_title_block.resources.SettingsUrls">SettingsUrls</a>, mails: <a title="pytia_title_block.resources.SettingsMails" href="#pytia_title_block.resources.SettingsMails">SettingsMails</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for settings (settings.json).</p></div>
@@ -998,6 +1039,7 @@ class Settings:  # pylint: disable=R0902
     restrictions: SettingsRestrictions
     doc_types: List[str]
     tolerances: List[str]
+    tables: SettingsTables
     paths: SettingsPaths
     files: SettingsFiles
     urls: SettingsUrls
@@ -1005,6 +1047,7 @@ class Settings:  # pylint: disable=R0902
 
     def __post_init__(self) -&gt; None:
         self.restrictions = SettingsRestrictions(**dict(self.restrictions))  # type: ignore
+        self.tables = SettingsTables(**dict(self.tables))  # type: ignore
         self.files = SettingsFiles(**dict(self.files))  # type: ignore
         self.paths = SettingsPaths(**dict(self.paths))  # type: ignore
         self.urls = SettingsUrls(**dict(self.urls))  # type: ignore
@@ -1033,6 +1076,10 @@ class Settings:  # pylint: disable=R0902
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 <dt id="pytia_title_block.resources.Settings.restrictions"><code class="name">var <span class="ident">restrictions</span> : <a title="pytia_title_block.resources.SettingsRestrictions" href="#pytia_title_block.resources.SettingsRestrictions">SettingsRestrictions</a></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.Settings.tables"><code class="name">var <span class="ident">tables</span> : <a title="pytia_title_block.resources.SettingsTables" href="#pytia_title_block.resources.SettingsTables">SettingsTables</a></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
@@ -1186,6 +1233,103 @@ class SettingsRestrictions:
 </dd>
 </dl>
 </dd>
+<dt id="pytia_title_block.resources.SettingsTables"><code class="flex name class">
+<span>class <span class="ident">SettingsTables</span></span>
+<span>(</span><span>*, tolerances: <a title="pytia_title_block.resources.SettingsTablesTolerances" href="#pytia_title_block.resources.SettingsTablesTolerances">SettingsTablesTolerances</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SettingsTables(*, tolerances: pytia_title_block.resources.SettingsTablesTolerances)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(slots=True, kw_only=True)
+class SettingsTables:
+    tolerances: SettingsTablesTolerances
+
+    def __post_init__(self) -&gt; None:
+        self.tolerances = SettingsTablesTolerances(**dict(self.tolerances))  # type: ignore</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pytia_title_block.resources.SettingsTables.tolerances"><code class="name">var <span class="ident">tolerances</span> : <a title="pytia_title_block.resources.SettingsTablesTolerances" href="#pytia_title_block.resources.SettingsTablesTolerances">SettingsTablesTolerances</a></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pytia_title_block.resources.SettingsTablesTolerances"><code class="flex name class">
+<span>class <span class="ident">SettingsTablesTolerances</span></span>
+<span>(</span><span>*, header_base: str, header_min: str, header_max: str, positions: List[<a title="pytia_title_block.resources.SettingsTablesTolerancesPositions" href="#pytia_title_block.resources.SettingsTablesTolerancesPositions">SettingsTablesTolerancesPositions</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SettingsTablesTolerances(*, header_base: str, header_min: str, header_max: str, positions: List[pytia_title_block.resources.SettingsTablesTolerancesPositions])</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(slots=True, kw_only=True)
+class SettingsTablesTolerances:
+    header_base: str
+    header_min: str
+    header_max: str
+    positions: List[SettingsTablesTolerancesPositions]
+
+    def __post_init__(self) -&gt; None:
+        self.positions = [SettingsTablesTolerancesPositions(**i) for i in self.positions]  # type: ignore</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pytia_title_block.resources.SettingsTablesTolerances.header_base"><code class="name">var <span class="ident">header_base</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.SettingsTablesTolerances.header_max"><code class="name">var <span class="ident">header_max</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.SettingsTablesTolerances.header_min"><code class="name">var <span class="ident">header_min</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.SettingsTablesTolerances.positions"><code class="name">var <span class="ident">positions</span> : List[<a title="pytia_title_block.resources.SettingsTablesTolerancesPositions" href="#pytia_title_block.resources.SettingsTablesTolerancesPositions">SettingsTablesTolerancesPositions</a>]</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pytia_title_block.resources.SettingsTablesTolerancesPositions"><code class="flex name class">
+<span>class <span class="ident">SettingsTablesTolerancesPositions</span></span>
+<span>(</span><span>*, size: str, x: int, y: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>SettingsTablesTolerancesPositions(*, size: str, x: int, y: int)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass(slots=True, kw_only=True)
+class SettingsTablesTolerancesPositions:
+    size: str
+    x: int
+    y: int</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pytia_title_block.resources.SettingsTablesTolerancesPositions.size"><code class="name">var <span class="ident">size</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.SettingsTablesTolerancesPositions.x"><code class="name">var <span class="ident">x</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.SettingsTablesTolerancesPositions.y"><code class="name">var <span class="ident">y</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+</dl>
+</dd>
 <dt id="pytia_title_block.resources.SettingsUrls"><code class="flex name class">
 <span>class <span class="ident">SettingsUrls</span></span>
 <span>(</span><span>*, help: str | None)</span>
@@ -1212,7 +1356,7 @@ class SettingsUrls:
 </dd>
 <dt id="pytia_title_block.resources.TitleBlockItems"><code class="flex name class">
 <span>class <span class="ident">TitleBlockItems</span></span>
-<span>(</span><span>*, partnumber: str, revision: str, definition: str, machine: str, material: str, base_size: str, tolerance: str, release_date: str, document_type: str, scale: str, creator_3d: str, creator_2d: str, version: str, path: str)</span>
+<span>(</span><span>*, partnumber: str, revision: str, definition: str, machine: str, material: str, base_size: str, tolerance: str, release_date: str, document_type: str, scale: str, creator_3d: str, creator_2d: str, notes: str, version: str, path: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for all possible title block items.</p></div>
@@ -1240,8 +1384,20 @@ class TitleBlockItems:
     creator_3d: str
     creator_2d: str
 
+    notes: str
+
     version: str
-    path: str</code></pre>
+    path: str
+
+    @property
+    def keys(self) -&gt; List[str]:
+        &#34;&#34;&#34;Returns a list of all keys from the TitleBlockItems dataclass.&#34;&#34;&#34;
+        return [f.name for f in fields(self)]
+
+    @property
+    def values(self) -&gt; List[str]:
+        &#34;&#34;&#34;Returns a list of all values from the TitleBlockItems dataclass.&#34;&#34;&#34;
+        return [getattr(self, f.name) for f in fields(self)]</code></pre>
 </details>
 <h3>Instance variables</h3>
 <dl>
@@ -1265,11 +1421,28 @@ class TitleBlockItems:
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
+<dt id="pytia_title_block.resources.TitleBlockItems.keys"><code class="name">var <span class="ident">keys</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of all keys from the TitleBlockItems dataclass.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def keys(self) -&gt; List[str]:
+    &#34;&#34;&#34;Returns a list of all keys from the TitleBlockItems dataclass.&#34;&#34;&#34;
+    return [f.name for f in fields(self)]</code></pre>
+</details>
+</dd>
 <dt id="pytia_title_block.resources.TitleBlockItems.machine"><code class="name">var <span class="ident">machine</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 <dt id="pytia_title_block.resources.TitleBlockItems.material"><code class="name">var <span class="ident">material</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.TitleBlockItems.notes"><code class="name">var <span class="ident">notes</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
@@ -1296,6 +1469,19 @@ class TitleBlockItems:
 <dt id="pytia_title_block.resources.TitleBlockItems.tolerance"><code class="name">var <span class="ident">tolerance</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.TitleBlockItems.values"><code class="name">var <span class="ident">values</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of all values from the TitleBlockItems dataclass.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def values(self) -&gt; List[str]:
+    &#34;&#34;&#34;Returns a list of all values from the TitleBlockItems dataclass.&#34;&#34;&#34;
+    return [getattr(self, f.name) for f in fields(self)]</code></pre>
+</details>
 </dd>
 <dt id="pytia_title_block.resources.TitleBlockItems.version"><code class="name">var <span class="ident">version</span> : str</code></dt>
 <dd>
@@ -1447,6 +1633,7 @@ def values(self) -&gt; List[str]:
 <li><code><a title="pytia_title_block.resources.Settings.mails" href="#pytia_title_block.resources.Settings.mails">mails</a></code></li>
 <li><code><a title="pytia_title_block.resources.Settings.paths" href="#pytia_title_block.resources.Settings.paths">paths</a></code></li>
 <li><code><a title="pytia_title_block.resources.Settings.restrictions" href="#pytia_title_block.resources.Settings.restrictions">restrictions</a></code></li>
+<li><code><a title="pytia_title_block.resources.Settings.tables" href="#pytia_title_block.resources.Settings.tables">tables</a></code></li>
 <li><code><a title="pytia_title_block.resources.Settings.title" href="#pytia_title_block.resources.Settings.title">title</a></code></li>
 <li><code><a title="pytia_title_block.resources.Settings.tolerances" href="#pytia_title_block.resources.Settings.tolerances">tolerances</a></code></li>
 <li><code><a title="pytia_title_block.resources.Settings.urls" href="#pytia_title_block.resources.Settings.urls">urls</a></code></li>
@@ -1485,6 +1672,29 @@ def values(self) -&gt; List[str]:
 </ul>
 </li>
 <li>
+<h4><code><a title="pytia_title_block.resources.SettingsTables" href="#pytia_title_block.resources.SettingsTables">SettingsTables</a></code></h4>
+<ul class="">
+<li><code><a title="pytia_title_block.resources.SettingsTables.tolerances" href="#pytia_title_block.resources.SettingsTables.tolerances">tolerances</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pytia_title_block.resources.SettingsTablesTolerances" href="#pytia_title_block.resources.SettingsTablesTolerances">SettingsTablesTolerances</a></code></h4>
+<ul class="">
+<li><code><a title="pytia_title_block.resources.SettingsTablesTolerances.header_base" href="#pytia_title_block.resources.SettingsTablesTolerances.header_base">header_base</a></code></li>
+<li><code><a title="pytia_title_block.resources.SettingsTablesTolerances.header_max" href="#pytia_title_block.resources.SettingsTablesTolerances.header_max">header_max</a></code></li>
+<li><code><a title="pytia_title_block.resources.SettingsTablesTolerances.header_min" href="#pytia_title_block.resources.SettingsTablesTolerances.header_min">header_min</a></code></li>
+<li><code><a title="pytia_title_block.resources.SettingsTablesTolerances.positions" href="#pytia_title_block.resources.SettingsTablesTolerances.positions">positions</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pytia_title_block.resources.SettingsTablesTolerancesPositions" href="#pytia_title_block.resources.SettingsTablesTolerancesPositions">SettingsTablesTolerancesPositions</a></code></h4>
+<ul class="">
+<li><code><a title="pytia_title_block.resources.SettingsTablesTolerancesPositions.size" href="#pytia_title_block.resources.SettingsTablesTolerancesPositions.size">size</a></code></li>
+<li><code><a title="pytia_title_block.resources.SettingsTablesTolerancesPositions.x" href="#pytia_title_block.resources.SettingsTablesTolerancesPositions.x">x</a></code></li>
+<li><code><a title="pytia_title_block.resources.SettingsTablesTolerancesPositions.y" href="#pytia_title_block.resources.SettingsTablesTolerancesPositions.y">y</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="pytia_title_block.resources.SettingsUrls" href="#pytia_title_block.resources.SettingsUrls">SettingsUrls</a></code></h4>
 <ul class="">
 <li><code><a title="pytia_title_block.resources.SettingsUrls.help" href="#pytia_title_block.resources.SettingsUrls.help">help</a></code></li>
@@ -1498,14 +1708,17 @@ def values(self) -&gt; List[str]:
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.creator_3d" href="#pytia_title_block.resources.TitleBlockItems.creator_3d">creator_3d</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.definition" href="#pytia_title_block.resources.TitleBlockItems.definition">definition</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.document_type" href="#pytia_title_block.resources.TitleBlockItems.document_type">document_type</a></code></li>
+<li><code><a title="pytia_title_block.resources.TitleBlockItems.keys" href="#pytia_title_block.resources.TitleBlockItems.keys">keys</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.machine" href="#pytia_title_block.resources.TitleBlockItems.machine">machine</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.material" href="#pytia_title_block.resources.TitleBlockItems.material">material</a></code></li>
+<li><code><a title="pytia_title_block.resources.TitleBlockItems.notes" href="#pytia_title_block.resources.TitleBlockItems.notes">notes</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.partnumber" href="#pytia_title_block.resources.TitleBlockItems.partnumber">partnumber</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.path" href="#pytia_title_block.resources.TitleBlockItems.path">path</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.release_date" href="#pytia_title_block.resources.TitleBlockItems.release_date">release_date</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.revision" href="#pytia_title_block.resources.TitleBlockItems.revision">revision</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.scale" href="#pytia_title_block.resources.TitleBlockItems.scale">scale</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.tolerance" href="#pytia_title_block.resources.TitleBlockItems.tolerance">tolerance</a></code></li>
+<li><code><a title="pytia_title_block.resources.TitleBlockItems.values" href="#pytia_title_block.resources.TitleBlockItems.values">values</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.version" href="#pytia_title_block.resources.TitleBlockItems.version">version</a></code></li>
 </ul>
 </li>

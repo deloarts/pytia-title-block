@@ -1,7 +1,7 @@
 # pytia title block
 
 ![state](https://img.shields.io/badge/State-Alpha-brown.svg?style=for-the-badge)
-![version](https://img.shields.io/badge/Version-0.1.1-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/Version-0.2.0-orange.svg?style=for-the-badge)
 
 [![python](https://img.shields.io/badge/Python-3.10-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
@@ -225,6 +225,7 @@ The filename of the workspace file can be changed in the **settings.json** file,
 
 ## 6 changelog
 
+**v0.2.0**: Add tolerance table tool.  
 **v0.1.1**: Fix installer bug. Add locked view restriction.  
 **v0.1.0**: Initial commit.  
 

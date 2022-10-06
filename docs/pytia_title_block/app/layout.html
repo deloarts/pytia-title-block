@@ -31,8 +31,9 @@
     The layout of the app.
 &#34;&#34;&#34;
 from datetime import datetime
-from tkinter import DISABLED, PhotoImage, Tk, ttk
+from tkinter import DISABLED, Menu, PhotoImage, Tk, ttk
 
+from helper.messages import show_help
 from resources import resource
 from tkcalendar import DateEntry
 
@@ -57,6 +58,17 @@ class Layout:
             variables (Variables): The variables of the main window.
         &#34;&#34;&#34;
         self.reload_image = PhotoImage(data=resource.get_png(&#34;reload.png&#34;))
+
+        # region MENU
+        menubar = Menu(root)
+
+        self._tools_menu = Menu(menubar, tearoff=False)
+        self._tools_menu.add_command(label=&#34;Tolerance Table&#34;)
+
+        menubar.add_cascade(label=&#34;Help&#34;, command=show_help)
+        menubar.add_cascade(label=&#34;Tools&#34;, menu=self._tools_menu)
+        root.configure(menu=menubar)
+        # endregion
 
         lbl_linked_doc = ttk.Label(
             frames.infrastructure,
@@ -540,6 +552,10 @@ class Layout:
             frames.footer, text=&#34;Abort&#34;, style=&#34;Footer.TButton&#34;
         )
         self._btn_abort.grid(row=0, column=2, padx=(2, 10), pady=(5, 5), sticky=&#34;e&#34;)
+
+    @property
+    def tools_menu(self) -&gt; Menu:
+        return self._tools_menu
 
     @property
     def linked_document(self) -&gt; ttk.Label:
@@ -665,6 +681,17 @@ class Layout:
         &#34;&#34;&#34;
         self.reload_image = PhotoImage(data=resource.get_png(&#34;reload.png&#34;))
 
+        # region MENU
+        menubar = Menu(root)
+
+        self._tools_menu = Menu(menubar, tearoff=False)
+        self._tools_menu.add_command(label=&#34;Tolerance Table&#34;)
+
+        menubar.add_cascade(label=&#34;Help&#34;, command=show_help)
+        menubar.add_cascade(label=&#34;Tools&#34;, menu=self._tools_menu)
+        root.configure(menu=menubar)
+        # endregion
+
         lbl_linked_doc = ttk.Label(
             frames.infrastructure,
             text=&#34;Linked document&#34;,
@@ -1147,6 +1174,10 @@ class Layout:
             frames.footer, text=&#34;Abort&#34;, style=&#34;Footer.TButton&#34;
         )
         self._btn_abort.grid(row=0, column=2, padx=(2, 10), pady=(5, 5), sticky=&#34;e&#34;)
+
+    @property
+    def tools_menu(self) -&gt; Menu:
+        return self._tools_menu
 
     @property
     def linked_document(self) -&gt; ttk.Label:
@@ -1469,6 +1500,18 @@ def linked_document(self) -&gt; ttk.Label:
     return self._lbl_linked_doc</code></pre>
 </details>
 </dd>
+<dt id="pytia_title_block.app.layout.Layout.tools_menu"><code class="name">var <span class="ident">tools_menu</span> : tkinter.Menu</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def tools_menu(self) -&gt; Menu:
+    return self._tools_menu</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1512,6 +1555,7 @@ def linked_document(self) -&gt; ttk.Label:
 <li><code><a title="pytia_title_block.app.layout.Layout.input_revision" href="#pytia_title_block.app.layout.Layout.input_revision">input_revision</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_tolerance" href="#pytia_title_block.app.layout.Layout.input_tolerance">input_tolerance</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.linked_document" href="#pytia_title_block.app.layout.Layout.linked_document">linked_document</a></code></li>
+<li><code><a title="pytia_title_block.app.layout.Layout.tools_menu" href="#pytia_title_block.app.layout.Layout.tools_menu">tools_menu</a></code></li>
 </ul>
 </li>
 </ul>

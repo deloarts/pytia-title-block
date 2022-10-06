@@ -19,6 +19,40 @@
         "ISO 2768 1-c 2-K",
         "ISO 2768 1-v 2-K"
     ],
+    "tables": {
+        "tolerances": {
+            "header_base": "Base",
+            "header_min": "Minimum",
+            "header_max": "Maximum",
+            "positions": [
+                {
+                    "size": "A4",
+                    "x": 107,
+                    "y": 10
+                },
+                {
+                    "size": "A3",
+                    "x": 230,
+                    "y": 10
+                },
+                {
+                    "size": "A2",
+                    "x": 404,
+                    "y": 10
+                },
+                {
+                    "size": "A1",
+                    "x": 651,
+                    "y": 10
+                },
+                {
+                    "size": "A0",
+                    "x": 999,
+                    "y": 10
+                }
+            ]
+        }
+    },
     "paths": {
         "catia": "C:\\CATIA\\V5-6R2017\\B27",
         "local_dependencies": "C:\\pytia\\local_deps",

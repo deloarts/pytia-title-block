@@ -35,6 +35,40 @@ This file contains the basic settings for the app.
         "ISO 2768 1-c 2-K",
         "ISO 2768 1-v 2-K"
     ],
+    "tables": {
+        "tolerances": {
+            "header_base": "Base",
+            "header_min": "Minimum",
+            "header_max": "Maximum",
+            "positions": [
+                {
+                    "size": "A4",
+                    "x": 107,
+                    "y": 10
+                },
+                {
+                    "size": "A3",
+                    "x": 230,
+                    "y": 10
+                },
+                {
+                    "size": "A2",
+                    "x": 404,
+                    "y": 10
+                },
+                {
+                    "size": "A1",
+                    "x": 651,
+                    "y": 10
+                },
+                {
+                    "size": "A0",
+                    "x": 999,
+                    "y": 10
+                }
+            ]
+        }
+    },
     "paths": {
         "catia": "C:\\CATIA\\V5-6R2017\\B27",
         "local_dependencies": "C:\\pytia\\local_deps",
@@ -67,6 +101,10 @@ restrictions.allow_outside_workspace | `bool` | If set to `false` a **workspace*
 restrictions.allow_locked_view | `bool` | If set to `false` the user cannot make any changes if the first view is locked. This helps to prevent changes after the document has been released.
 doc_types | `List[str]` | A list of available document types.
 tolerances | `List[str]` | A list of available tolerances.
+tables.tolerances.header_base | `str` | The table header name for the tolerance base value.
+tables.tolerances.header_min | `str` | The table header name for the tolerance minimum value.
+tables.tolerances.header_max | `str` | The table header name for the tolerance maximum value.
+tables.tolerances.positions | `List[Object]` | The table position depending on the paper size. Anchor is bottom right.
 paths.catia | `str` | The absolute path to the CATIA executables.
 paths.local_dependencies | `str` | The folder where local local_dependencies (python wheel files) for the installer are stored.
 paths.release | `str` | The folder where the launcher and the app are released into.

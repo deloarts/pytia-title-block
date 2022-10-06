@@ -11,6 +11,7 @@ from const import (
     TOLERANCE_TABLE_CELL_WIDTH,
     TOLERANCE_TABLE_NAME,
 )
+from helper.translators import translate_paper_size
 from loader.doc_loader import DocumentLoader
 from pytia.framework.drafting_interfaces.drawing_dimension import DrawingDimension
 from pytia.framework.drafting_interfaces.drawing_table import DrawingTable
@@ -53,7 +54,13 @@ class ToleranceTools:
         table_data: List[ToleranceTableModel] = []
 
         # Add table header
-        table_data.append(ToleranceTableModel(base="Base", min="Min", max="Max"))
+        table_data.append(
+            ToleranceTableModel(
+                base=resource.settings.tables.tolerances.header_base,
+                min=resource.settings.tables.tolerances.header_min,
+                max=resource.settings.tables.tolerances.header_max,
+            )
+        )
 
         # Add table data
         for item in tolerated_dimensions:
@@ -121,8 +128,22 @@ class ToleranceTools:
             )
             return
 
+        paper_size = translate_paper_size(self.doc.sheets.active_sheet.paper_size)
+        table_x = 0
+        table_y = 0
+        for position in resource.settings.tables.tolerances.positions:
+            if position.size == paper_size:
+                table_x = position.x - 3 * TOLERANCE_TABLE_CELL_WIDTH
+                table_y = position.y + len(data) * TOLERANCE_TABLE_CELL_HEIGHT
+                break
+
         table = self.doc.background_view.tables.add(
-            0, 0, len(data), 3, TOLERANCE_TABLE_CELL_HEIGHT, TOLERANCE_TABLE_CELL_WIDTH
+            table_x,
+            table_y,
+            len(data),
+            3,
+            TOLERANCE_TABLE_CELL_HEIGHT,
+            TOLERANCE_TABLE_CELL_WIDTH,
         )
         table.name = TOLERANCE_TABLE_NAME
 

@@ -17,7 +17,18 @@ from resources import resource
 
 
 class ToleranceTools:
+    """
+    This class provides methods to create a tolerance table.
+    A tolerance table is a collection of all tolerated dimensions of the active sheet.
+    """
+
     def __init__(self, doc_loader: DocumentLoader) -> None:
+        """
+        Inits the class.
+
+        Args:
+            doc_loader (DocumentLoader): The doc loader instance.
+        """
         self.doc = doc_loader
         self.views = doc_loader.views
 
@@ -25,6 +36,16 @@ class ToleranceTools:
     def prepare_table_data(
         tolerated_dimensions: List[ToleranceModel],
     ) -> List[ToleranceTableModel]:
+        """
+        Moves data from the ToleranceModel to the ToleranceTableModel.
+        Does some filtering and creates header cells.
+
+        Args:
+            tolerated_dimensions (List[ToleranceModel]): _description_
+
+        Returns:
+            List[ToleranceTableModel]: _description_
+        """
         table_data: List[ToleranceTableModel] = []
 
         # Add table header
@@ -57,6 +78,12 @@ class ToleranceTools:
         return table_data
 
     def get_all_tolerated_dimensions(self) -> List[ToleranceModel]:
+        """
+        Returns all dimensions that have a tolerated value of type `2`.
+
+        Returns:
+            List[ToleranceModel]: All tolerated dimensions.
+        """
         dimensions = []
         for view_index in range(1, self.views.count + 1):
             for dim_index in range(1, self.views.item(view_index).dimensions.count + 1):
@@ -90,6 +117,10 @@ class ToleranceTools:
         return dimensions
 
     def add_table(self) -> None:
+        """
+        Adds the table to the sheet's background view according to the config of the settings.json.
+        Removes existing tolerance tables first.
+        """
         self.remove_table()
 
         dimensions = self.get_all_tolerated_dimensions()
@@ -132,6 +163,7 @@ class ToleranceTools:
                 table.set_cell_alignment(row + 1, col + 1, 4)
 
     def remove_table(self) -> None:
+        """Removes existing tolerance tables."""
         rm_index = None
 
         for index, table in enumerate(self.doc.background_view.tables):

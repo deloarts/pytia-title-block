@@ -2,7 +2,6 @@
     Tool for creating tolerance tables.
 """
 
-from dataclasses import dataclass
 from tkinter import messagebox as tkmsg
 from typing import List
 
@@ -13,33 +12,8 @@ from const import (
 )
 from helper.translators import translate_paper_size
 from loader.doc_loader import DocumentLoader
-from pytia.framework.drafting_interfaces.drawing_dimension import DrawingDimension
-from pytia.framework.drafting_interfaces.drawing_table import DrawingTable
-from pytia.log import log
-from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
+from models.tolerance_model import ToleranceModel, ToleranceTableModel
 from resources import resource
-
-
-@dataclass(kw_only=True, slots=True, frozen=True)
-class ToleranceTableModel:
-    base: str
-    min: str
-    max: str
-
-
-@dataclass(kw_only=True, slots=True, frozen=True)
-class ToleranceModel:
-    name: str
-    value: float
-    precision: float
-
-    tol_type: int
-    tol_name: str
-    tol_up_s: str
-    tol_low_s: str
-    tol_up_d: float
-    tol_low_d: float
-    tol_display: int
 
 
 class ToleranceTools:

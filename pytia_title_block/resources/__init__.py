@@ -13,6 +13,7 @@ import tkinter.messagebox as tkmsg
 from dataclasses import asdict, dataclass, field, fields
 from json.decoder import JSONDecodeError
 from pathlib import Path
+from turtle import position
 from typing import List, Optional
 
 from const import (
@@ -40,6 +41,32 @@ class SettingsRestrictions:
     allow_unsaved: bool
     allow_outside_workspace: bool
     allow_locked_view: bool
+
+
+@dataclass(slots=True, kw_only=True)
+class SettingsTablesTolerancesPositions:
+    size: str
+    x: int
+    y: int
+
+
+@dataclass(slots=True, kw_only=True)
+class SettingsTablesTolerances:
+    header_base: str
+    header_min: str
+    header_max: str
+    positions: List[SettingsTablesTolerancesPositions]
+
+    def __post_init__(self) -> None:
+        self.positions = [SettingsTablesTolerancesPositions(**i) for i in self.positions]  # type: ignore
+
+
+@dataclass(slots=True, kw_only=True)
+class SettingsTables:
+    tolerances: SettingsTablesTolerances
+
+    def __post_init__(self) -> None:
+        self.tolerances = SettingsTablesTolerances(**dict(self.tolerances))  # type: ignore
 
 
 @dataclass(slots=True, kw_only=True, frozen=True)
@@ -83,6 +110,7 @@ class Settings:  # pylint: disable=R0902
     restrictions: SettingsRestrictions
     doc_types: List[str]
     tolerances: List[str]
+    tables: SettingsTables
     paths: SettingsPaths
     files: SettingsFiles
     urls: SettingsUrls
@@ -90,6 +118,7 @@ class Settings:  # pylint: disable=R0902
 
     def __post_init__(self) -> None:
         self.restrictions = SettingsRestrictions(**dict(self.restrictions))  # type: ignore
+        self.tables = SettingsTables(**dict(self.tables))  # type: ignore
         self.files = SettingsFiles(**dict(self.files))  # type: ignore
         self.paths = SettingsPaths(**dict(self.paths))  # type: ignore
         self.urls = SettingsUrls(**dict(self.urls))  # type: ignore

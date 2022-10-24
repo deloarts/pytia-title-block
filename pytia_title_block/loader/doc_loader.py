@@ -110,13 +110,17 @@ class DocumentLoader:
 
     def check_title_block(self) -> None:
         for item in resource.title_block_items.values:
+            missing_items = []
             if self.get_text_by_name(item) is None:
+                missing_items.append(item)
+            if missing_items:
                 tkmsg.showwarning(
                     title=resource.settings.title,
                     message=(
                         "The title block of the current document doesn't have all required items. "
                         "It is possible, that some information will be lost. Please consider "
-                        "updating the title block."
+                        "updating the title block.\n\nItems missing:\n"
+                        f"{', '.join(missing_items)}"
                     ),
                 )
                 return

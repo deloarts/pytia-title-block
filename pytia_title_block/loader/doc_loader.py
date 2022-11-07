@@ -29,8 +29,11 @@ class DocumentLoader:
         self.vars = variables
         self.active_document = framework.catia.active_document
 
-        self._lock_catia(True)
-        atexit.register(lambda: self._lock_catia(False))
+        # FIXME: Locking CATIA prevents the ability to detect changes on the document.
+        # This means that the part or product won't be saved, even if the user tries to manually
+        # save it.
+        # self._lock_catia(True)
+        # atexit.register(lambda: self._lock_catia(False))
 
         if not resource.settings.restrictions.allow_unsaved and not os.path.isabs(
             self.active_document.full_name

@@ -191,6 +191,7 @@ class Callbacks:
         """
         log.info("Callback for button 'Save'.")
         self.data_loader.load_into_title_block()
+        self.doc_loader.save_drawing_path_to_linked_document()
 
         self.root.withdraw()
         self.root.destroy()

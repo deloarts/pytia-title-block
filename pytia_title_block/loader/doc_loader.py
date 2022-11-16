@@ -29,8 +29,11 @@ class DocumentLoader:
         self.vars = variables
         self.active_document = framework.catia.active_document
 
-        self._lock_catia(True)
-        atexit.register(lambda: self._lock_catia(False))
+        # FIXME: Locking CATIA prevents the ability to detect changes on the document.
+        # This means that the part or product won't be saved, even if the user tries to manually
+        # save it.
+        # self._lock_catia(True)
+        # atexit.register(lambda: self._lock_catia(False))
 
         if not resource.settings.restrictions.allow_unsaved and not os.path.isabs(
             self.active_document.full_name
@@ -110,13 +113,17 @@ class DocumentLoader:
 
     def check_title_block(self) -> None:
         for item in resource.title_block_items.values:
+            missing_items = []
             if self.get_text_by_name(item) is None:
+                missing_items.append(item)
+            if missing_items:
                 tkmsg.showwarning(
                     title=resource.settings.title,
                     message=(
                         "The title block of the current document doesn't have all required items. "
                         "It is possible, that some information will be lost. Please consider "
-                        "updating the title block."
+                        "updating the title block.\n\nItems missing:\n"
+                        f"{', '.join(missing_items)}"
                     ),
                 )
                 return
@@ -146,7 +153,6 @@ class DocumentLoader:
                 self._linked_product = Product(com_doc)
                 self._linked_doc = Document(self._linked_product.parent.com_object)
                 self._linked_properties = PyProperties(self._linked_product)
-                self.save_drawing_path_to_linked_document()
                 log.info(f"Linked document {self._linked_product.full_name!r}.")
             else:
                 log.info(
@@ -253,29 +259,43 @@ class DocumentLoader:
             log.warning("No linked document, skipping saving drawing path.")
             return
 
-        if self.linked_properties.exists(PROP_DRAWING_PATH):
-            existing_path = str(
+        if not self.linked_properties.exists(PROP_DRAWING_PATH):
+            self._save_path_to_linked_document()
+            return
+
+        if (
+            existing_path := str(
                 Path(self.linked_properties.get_by_name(PROP_DRAWING_PATH).value)
             )
-            if existing_path != str(self.path):
-                if not tkmsg.askyesno(
-                    title=resource.settings.title,
-                    message=(
-                        "A drawing file already exists for the linked document at "
-                        f"{existing_path!r}.\n\n"
-                        "Do you want to overwrite the drawing file path in the linked document "
-                        "with the path of the current drawing?"
-                    ),
-                ):
-                    return
-            self.linked_properties.delete(PROP_DRAWING_PATH)
+        ) != str(self.path):
+            if tkmsg.askyesno(
+                title=resource.settings.title,
+                message=(
+                    "A drawing file already exists for the linked document at "
+                    f"{existing_path!r}.\n\n"
+                    "Do you want to overwrite the drawing file path in the linked document "
+                    "with the path of the current drawing?"
+                ),
+            ):
+                self._save_path_to_linked_document()
+                return
 
-        if self.path.is_absolute():
+    def _save_path_to_linked_document(self) -> None:
+        if self.path.is_absolute() and self.linked_document and self.linked_properties:
+            if self.linked_properties.exists(PROP_DRAWING_PATH):
+                self.linked_properties.delete(PROP_DRAWING_PATH)
             self.linked_properties.create(
                 name=PROP_DRAWING_PATH,
                 value=str(self.path),
             )
+
+            # FIXME: This loads the linked document as active document, but only if the linked
+            #        document is already open. If the linked document isn't open, this works
+            #        perfectly fine.
+            #        Temporary fix: Close the linked document.
             self.linked_document.save()
+            self.linked_document.close()
+
             log.info(
                 f"Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}."
             )

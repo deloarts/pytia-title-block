@@ -220,6 +220,7 @@ class Callbacks:
         &#34;&#34;&#34;
         log.info(&#34;Callback for button &#39;Save&#39;.&#34;)
         self.data_loader.load_into_title_block()
+        self.doc_loader.save_drawing_path_to_linked_document()
 
         self.root.withdraw()
         self.root.destroy()
@@ -439,6 +440,7 @@ class Callbacks:
         &#34;&#34;&#34;
         log.info(&#34;Callback for button &#39;Save&#39;.&#34;)
         self.data_loader.load_into_title_block()
+        self.doc_loader.save_drawing_path_to_linked_document()
 
         self.root.withdraw()
         self.root.destroy()
@@ -610,6 +612,7 @@ documents properties.</p></div>
     &#34;&#34;&#34;
     log.info(&#34;Callback for button &#39;Save&#39;.&#34;)
     self.data_loader.load_into_title_block()
+    self.doc_loader.save_drawing_path_to_linked_document()
 
     self.root.withdraw()
     self.root.destroy()</code></pre>

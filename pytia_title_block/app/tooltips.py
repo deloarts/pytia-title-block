@@ -2,11 +2,8 @@
     Tooltips submodule for the app.
 """
 
-from pytia_ui_tools.handlers.workspace_handler import Workspace
-from pytia_ui_tools.widgets.tooltips import ToolTip
-
 from app.layout import Layout
-from app.vars import Variables
+from pytia_ui_tools.widgets.tooltips import ToolTip
 
 
 class ToolTips:

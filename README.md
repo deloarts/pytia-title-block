@@ -21,8 +21,6 @@ Check out the pytia ecosystem:
 
 ## 1 installation
 
-### 1.1 user
-
 On the users machine you need to install the following:
 
 - CATIA
@@ -37,20 +35,6 @@ python-installer.exe /passive PrependPath=1 Include_doc=0 Include_test=0 SimpleI
 ```
 
 For convenience there is a powershell script that will install the required python version for you, see [assets/python_installer.ps1](assets/python_installer.ps1).
-
-### 1.2 developer
-
-On the developers machine (this is you) install the following:
-
-- CATIA
-- [Python](https://www.python.org/downloads/)
-- [Poetry](https://python-poetry.org/docs/master/)
-
-> ✏️ Use poetry to install all dependencies and dev-dependencies to work on this project.
->
-> 🔒 Some dependencies are from private repos. You need to have [ssh-access](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) to those repositories. Test your ssh connection with `ssh -T git@github.com`
->
-> ❗️ Never develop new features and fixes in the main branch!
 
 ## 2 setup
 
@@ -103,17 +87,7 @@ The app need to know where to put the data to. Thus you have to match the names 
 
 ![Drawing Setup](assets/images/drawing_item.png)
 
-### 2.5 test
-
-Most tests require CATIA running. Test suite is pytest. For testing with poetry run:
-
-```powershell
-poetry run pytest
-```
-
-> ⚠️ Test discovery in VS Code only works when CATIA is running.
-
-### 2.6 build
+### 2.5 build
 
 > ❗️ Do not build the app with poetry! This package is not not meant to be used as an import, it should be used as an app.
 
@@ -123,7 +97,7 @@ To build the app and make it executable for the user run the [_build.py](_build.
 >
 > ✏️ The reason this app isn't compiled to an exe is performance. It takes way too long to load the UI if the app isn't launched as python zipfile.
 
-### 2.7 release
+### 2.6 release
 
 To release the app into the provided release folder run the [_release.py](_release.py) script.
 
@@ -133,50 +107,9 @@ You can always change the path of the release folder by editing the value from t
 
 > ⚠️ Once you built and released the app you cannot move the python app nor the catvbs script to another location, because absolute paths will be written to those files. If you have to move the location of the files you have to change the paths in the **settings.json** config file, build the app again and release it to the new destination.
 
-### 2.8 pre-commit hooks
-
-Don't forget to install the pre-commit hooks:
-
-```powershell
-pre-commit install
-```
-
-### 2.9 docs
-
-Documentation is done with [pdoc3](https://pdoc3.github.io/pdoc/).
-
-To update the documentation run:
-
-```powershell
-python -m pdoc --html --output-dir docs pytia_title_block
-```
-
-For preview run:
-
-```powershell
-python -m pdoc --http : pytia_title_block
-```
+### 2.7 docs
 
 You can find the documentation in the [docs folder](/docs).
-
-### 2.10 new revision checklist
-
-On a new revision, do the following:
-
-1. Update **dependency versions** in
-   - [pyproject.toml](pyproject.toml)
-   - [dependencies.json](pytia_title_block/resources/dependencies.json)
-   - [README.md](README.md)
-2. Update **dependencies**: `poetry update`
-3. Update the **version** in
-   - [pyproject.toml](pyproject.toml)
-   - [__ init __.py](pytia_title_block/__init__.py)
-   - [README.md](README.md)
-4. Run all **tests**: `poetry run pytest`
-5. Check **pylint** output: `poetry run pylint pytia_title_block/`
-6. Update the **documentation**: `poetry run pdoc --force --html --output-dir docs pytia_title_block`
-7. Update the **lockfile**: `poetry lock`
-8. Update the **requirements.txt**: `poetry export --dev -f requirements.txt -o requirements.txt`
 
 ## 3 usage
 
@@ -221,17 +154,152 @@ For a detailed description of the workspace config file, see [WORKSPACE_FILE](do
 
 The filename of the workspace file can be changed in the **settings.json** file, see [SAMPLE_FILES](docs/SAMPLE_FILES.md).
 
-## 5 license
+## 5 developing
+
+For developing you would, additionally to the system requirements, need to install:
+
+- [Poetry](https://python-poetry.org/docs/master/#installation)
+- [Git](https://git-scm.com/downloads) or [GitHub Desktop](https://desktop.github.com/)
+
+### 5.1 repository
+
+#### 5.1.1 cloning
+
+Clone the repo to your local machine:
+
+```powershell
+cd $HOME
+New-Item -Path '.\git\pytia-title-block' -ItemType Directory
+cd .\git\pytia-title-block\
+git clone git@github.com:deloarts/pytia-title-block.git
+```
+
+Or use GitHub Desktop.
+
+#### 5.1.2 main branch protection
+
+> ❗️ Never develop new features and fixes in the main branch!
+
+The main branch is protected: it's not allowed to make changes directly to it. Create a new branch in order work on issues. The new branch should follow the naming convention from below.
+
+#### 5.1.3 branch naming convention
+
+1. Use grouping tokens at the beginning of your branch names, such as:
+    - feature: A new feature that will be added to the project
+    - fix: For bugfixes
+    - tests: Adding or updating tests
+    - docs: For updating the docs
+    - wip: Work in progress, won't be finished soon
+    - junk: Just for experimenting
+2. Use slashes `/` as delimiter in branch names (`feature/docket-export`)
+3. Avoid long descriptive names, rather refer to an issue
+4. Do not use bare numbers as leading parts (`fix/108` is bad, `fix/issue108` is good)
+
+#### 5.1.4 issues
+
+Use the issue templates for creating an issue. Please don't open a new issue if you haven't met the requirements and add as much information as possible. Further:
+
+- Format your code in an issue correctly with three backticks, see the [markdown guide](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+- Add the full error trace.
+- Do not add screenshots for code or traces.
+
+### 5.2 poetry
+
+#### 5.2.1 setup
+
+If you prefer the environment inside the projects root, use:
+
+```powershell
+poetry config virtualenvs.in-project true
+```
+
+> ⚠️ Make sure not to commit the virtual environment to GitHub. See [.gitignore](.gitignore) to find out which folders are ignored.
+
+#### 5.2.2 install
+
+Install all dependencies (assuming you are inside the projects root folder):
+
+```powershell
+poetry install
+```
+
+Check your active environment with:
+
+```powershell
+poetry env list
+poetry env info
+```
+
+Update packages with:
+
+```powershell
+poetry update
+```
+
+#### 5.2.3 tests
+
+Tests are done with pytest. For testing with poetry run:
+
+```powershell
+poetry run pytest
+```
+
+> ⚠️ Test discovery in VS Code only works when CATIA is running.
+
+### 5.3 pre-commit hooks
+
+Don't forget to install the pre-commit hooks:
+
+```powershell
+pre-commit install
+```
+
+### 5.4 docs
+
+Documentation is done with [pdoc3](https://pdoc3.github.io/pdoc/).
+
+To update the documentation run:
+
+```powershell
+python -m pdoc --html --output-dir docs pytia_bill_of_material
+```
+
+For preview run:
+
+```powershell
+python -m pdoc --http : pytia_bill_of_material
+```
+
+### 5.5 new revision checklist
+
+On a new revision, do the following:
+
+1. Update **dependency versions** in
+   - [pyproject.toml](pyproject.toml)
+   - [dependencies.json](pytia_title_block/resources/dependencies.json)
+   - [README.md](README.md)
+2. Update **dependencies**: `poetry update`
+3. Update the **version** in
+   - [pyproject.toml](pyproject.toml)
+   - [__ init __.py](pytia_title_block/__init__.py)
+   - [README.md](README.md)
+4. Run all **tests**: `poetry run pytest`
+5. Check **pylint** output: `poetry run pylint pytia_title_block/`
+6. Update the **documentation**: `poetry run pdoc --force --html --output-dir docs pytia_title_block`
+7. Update the **lockfile**: `poetry lock`
+8. Update the **requirements.txt**: `poetry export --dev -f requirements.txt -o requirements.txt`
+
+## 6 license
 
 [MIT License](LICENSE)
 
-## 6 changelog
+## 7 changelog
 
 **v0.2.1**: Disable app lock & update deps.  
 **v0.2.0**: Add tolerance table tool.  
 **v0.1.1**: Fix installer bug. Add locked view restriction.  
 **v0.1.0**: Initial commit.  
 
-## 7 to dos
+## 8 to dos
 
 Using VS Code [Comment Anchors](https://marketplace.visualstudio.com/items?itemName=ExodiusStudios.comment-anchors) to keep track of to-dos.

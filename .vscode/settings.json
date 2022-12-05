@@ -16,6 +16,7 @@
         "pady",
         "partnumber",
         "pdoc",
+        "pycatia",
         "pygit",
         "pylint",
         "pyproject",

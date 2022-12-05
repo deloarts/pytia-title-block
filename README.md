@@ -19,6 +19,40 @@ Check out the pytia ecosystem:
 - [pytia-quick-export](https://github.com/deloarts/pytia-quick-export): An app for quick data exports from a part or product.
 - [pytia-ui-tools](https://github.com/deloarts/pytia-ui-tools): A toolbox for all pytia apps.
 
+Table of contents:
+
+- [pytia title block](#pytia-title-block)
+  - [1 installation](#1-installation)
+  - [2 setup](#2-setup)
+    - [2.1 resource files](#21-resource-files)
+      - [2.1.1 default files](#211-default-files)
+      - [2.1.2 sample files](#212-sample-files)
+      - [2.1.3 static files](#213-static-files)
+    - [2.2 provide local dependencies](#22-provide-local-dependencies)
+    - [2.3 provide a release folder](#23-provide-a-release-folder)
+    - [2.4 catia drawing setup](#24-catia-drawing-setup)
+    - [2.5 build](#25-build)
+    - [2.6 release](#26-release)
+    - [2.7 docs](#27-docs)
+  - [3 usage](#3-usage)
+  - [4 workspace](#4-workspace)
+  - [5 developing](#5-developing)
+    - [5.1 repository](#51-repository)
+      - [5.1.1 cloning](#511-cloning)
+      - [5.1.2 main branch protection](#512-main-branch-protection)
+      - [5.1.3 branch naming convention](#513-branch-naming-convention)
+      - [5.1.4 issues](#514-issues)
+    - [5.2 poetry](#52-poetry)
+      - [5.2.1 setup](#521-setup)
+      - [5.2.2 install](#522-install)
+      - [5.2.3 tests](#523-tests)
+    - [5.3 pre-commit hooks](#53-pre-commit-hooks)
+    - [5.4 docs](#54-docs)
+    - [5.5 new revision checklist](#55-new-revision-checklist)
+  - [6 license](#6-license)
+  - [7 changelog](#7-changelog)
+  - [8 to dos](#8-to-dos)
+
 ## 1 installation
 
 On the users machine you need to install the following:

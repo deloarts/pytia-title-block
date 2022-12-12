@@ -31,19 +31,18 @@
     Document loader for the UI.
 &#34;&#34;&#34;
 
-import atexit
 import os
 from pathlib import Path
 from tkinter import messagebox as tkmsg
 
 from app.vars import Variables
 from const import PROP_DRAWING_PATH
+from pycatia.drafting_interfaces.drawing_text import DrawingText
+from pycatia.drafting_interfaces.drawing_view import DrawingView
+from pycatia.in_interfaces.document import Document
+from pycatia.product_structure_interfaces.product import Product
 from pytia.exceptions import PytiaDocumentNotSavedError
 from pytia.framework import framework
-from pytia.framework.drafting_interfaces.drawing_text import DrawingText
-from pytia.framework.drafting_interfaces.drawing_view import DrawingView
-from pytia.framework.in_interfaces.document import Document
-from pytia.framework.product_structure_interfaces.product import Product
 from pytia.log import log
 from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
 from pytia.wrapper.properties import PyProperties
@@ -96,7 +95,7 @@ class DocumentLoader:
     @property
     def path(self) -&gt; Path:
         &#34;&#34;&#34;Returns the documents absolute path with filename and file extension.&#34;&#34;&#34;
-        return Path(self.drawing_document.document.full_name)
+        return Path(self.drawing_document.document.full_name).resolve()
 
     @property
     def folder(self) -&gt; Path:
@@ -404,7 +403,7 @@ class DocumentLoader:
     @property
     def path(self) -&gt; Path:
         &#34;&#34;&#34;Returns the documents absolute path with filename and file extension.&#34;&#34;&#34;
-        return Path(self.drawing_document.document.full_name)
+        return Path(self.drawing_document.document.full_name).resolve()
 
     @property
     def folder(self) -&gt; Path:
@@ -660,7 +659,7 @@ def folder(self) -&gt; Path:
     return Path(self.path).parent</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_document"><code class="name">var <span class="ident">linked_document</span> : pytia.framework.in_interfaces.document.Document | None</code></dt>
+<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_document"><code class="name">var <span class="ident">linked_document</span> : pycatia.in_interfaces.document.Document | None</code></dt>
 <dd>
 <div class="desc"><p>Returns the document object of the linked document.</p></div>
 <details class="source">
@@ -673,7 +672,7 @@ def linked_document(self) -&gt; Document | None:
     return self._linked_doc</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_product"><code class="name">var <span class="ident">linked_product</span> : pytia.framework.product_structure_interfaces.product.Product | None</code></dt>
+<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_product"><code class="name">var <span class="ident">linked_product</span> : pycatia.product_structure_interfaces.product.Product | None</code></dt>
 <dd>
 <div class="desc"><p>Returns the product object of the linked document.</p></div>
 <details class="source">
@@ -699,7 +698,7 @@ def linked_properties(self) -&gt; PyProperties | None:
     return self._linked_properties</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_view"><code class="name">var <span class="ident">linked_view</span> : pytia.framework.drafting_interfaces.drawing_view.DrawingView | None</code></dt>
+<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.linked_view"><code class="name">var <span class="ident">linked_view</span> : pycatia.drafting_interfaces.drawing_view.DrawingView | None</code></dt>
 <dd>
 <div class="desc"><p>Returns the first view of the linked document.</p></div>
 <details class="source">
@@ -722,7 +721,7 @@ def linked_view(self) -&gt; DrawingView | None:
 <pre><code class="python">@property
 def path(self) -&gt; Path:
     &#34;&#34;&#34;Returns the documents absolute path with filename and file extension.&#34;&#34;&#34;
-    return Path(self.drawing_document.document.full_name)</code></pre>
+    return Path(self.drawing_document.document.full_name).resolve()</code></pre>
 </details>
 </dd>
 </dl>
@@ -859,7 +858,7 @@ name is <code>partnumber</code>, <code>definition</code>, <code>revision</code>,
 </details>
 </dd>
 <dt id="pytia_title_block.loader.doc_loader.DocumentLoader.get_text_by_name"><code class="name flex">
-<span>def <span class="ident">get_text_by_name</span></span>(<span>self, name: str) ‑> pytia.framework.drafting_interfaces.drawing_text.DrawingText | None</span>
+<span>def <span class="ident">get_text_by_name</span></span>(<span>self, name: str) ‑> pycatia.drafting_interfaces.drawing_text.DrawingText | None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns the drawing text item of the document, which component name matches the given name.

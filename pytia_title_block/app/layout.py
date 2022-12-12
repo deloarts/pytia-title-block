@@ -4,12 +4,11 @@
 from datetime import datetime
 from tkinter import DISABLED, Menu, PhotoImage, Tk, ttk
 
+from app.frames import Frames
+from app.vars import Variables
 from helper.messages import show_help
 from resources import resource
 from tkcalendar import DateEntry
-
-from app.frames import Frames
-from app.vars import Variables
 
 
 class Layout:
@@ -523,6 +522,7 @@ class Layout:
             frames.footer, text="Abort", style="Footer.TButton"
         )
         self._btn_abort.grid(row=0, column=2, padx=(2, 10), pady=(5, 5), sticky="e")
+        # endregion
 
     @property
     def tools_menu(self) -> Menu:

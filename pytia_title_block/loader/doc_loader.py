@@ -2,19 +2,18 @@
     Document loader for the UI.
 """
 
-import atexit
 import os
 from pathlib import Path
 from tkinter import messagebox as tkmsg
 
 from app.vars import Variables
 from const import PROP_DRAWING_PATH
+from pycatia.drafting_interfaces.drawing_text import DrawingText
+from pycatia.drafting_interfaces.drawing_view import DrawingView
+from pycatia.in_interfaces.document import Document
+from pycatia.product_structure_interfaces.product import Product
 from pytia.exceptions import PytiaDocumentNotSavedError
 from pytia.framework import framework
-from pytia.framework.drafting_interfaces.drawing_text import DrawingText
-from pytia.framework.drafting_interfaces.drawing_view import DrawingView
-from pytia.framework.in_interfaces.document import Document
-from pytia.framework.product_structure_interfaces.product import Product
 from pytia.log import log
 from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
 from pytia.wrapper.properties import PyProperties
@@ -67,7 +66,7 @@ class DocumentLoader:
     @property
     def path(self) -> Path:
         """Returns the documents absolute path with filename and file extension."""
-        return Path(self.drawing_document.document.full_name)
+        return Path(self.drawing_document.document.full_name).resolve()
 
     @property
     def folder(self) -> Path:

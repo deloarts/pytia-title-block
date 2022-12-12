@@ -43,7 +43,7 @@ Standard properties have the following names:
 - source
 - description
 
-User reference properties can have any name, except the any name from the list above.
+User reference properties can have any name, except all from the list above.
 
 ## 2 title_block_items.default.json
 

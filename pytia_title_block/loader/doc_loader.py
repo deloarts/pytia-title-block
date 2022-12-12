@@ -2,7 +2,6 @@
     Document loader for the UI.
 """
 
-import atexit
 import os
 from pathlib import Path
 from tkinter import messagebox as tkmsg

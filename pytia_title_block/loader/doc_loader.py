@@ -67,7 +67,7 @@ class DocumentLoader:
     @property
     def path(self) -> Path:
         """Returns the documents absolute path with filename and file extension."""
-        return Path(self.drawing_document.document.full_name)
+        return Path(self.drawing_document.document.full_name).resolve()
 
     @property
     def folder(self) -> Path:

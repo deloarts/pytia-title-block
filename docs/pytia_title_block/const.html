@@ -32,8 +32,9 @@
 &#34;&#34;&#34;
 
 import os
+from pathlib import Path
 
-__version__ = &#34;0.2.2&#34;
+__version__ = &#34;0.3.0&#34;
 
 PYTIA = &#34;pytia&#34;
 PYTIA_TITLE_BLOCK = &#34;pytia_title_block&#34;
@@ -50,8 +51,8 @@ LOG = &#34;app.log&#34;
 PID = os.getpid()
 PID_FILE = f&#34;{TEMP}\\{PYTIA_TITLE_BLOCK}.pid&#34;
 VENV = f&#34;\\.env\\{APP_VERSION}&#34;
-VENV_PYTHON = VENV + &#34;\\Scripts\\python.exe&#34;
-VENV_PYTHONW = VENV + &#34;\\Scripts\\pythonw.exe&#34;
+VENV_PYTHON = Path(VENV, &#34;Scripts\\python.exe&#34;)
+VENV_PYTHONW = Path(VENV, &#34;Scripts\\pythonw.exe&#34;)
 PY_VERSION = APPDATA + &#34;\\pyversion.txt&#34;
 
 PROP_DRAWING_PATH = &#34;pytia.drawing_path&#34;
@@ -72,7 +73,7 @@ TOLERANCE_TABLE_NAME = &#34;tolerance_table&#34;
 TOLERANCE_TABLE_CELL_HEIGHT = 4.5
 TOLERANCE_TABLE_CELL_WIDTH = 32.3333
 
-WEB_PIP = &#34;www.pypi.org&#34;</code></pre>
+WEB_PIP = &#34;https://www.pypi.org&#34;</code></pre>
 </details>
 </section>
 <section>

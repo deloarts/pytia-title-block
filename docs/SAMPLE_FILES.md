@@ -71,7 +71,6 @@ This file contains the basic settings for the app.
     },
     "paths": {
         "catia": "C:\\CATIA\\V5-6R2017\\B27",
-        "local_dependencies": "C:\\pytia\\local_deps",
         "release": "C:\\pytia\\release"
     },
     "files": {
@@ -106,7 +105,6 @@ tables.tolerances.header_min | `str` | The table header name for the tolerance m
 tables.tolerances.header_max | `str` | The table header name for the tolerance maximum value.
 tables.tolerances.positions | `List[Object]` | The table position depending on the paper size. Anchor is bottom right.
 paths.catia | `str` | The absolute path to the CATIA executables.
-paths.local_dependencies | `str` | The folder where local local_dependencies (python wheel files) for the installer are stored.
 paths.release | `str` | The folder where the launcher and the app are released into.
 files.app | `str` | The name of the released python app file.
 files.launcher | `str` | The name of the release catvbs launcher file.

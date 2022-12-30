@@ -1,7 +1,7 @@
 # pytia title block
 
 ![state](https://img.shields.io/badge/State-beta-brown.svg?style=for-the-badge)
-![version](https://img.shields.io/badge/Version-0.2.2-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/Version-0.3.0-orange.svg?style=for-the-badge)
 
 [![python](https://img.shields.io/badge/Python-3.10-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
@@ -318,6 +318,7 @@ On a new revision, do the following:
 
 ## 7 changelog
 
+**v0.3.0**: Remove local dependencies.  
 **v0.2.2**: Fix unresolved path.  
 **v0.2.1**: Disable app lock & update deps.  
 **v0.2.0**: Add tolerance table tool.  

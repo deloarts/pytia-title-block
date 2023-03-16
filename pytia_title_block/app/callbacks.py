@@ -183,10 +183,12 @@ class Callbacks:
         )
 
     def on_tools_add_tolerance_table(self) -> None:
+        """Creates a new tolerance table (based on all ALP tolerances of all views)"""
         tol_tools = ToleranceTools(doc_loader=self.doc_loader)
         tol_tools.add_table()
 
     def on_tools_open_linked_document(self) -> None:
+        """Opens the linked document and closes the app."""
         self.doc_loader.open_linked()
 
     def on_btn_save(self) -> None:

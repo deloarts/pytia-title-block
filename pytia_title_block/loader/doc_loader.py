@@ -3,6 +3,7 @@
 """
 
 import os
+import sys
 from pathlib import Path
 from tkinter import messagebox as tkmsg
 
@@ -159,6 +160,16 @@ class DocumentLoader:
                 )
         else:
             log.info("No document available to link.")
+
+    def open_linked(self) -> None:
+        """Opens the linked document and closes the app."""
+        if self.linked_product and self.linked_product.path().is_file():
+            framework.catia.documents.open(str(self.linked_product.path()))
+            log.info(f"User opened linked document.")
+            sys.exit()
+        tkmsg.showinfo(
+            title=resource.settings.title, message="No linked document found."
+        )
 
     def get_text_by_name(self, name: str) -> DrawingText | None:
         """

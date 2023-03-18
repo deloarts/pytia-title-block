@@ -25,6 +25,7 @@ VENV = f"\\.env\\{APP_VERSION}"
 VENV_PYTHON = Path(VENV, "Scripts\\python.exe")
 VENV_PYTHONW = Path(VENV, "Scripts\\pythonw.exe")
 PY_VERSION = APPDATA + "\\pyversion.txt"
+EXPLORER = os.path.join(str(os.getenv("WINDIR")), "explorer.exe")
 
 PROP_DRAWING_PATH = "pytia.drawing_path"
 

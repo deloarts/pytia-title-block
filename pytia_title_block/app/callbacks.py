@@ -15,6 +15,7 @@ from pytia.log import log
 from pytia_ui_tools.widgets.tooltips import ToolTip
 from resources import resource
 from tools.tolerance_tools import ToleranceTools
+from tools.explorer import explorer
 
 
 class Callbacks:
@@ -87,8 +88,9 @@ class Callbacks:
     def _bind_menu_callbacks(self) -> None:
         """Binds all callbacks to the menubar."""
         self.layout.tools_menu.entryconfig(0, command=self.on_tools_add_tolerance_table)
+        self.layout.tools_menu.entryconfig(1, command=self.on_tools_open_file_explorer)
         self.layout.tools_menu.entryconfig(
-            1, command=self.on_tools_open_linked_document
+            2, command=self.on_tools_open_linked_document
         )
 
     def _on_btn_reload(
@@ -190,6 +192,10 @@ class Callbacks:
     def on_tools_open_linked_document(self) -> None:
         """Opens the linked document and closes the app."""
         self.doc_loader.open_linked()
+
+    def on_tools_open_file_explorer(self) -> None:
+        """Opens the file explorer."""
+        explorer(self.doc_loader.path)
 
     def on_btn_save(self) -> None:
         """

@@ -31,6 +31,7 @@
         "tkcalendar",
         "tkmsg",
         "toolwindow",
+        "WINDIR",
         "zipfile"
     ],
     "python.testing.pytestArgs": [

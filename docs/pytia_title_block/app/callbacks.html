@@ -35,16 +35,16 @@ from tkinter import StringVar, Tk
 from tkinter import messagebox as tkmsg
 from tkinter import ttk
 
+from app.layout import Layout
+from app.state_setter import UISetter
+from app.vars import Variables
 from loader.data_loader import DataLoader
 from loader.doc_loader import DocumentLoader
 from pytia.log import log
 from pytia_ui_tools.widgets.tooltips import ToolTip
 from resources import resource
 from tools.tolerance_tools import ToleranceTools
-
-from app.layout import Layout
-from app.state_setter import UISetter
-from app.vars import Variables
+from tools.explorer import explorer
 
 
 class Callbacks:
@@ -117,6 +117,10 @@ class Callbacks:
     def _bind_menu_callbacks(self) -&gt; None:
         &#34;&#34;&#34;Binds all callbacks to the menubar.&#34;&#34;&#34;
         self.layout.tools_menu.entryconfig(0, command=self.on_tools_add_tolerance_table)
+        self.layout.tools_menu.entryconfig(1, command=self.on_tools_open_file_explorer)
+        self.layout.tools_menu.entryconfig(
+            2, command=self.on_tools_open_linked_document
+        )
 
     def _on_btn_reload(
         self,
@@ -210,8 +214,17 @@ class Callbacks:
         )
 
     def on_tools_add_tolerance_table(self) -&gt; None:
+        &#34;&#34;&#34;Creates a new tolerance table (based on all ALP tolerances of all views)&#34;&#34;&#34;
         tol_tools = ToleranceTools(doc_loader=self.doc_loader)
         tol_tools.add_table()
+
+    def on_tools_open_linked_document(self) -&gt; None:
+        &#34;&#34;&#34;Opens the linked document and closes the app.&#34;&#34;&#34;
+        self.doc_loader.open_linked()
+
+    def on_tools_open_file_explorer(self) -&gt; None:
+        &#34;&#34;&#34;Opens the file explorer.&#34;&#34;&#34;
+        explorer(self.doc_loader.path)
 
     def on_btn_save(self) -&gt; None:
         &#34;&#34;&#34;
@@ -337,6 +350,10 @@ class Callbacks:
     def _bind_menu_callbacks(self) -&gt; None:
         &#34;&#34;&#34;Binds all callbacks to the menubar.&#34;&#34;&#34;
         self.layout.tools_menu.entryconfig(0, command=self.on_tools_add_tolerance_table)
+        self.layout.tools_menu.entryconfig(1, command=self.on_tools_open_file_explorer)
+        self.layout.tools_menu.entryconfig(
+            2, command=self.on_tools_open_linked_document
+        )
 
     def _on_btn_reload(
         self,
@@ -430,8 +447,17 @@ class Callbacks:
         )
 
     def on_tools_add_tolerance_table(self) -&gt; None:
+        &#34;&#34;&#34;Creates a new tolerance table (based on all ALP tolerances of all views)&#34;&#34;&#34;
         tol_tools = ToleranceTools(doc_loader=self.doc_loader)
         tol_tools.add_table()
+
+    def on_tools_open_linked_document(self) -&gt; None:
+        &#34;&#34;&#34;Opens the linked document and closes the app.&#34;&#34;&#34;
+        self.doc_loader.open_linked()
+
+    def on_tools_open_file_explorer(self) -&gt; None:
+        &#34;&#34;&#34;Opens the file explorer.&#34;&#34;&#34;
+        explorer(self.doc_loader.path)
 
     def on_btn_save(self) -&gt; None:
         &#34;&#34;&#34;
@@ -622,14 +648,43 @@ documents properties.</p></div>
 <span>def <span class="ident">on_tools_add_tolerance_table</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Creates a new tolerance table (based on all ALP tolerances of all views)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_tools_add_tolerance_table(self) -&gt; None:
+    &#34;&#34;&#34;Creates a new tolerance table (based on all ALP tolerances of all views)&#34;&#34;&#34;
     tol_tools = ToleranceTools(doc_loader=self.doc_loader)
     tol_tools.add_table()</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.app.callbacks.Callbacks.on_tools_open_file_explorer"><code class="name flex">
+<span>def <span class="ident">on_tools_open_file_explorer</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Opens the file explorer.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_tools_open_file_explorer(self) -&gt; None:
+    &#34;&#34;&#34;Opens the file explorer.&#34;&#34;&#34;
+    explorer(self.doc_loader.path)</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.app.callbacks.Callbacks.on_tools_open_linked_document"><code class="name flex">
+<span>def <span class="ident">on_tools_open_linked_document</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Opens the linked document and closes the app.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_tools_open_linked_document(self) -&gt; None:
+    &#34;&#34;&#34;Opens the linked document and closes the app.&#34;&#34;&#34;
+    self.doc_loader.open_linked()</code></pre>
 </details>
 </dd>
 </dl>
@@ -663,6 +718,8 @@ documents properties.</p></div>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_tolerance" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_tolerance">on_btn_reload_tolerance</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_save" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_save">on_btn_save</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_tools_add_tolerance_table" href="#pytia_title_block.app.callbacks.Callbacks.on_tools_add_tolerance_table">on_tools_add_tolerance_table</a></code></li>
+<li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_tools_open_file_explorer" href="#pytia_title_block.app.callbacks.Callbacks.on_tools_open_file_explorer">on_tools_open_file_explorer</a></code></li>
+<li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_tools_open_linked_document" href="#pytia_title_block.app.callbacks.Callbacks.on_tools_open_linked_document">on_tools_open_linked_document</a></code></li>
 </ul>
 </li>
 </ul>

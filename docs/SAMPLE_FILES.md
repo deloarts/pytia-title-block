@@ -104,8 +104,8 @@ tables.tolerances.header_base | `str` | The table header name for the tolerance 
 tables.tolerances.header_min | `str` | The table header name for the tolerance minimum value.
 tables.tolerances.header_max | `str` | The table header name for the tolerance maximum value.
 tables.tolerances.positions | `List[Object]` | The table position depending on the paper size. Anchor is bottom right.
-paths.catia | `str` | The absolute path to the CATIA executables.
-paths.release | `str` | The folder where the launcher and the app are released into.
+paths.catia | `str` | The absolute path to the CATIA executables. Environment variables will be expanded to their respective values. E.g: `%ONEDRIVE%\\CATIA\\Apps` will be resolved to `C:\\Users\\...\\OneDrive\\CATIA\\Apps`.
+paths.release | `str` | The folder where the launcher and the app are released into. Environment variables will be expanded to their respective values. E.g: `%ONEDRIVE%\\CATIA\\Apps` will be resolved to `C:\\Users\\...\\OneDrive\\CATIA\\Apps`.
 files.app | `str` | The name of the released python app file.
 files.launcher | `str` | The name of the release catvbs launcher file.
 files.material | `str` | The filename of CATMaterial file.

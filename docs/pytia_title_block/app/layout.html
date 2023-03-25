@@ -63,6 +63,8 @@ class Layout:
 
         self._tools_menu = Menu(menubar, tearoff=False)
         self._tools_menu.add_command(label=&#34;Tolerance Table&#34;)
+        self._tools_menu.add_command(label=&#34;Open File Explorer&#34;)
+        self._tools_menu.add_command(label=&#34;Open Linked Document&#34;)
 
         menubar.add_cascade(label=&#34;Help&#34;, command=show_help)
         menubar.add_cascade(label=&#34;Tools&#34;, menu=self._tools_menu)
@@ -686,6 +688,8 @@ class Layout:
 
         self._tools_menu = Menu(menubar, tearoff=False)
         self._tools_menu.add_command(label=&#34;Tolerance Table&#34;)
+        self._tools_menu.add_command(label=&#34;Open File Explorer&#34;)
+        self._tools_menu.add_command(label=&#34;Open Linked Document&#34;)
 
         menubar.add_cascade(label=&#34;Help&#34;, command=show_help)
         menubar.add_cascade(label=&#34;Tools&#34;, menu=self._tools_menu)

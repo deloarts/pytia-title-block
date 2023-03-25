@@ -3,8 +3,10 @@
 """
 
 import os
+import sys
 from pathlib import Path
 from tkinter import messagebox as tkmsg
+from typing import List
 
 from app.vars import Variables
 from const import PROP_DRAWING_PATH
@@ -110,6 +112,20 @@ class DocumentLoader:
         else:
             framework.catia.enable_new_undo_redo_transaction()
 
+    def get_all_open_documents(self) -> List[str]:
+        """Returns a list of all open documents (document.name)"""
+        open_documents: List[str] = []
+        for i in range(1, framework.catia.documents.count + 1):
+            open_documents.append(framework.catia.documents.item(i).name)
+        return open_documents
+
+    def get_all_open_windows(self) -> List[str]:
+        """Returns a list of all open windows"""
+        open_windows: List[str] = []
+        for i in range(1, framework.catia.windows.count + 1):
+            open_windows.append(framework.catia.windows.item(i).name)
+        return open_windows
+
     def check_title_block(self) -> None:
         for item in resource.title_block_items.values:
             missing_items = []
@@ -159,6 +175,21 @@ class DocumentLoader:
                 )
         else:
             log.info("No document available to link.")
+
+    def open_linked(self) -> None:
+        """Opens the linked document and closes the app."""
+        if self.linked_document:
+            if self.linked_document.name in self.get_all_open_windows():
+                framework.catia.windows.item(self.linked_document.name).activate()
+                log.info(f"User opened linked document (window).")
+                sys.exit()
+            if self.linked_document.path().is_file():
+                framework.catia.documents.open(str(self.linked_document.path()))
+                log.info(f"User opened linked document (file).")
+                sys.exit()
+        tkmsg.showinfo(
+            title=resource.settings.title, message="No linked document found."
+        )
 
     def get_text_by_name(self, name: str) -> DrawingText | None:
         """

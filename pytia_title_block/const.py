@@ -5,7 +5,7 @@
 import os
 from pathlib import Path
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 PYTIA = "pytia"
 PYTIA_TITLE_BLOCK = "pytia_title_block"
@@ -25,6 +25,7 @@ VENV = f"\\.env\\{APP_VERSION}"
 VENV_PYTHON = Path(VENV, "Scripts\\python.exe")
 VENV_PYTHONW = Path(VENV, "Scripts\\pythonw.exe")
 PY_VERSION = APPDATA + "\\pyversion.txt"
+EXPLORER = os.path.join(str(os.getenv("WINDIR")), "explorer.exe")
 
 PROP_DRAWING_PATH = "pytia.drawing_path"
 

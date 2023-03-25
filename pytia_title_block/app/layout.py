@@ -34,6 +34,8 @@ class Layout:
 
         self._tools_menu = Menu(menubar, tearoff=False)
         self._tools_menu.add_command(label="Tolerance Table")
+        self._tools_menu.add_command(label="Open File Explorer")
+        self._tools_menu.add_command(label="Open Linked Document")
 
         menubar.add_cascade(label="Help", command=show_help)
         menubar.add_cascade(label="Tools", menu=self._tools_menu)

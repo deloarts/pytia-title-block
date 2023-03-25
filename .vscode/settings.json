@@ -12,6 +12,7 @@
         "ipadx",
         "ipady",
         "mindate",
+        "ONEDRIVE",
         "padx",
         "pady",
         "partnumber",
@@ -31,6 +32,7 @@
         "tkcalendar",
         "tkmsg",
         "toolwindow",
+        "WINDIR",
         "zipfile"
     ],
     "python.testing.pytestArgs": [

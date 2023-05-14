@@ -1,6 +1,6 @@
 [tool.poetry]
 authors = ["Philip Delorenzo <git@deloarts.com>"]
-classifiers = ["Operating System :: Windows"]
+classifiers = ["Operating System :: Microsoft :: Windows :: Windows 10", "Operating System :: Microsoft :: Windows :: Windows 11"]
 description = "A visual tool for managing CATIA V5 properties."
 name = "pytia-title-block"
 readme = "README.md"
@@ -12,7 +12,7 @@ pytia = {git = "ssh://git@github.com/deloarts/pytia.git", tag = "v0.3.1"}
 pytia-ui-tools = {git = "ssh://git@github.com/deloarts/pytia-ui-tools.git", tag = "v0.6.3"}
 tkcalendar = "1.6.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 Jinja2 = "^3.1.2"
 black = "22.10.0"
 packaging = "^21.3"
@@ -21,9 +21,9 @@ pre-commit = "^2.19.0"
 pygit2 = "^1.10.1"
 pylint = "2.13.9"
 pytest = "^7.1.1"
-setuptools = "^62.3.1"
+setuptools = "^67.7.2"
 toml = "^0.10.2"
-validators = "^0.19.0"
+validators = "^0.20.0"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

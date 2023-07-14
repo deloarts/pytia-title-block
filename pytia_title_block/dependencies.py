@@ -172,8 +172,8 @@ class Dependencies:
                 title=resource.settings.title,
                 message=(
                     "Successfully updated the app.\n\n"
-                    "The next time you start the using the launcher all changes will "
-                    "be applied. This may take a while.\n\n"
+                    "The next time you start the app using the launcher all changes "
+                    "will be applied. This may take a while.\n\n"
                     "Click OK to exit."
                 ),
             )

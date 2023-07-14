@@ -20,6 +20,7 @@ from pytia.log import log
 from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
 from pytia.wrapper.properties import PyProperties
 from resources import resource
+from resources.utils import create_path_symlink
 
 
 class DocumentLoader:
@@ -314,9 +315,10 @@ class DocumentLoader:
         if self.path.is_absolute() and self.linked_document and self.linked_properties:
             if self.linked_properties.exists(PROP_DRAWING_PATH):
                 self.linked_properties.delete(PROP_DRAWING_PATH)
+
             self.linked_properties.create(
                 name=PROP_DRAWING_PATH,
-                value=str(self.path),
+                value=str(create_path_symlink(self.path)),
             )
 
             # FIXME: This loads the linked document as active document, but only if the linked

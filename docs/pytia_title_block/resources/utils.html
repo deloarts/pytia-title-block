@@ -39,13 +39,14 @@ must work on its own without any other dependencies!</p>
 import os
 import re
 import sys
+from pathlib import Path
 from tkinter import messagebox as tkmsg
 
 
 def expand_env_vars(value: str) -&gt; str:
     &#34;&#34;&#34;
     Expands windows environment variables.
-    E.g.: Expands %ONEDRIVE%/foo/bar to &#34;C:/Users/.../OneDrive/foo/bar
+    E.g.: Expands `%ONEDRIVE%/foo/bar` to `C:/Users/.../OneDrive/foo/bar`
 
     The variable to replace must be between two percentage symbols.
 
@@ -68,7 +69,41 @@ def expand_env_vars(value: str) -&gt; str:
                 ),
             )
             sys.exit()
-    return output</code></pre>
+    return output
+
+
+def create_path_symlink(path: Path) -&gt; Path:
+    &#34;&#34;&#34;
+    Replaces paths of the given path with the environment variable, if exists
+    and the users agrees. Starts with the deepest folder and runs upwards.
+
+    E.g.: Replaces `C:/Users/.../OneDrive/foo/bar` with `%ONEDRIVE%/foo/bar`
+
+    The environment variable will be encapsuled within two percentage symbols.
+
+    Return the original path if no symlink is found.
+    &#34;&#34;&#34;
+    for parent in path.parents:
+        for key, value in os.environ.items():
+            if str(parent) == value:
+                symlinked = Path(str(path).replace(str(parent), f&#34;%{key}%&#34;))
+                if tkmsg.askyesno(
+                    title=&#34;Symlink has bee found.&#34;,
+                    message=(
+                        &#34;A symlink has been found for the drawing documents path:\n&#34;
+                        f&#34; - Path: {str(parent)!r}.\n&#34;
+                        f&#34; - Symlink: {key!r}\n\n&#34;
+                        &#34;Do you want to save the symlink to the linked documents path?\n\n&#34;
+                        &#34;Depending on your choice, the following path will be written &#34;
+                        &#34;to the linked document:\n&#34;
+                        f&#34; - Yes: {str(symlinked)!r}\n&#34;
+                        f&#34; - No:  {str(path)!r}&#34;
+                    ),
+                ):
+                    return symlinked
+                else:
+                    return path
+    return path</code></pre>
 </details>
 </section>
 <section>
@@ -78,12 +113,59 @@ def expand_env_vars(value: str) -&gt; str:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="pytia_title_block.resources.utils.create_path_symlink"><code class="name flex">
+<span>def <span class="ident">create_path_symlink</span></span>(<span>path: pathlib.Path) ‑> pathlib.Path</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Replaces paths of the given path with the environment variable, if exists
+and the users agrees. Starts with the deepest folder and runs upwards.</p>
+<p>E.g.: Replaces <code>C:/Users/.../OneDrive/foo/bar</code> with <code>%ONEDRIVE%/foo/bar</code></p>
+<p>The environment variable will be encapsuled within two percentage symbols.</p>
+<p>Return the original path if no symlink is found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_path_symlink(path: Path) -&gt; Path:
+    &#34;&#34;&#34;
+    Replaces paths of the given path with the environment variable, if exists
+    and the users agrees. Starts with the deepest folder and runs upwards.
+
+    E.g.: Replaces `C:/Users/.../OneDrive/foo/bar` with `%ONEDRIVE%/foo/bar`
+
+    The environment variable will be encapsuled within two percentage symbols.
+
+    Return the original path if no symlink is found.
+    &#34;&#34;&#34;
+    for parent in path.parents:
+        for key, value in os.environ.items():
+            if str(parent) == value:
+                symlinked = Path(str(path).replace(str(parent), f&#34;%{key}%&#34;))
+                if tkmsg.askyesno(
+                    title=&#34;Symlink has bee found.&#34;,
+                    message=(
+                        &#34;A symlink has been found for the drawing documents path:\n&#34;
+                        f&#34; - Path: {str(parent)!r}.\n&#34;
+                        f&#34; - Symlink: {key!r}\n\n&#34;
+                        &#34;Do you want to save the symlink to the linked documents path?\n\n&#34;
+                        &#34;Depending on your choice, the following path will be written &#34;
+                        &#34;to the linked document:\n&#34;
+                        f&#34; - Yes: {str(symlinked)!r}\n&#34;
+                        f&#34; - No:  {str(path)!r}&#34;
+                    ),
+                ):
+                    return symlinked
+                else:
+                    return path
+    return path</code></pre>
+</details>
+</dd>
 <dt id="pytia_title_block.resources.utils.expand_env_vars"><code class="name flex">
 <span>def <span class="ident">expand_env_vars</span></span>(<span>value: str) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Expands windows environment variables.
-E.g.: Expands %ONEDRIVE%/foo/bar to "C:/Users/&hellip;/OneDrive/foo/bar</p>
+E.g.: Expands <code>%ONEDRIVE%/foo/bar</code> to <code>C:/Users/.../OneDrive/foo/bar</code></p>
 <p>The variable to replace must be between two percentage symbols.</p>
 <p>Terminates the app if the given value has a variable, that
 cannot be found in the system variables.</p></div>
@@ -94,7 +176,7 @@ cannot be found in the system variables.</p></div>
 <pre><code class="python">def expand_env_vars(value: str) -&gt; str:
     &#34;&#34;&#34;
     Expands windows environment variables.
-    E.g.: Expands %ONEDRIVE%/foo/bar to &#34;C:/Users/.../OneDrive/foo/bar
+    E.g.: Expands `%ONEDRIVE%/foo/bar` to `C:/Users/.../OneDrive/foo/bar`
 
     The variable to replace must be between two percentage symbols.
 
@@ -138,6 +220,7 @@ cannot be found in the system variables.</p></div>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="pytia_title_block.resources.utils.create_path_symlink" href="#pytia_title_block.resources.utils.create_path_symlink">create_path_symlink</a></code></li>
 <li><code><a title="pytia_title_block.resources.utils.expand_env_vars" href="#pytia_title_block.resources.utils.expand_env_vars">expand_env_vars</a></code></li>
 </ul>
 </li>

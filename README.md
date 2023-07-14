@@ -1,7 +1,7 @@
 # pytia title block
 
 ![state](https://img.shields.io/badge/State-beta-brown.svg?style=for-the-badge)
-![version](https://img.shields.io/badge/Version-0.3.2-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/badge/Version-0.3.3-orange.svg?style=for-the-badge)
 
 [![python](https://img.shields.io/badge/Python-3.10-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
@@ -311,7 +311,7 @@ On a new revision, do the following:
 5. Check **pylint** output: `poetry run pylint pytia_title_block/`
 6. Update the **documentation**: `poetry run pdoc --force --html --output-dir docs pytia_title_block`
 7. Update the **lockfile**: `poetry lock`
-8. Update the **requirements.txt**: `poetry export --dev -f requirements.txt -o requirements.txt`
+8. Update the **requirements.txt**: `poetry export --with dev -f requirements.txt -o requirements.txt`
 
 ## 6 license
 
@@ -319,6 +319,7 @@ On a new revision, do the following:
 
 ## 7 changelog
 
+**v0.3.3**: Symlink for linked doc path.  
 **v0.3.2**: Fix launcher path.  
 **v0.3.1**: Expand environment variables in path settings.  
 **v0.3.0**: Remove local dependencies.  

@@ -71,3 +71,8 @@ class ToolTips:
             widget=layout.button_abort,
             text="Discards all changes and closes the app.",
         )
+
+        ToolTip(
+            widget=layout.toggle_symlink,
+            text="Automatically uses symlinks to write the document path.",
+        )

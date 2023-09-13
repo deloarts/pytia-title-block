@@ -2,14 +2,15 @@
     Frames submodule for the main window.
 """
 
-from tkinter import Tk, ttk
+from tkinter import Tk
+from ttkbootstrap import Frame, Labelframe
 
 
 class Frames:
     """Frames class for the main window. Holds all ttk frames."""
 
     def __init__(self, root: Tk) -> None:
-        self._frame_infra = ttk.Frame(
+        self._frame_infra = Frame(
             master=root,
         )
         self._frame_infra.grid(
@@ -21,18 +22,18 @@ class Frames:
         root.grid_columnconfigure(0, weight=1)
         root.grid_rowconfigure(0, weight=1)
 
-        self._frame_footer = ttk.Frame(master=root, height=30, style="Footer.TFrame")
+        self._frame_footer = Frame(master=root, height=30)
         self._frame_footer.grid(
             row=1, column=0, sticky="swe", padx=10, pady=(5, 10), columnspan=1
         )
         self._frame_footer.grid_columnconfigure(1, weight=1)
 
     @property
-    def infrastructure(self) -> ttk.Frame:
+    def infrastructure(self) -> Frame:
         """Returns the infrastructure frame."""
         return self._frame_infra
 
     @property
-    def footer(self) -> ttk.Frame:
+    def footer(self) -> Frame:
         """Returns the footer frame."""
         return self._frame_footer

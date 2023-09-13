@@ -5,10 +5,9 @@
 
 import tkinter as tk
 
-from pytia.log import log
-
 from app.layout import Layout
 from app.vars import Variables
+from pytia.log import log
 
 
 class UISetter:
@@ -58,7 +57,8 @@ class UISetter:
             self.layout.input_tolerance.configure(state=tk.NORMAL)
             self.layout.button_reload_tolerance.configure(state=tk.NORMAL)
 
-            self.layout.input_release_date.configure(state="readonly")
+            self.layout.input_release_date.entry.configure(state=tk.NORMAL)
+            self.layout.input_release_date.button.configure(state=tk.NORMAL)
 
             self.layout.input_doc_type.configure(state="readonly")
 
@@ -95,7 +95,8 @@ class UISetter:
         self.layout.input_tolerance.configure(state=tk.DISABLED)
         self.layout.button_reload_tolerance.configure(state=tk.DISABLED)
 
-        self.layout.input_release_date.configure(state=tk.DISABLED)
+        self.layout.input_release_date.entry.configure(state=tk.DISABLED)
+        self.layout.input_release_date.button.configure(state=tk.DISABLED)
 
         self.layout.button_save.configure(state=tk.DISABLED)
 

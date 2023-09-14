@@ -31,13 +31,24 @@
     The layout of the app.
 &#34;&#34;&#34;
 from datetime import datetime
-from tkinter import DISABLED, Menu, PhotoImage, Tk, ttk
+from tkinter import DISABLED, Menu, Tk
 
 from app.frames import Frames
 from app.vars import Variables
+from const import STYLES
+from helper.appearance import set_appearance_menu
 from helper.messages import show_help
 from resources import resource
-from tkcalendar import DateEntry
+from ttkbootstrap import (
+    Button,
+    Checkbutton,
+    Combobox,
+    DateEntry,
+    Entry,
+    Label,
+    Menu,
+    PhotoImage,
+)
 
 
 class Layout:
@@ -61,21 +72,27 @@ class Layout:
         # region MENU
         menubar = Menu(root)
 
+        self._appearance_menu = Menu(menubar, tearoff=False)
+        for style in STYLES:
+            self._appearance_menu.add_command(label=style)
+
         self._tools_menu = Menu(menubar, tearoff=False)
         self._tools_menu.add_command(label=&#34;Tolerance Table&#34;)
         self._tools_menu.add_command(label=&#34;Open File Explorer&#34;)
         self._tools_menu.add_command(label=&#34;Open Linked Document&#34;)
 
         menubar.add_cascade(label=&#34;Help&#34;, command=show_help)
+        menubar.add_cascade(label=&#34;Appearance&#34;, menu=self._appearance_menu)
         menubar.add_cascade(label=&#34;Tools&#34;, menu=self._tools_menu)
+
+        set_appearance_menu(self._appearance_menu)
         root.configure(menu=menubar)
         # endregion
 
-        lbl_linked_doc = ttk.Label(
+        lbl_linked_doc = Label(
             frames.infrastructure,
             text=&#34;Linked document&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_linked_doc.grid(
             row=0,
@@ -85,10 +102,9 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._lbl_linked_doc = ttk.Label(
+        self._lbl_linked_doc = Label(
             frames.infrastructure,
             textvariable=variables.linked_document,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         self._lbl_linked_doc.grid(
             row=0,
@@ -100,11 +116,10 @@ class Layout:
         )
 
         # region CREATOR 3D
-        lbl_creator_3d = ttk.Label(
+        lbl_creator_3d = Label(
             frames.infrastructure,
             text=&#34;Creator 3D&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_creator_3d.grid(
             row=1,
@@ -113,11 +128,10 @@ class Layout:
             pady=(4, 4),
             sticky=&#34;nsew&#34;,
         )
-        self._lbl_creator_3d = ttk.Label(
+        self._lbl_creator_3d = Label(
             frames.infrastructure,
             textvariable=variables.creator_3d,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         self._lbl_creator_3d.grid(
             row=1,
@@ -130,11 +144,10 @@ class Layout:
         # endregion
 
         # region CREATOR 2D
-        lbl_creator_2d = ttk.Label(
+        lbl_creator_2d = Label(
             frames.infrastructure,
             text=&#34;Creator 2D&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_creator_2d.grid(
             row=2,
@@ -143,11 +156,10 @@ class Layout:
             pady=(4, 4),
             sticky=&#34;nsew&#34;,
         )
-        self._lbl_creator_2d = ttk.Label(
+        self._lbl_creator_2d = Label(
             frames.infrastructure,
             textvariable=variables.creator_2d,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         self._lbl_creator_2d.grid(
             row=2,
@@ -160,11 +172,10 @@ class Layout:
         # endregion
 
         # region MACHINE
-        lbl_machine = ttk.Label(
+        lbl_machine = Label(
             frames.infrastructure,
             text=&#34;Machine&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_machine.grid(
             row=4,
@@ -174,7 +185,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_machine = ttk.Entry(
+        self._entry_machine = Entry(
             frames.infrastructure,
             textvariable=variables.machine,
             state=DISABLED,
@@ -184,31 +195,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(Layout.MARGIN_Y * 2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_machine = ttk.Button(
+        self._btn_reload_machine = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_machine.grid(
             row=4,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(Layout.MARGIN_Y * 2 - 1, 1),
+            pady=(Layout.MARGIN_Y * 2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region PARTNUMBER
-        lbl_partnumber = ttk.Label(
+        lbl_partnumber = Label(
             frames.infrastructure,
             text=&#34;Partnumber&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_partnumber.grid(
             row=5,
@@ -218,7 +227,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_partnumber = ttk.Entry(
+        self._entry_partnumber = Entry(
             frames.infrastructure,
             textvariable=variables.partnumber,
             state=DISABLED,
@@ -228,31 +237,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_partnumber = ttk.Button(
+        self._btn_reload_partnumber = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_partnumber.grid(
             row=5,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region REVISION
-        lbl_revision = ttk.Label(
+        lbl_revision = Label(
             frames.infrastructure,
             text=&#34;Revision&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_revision.grid(
             row=6,
@@ -262,7 +269,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_revision = ttk.Entry(
+        self._entry_revision = Entry(
             frames.infrastructure,
             textvariable=variables.revision,
             state=DISABLED,
@@ -272,31 +279,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_revision = ttk.Button(
+        self._btn_reload_revision = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_revision.grid(
             row=6,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region DEFINITION
-        lbl_definition = ttk.Label(
+        lbl_definition = Label(
             frames.infrastructure,
             text=&#34;Definition&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_definition.grid(
             row=7,
@@ -306,7 +311,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_definition = ttk.Entry(
+        self._entry_definition = Entry(
             frames.infrastructure,
             textvariable=variables.definition,
             state=DISABLED,
@@ -316,31 +321,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_definition = ttk.Button(
+        self._btn_reload_definition = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_definition.grid(
             row=7,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region MATERIAL
-        lbl_material = ttk.Label(
+        lbl_material = Label(
             frames.infrastructure,
             text=&#34;Material&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_material.grid(
             row=8,
@@ -350,7 +353,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_material = ttk.Entry(
+        self._entry_material = Entry(
             frames.infrastructure,
             textvariable=variables.material,
             state=DISABLED,
@@ -360,31 +363,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(Layout.MARGIN_Y * 2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_material = ttk.Button(
+        self._btn_reload_material = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_material.grid(
             row=8,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(Layout.MARGIN_Y * 2 - 1, 1),
+            pady=(Layout.MARGIN_Y * 2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region BASE SIZE
-        lbl_base_size = ttk.Label(
+        lbl_base_size = Label(
             frames.infrastructure,
             text=&#34;Base Size&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_base_size.grid(
             row=9,
@@ -394,7 +395,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_base_size = ttk.Entry(
+        self._entry_base_size = Entry(
             frames.infrastructure,
             textvariable=variables.base_size,
             state=DISABLED,
@@ -404,31 +405,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_base_size = ttk.Button(
+        self._btn_reload_base_size = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_base_size.grid(
             row=9,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region TOLERANCE
-        lbl_tolerance = ttk.Label(
+        lbl_tolerance = Label(
             frames.infrastructure,
             text=&#34;Tolerance&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_tolerance.grid(
             row=10,
@@ -438,7 +437,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._combo_tolerance = ttk.Combobox(
+        self._combo_tolerance = Combobox(
             frames.infrastructure,
             values=resource.settings.tolerances,
             textvariable=variables.tolerance,
@@ -449,31 +448,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_tolerance = ttk.Button(
+        self._btn_reload_tolerance = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_tolerance.grid(
             row=10,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region DATE
-        lbl_date = ttk.Label(
+        lbl_date = Label(
             frames.infrastructure,
             text=&#34;Release Date&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_date.grid(
             row=11,
@@ -483,32 +480,32 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        # FIXME: The DateEntry flashes a new window on instantiation.
         self._entry_date = DateEntry(
             master=frames.infrastructure,
+            dateformat=&#34;%d.%m.%Y&#34;,
+            startdate=datetime.now(),
+            firstweekday=0,
+        )
+        self._entry_date.entry.configure(
             textvariable=variables.release_date,
-            date_pattern=&#34;dd.mm.yyyy&#34;,
-            mindate=datetime.now(),
             state=DISABLED,
         )
+        self._entry_date.button.configure(state=DISABLED)
         self._entry_date.grid(
             row=11,
             column=1,
             padx=(5, 10),
             pady=(Layout.MARGIN_Y * 2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
             columnspan=2,
         )
         # endregion
 
         # region DOC TYPE
-        lbl_doc_type = ttk.Label(
+        lbl_doc_type = Label(
             frames.infrastructure,
             text=&#34;Document type&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_doc_type.grid(
             row=12,
@@ -517,7 +514,7 @@ class Layout:
             pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
-        self._combo_doc_type = ttk.Combobox(
+        self._combo_doc_type = Combobox(
             frames.infrastructure,
             values=resource.settings.doc_types,
             textvariable=variables.document_type,
@@ -528,29 +525,36 @@ class Layout:
             column=1,
             padx=(5, 10),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
             columnspan=2,
         )
         # endregion
 
         # region FRAME Footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        lbl_info = ttk.Label(
-            frames.footer,
-            text=&#34;&#34;,
+        self._symlink_toggle = Checkbutton(
+            master=frames.footer,
+            bootstyle=&#34;round-toggle&#34;,  # type:ignore
+            text=&#34;Set Symlink&#34;,
+            variable=variables.auto_symlink,
+            onvalue=True,
+            offvalue=False,
         )
-        lbl_info.grid(
-            row=0, column=0, padx=(0, 5), pady=0, ipadx=2, ipady=2, sticky=&#34;nsew&#34;
-        )
+        self._symlink_toggle.grid(row=0, column=0, padx=(8, 2), pady=(5, 5), sticky=&#34;w&#34;)
 
-        self._btn_save = ttk.Button(
-            frames.footer, text=&#34;Save&#34;, style=&#34;Footer.TButton&#34;, state=DISABLED
+        self._btn_save = Button(
+            frames.footer,
+            text=&#34;Save&#34;,
+            style=&#34;outline&#34;,
+            width=10,
+            state=DISABLED,
         )
         self._btn_save.grid(row=0, column=1, padx=(5, 2), pady=(5, 5), sticky=&#34;e&#34;)
 
-        self._btn_abort = ttk.Button(
-            frames.footer, text=&#34;Abort&#34;, style=&#34;Footer.TButton&#34;
+        self._btn_abort = Button(
+            frames.footer,
+            text=&#34;Abort&#34;,
+            style=&#34;outline&#34;,
+            width=10,
         )
         self._btn_abort.grid(row=0, column=2, padx=(2, 10), pady=(5, 5), sticky=&#34;e&#34;)
         # endregion
@@ -560,79 +564,83 @@ class Layout:
         return self._tools_menu
 
     @property
-    def linked_document(self) -&gt; ttk.Label:
+    def linked_document(self) -&gt; Label:
         return self._lbl_linked_doc
 
     @property
-    def input_machine(self) -&gt; ttk.Entry:
+    def input_machine(self) -&gt; Entry:
         return self._entry_machine
 
     @property
-    def button_reload_machine(self) -&gt; ttk.Button:
+    def button_reload_machine(self) -&gt; Button:
         return self._btn_reload_machine
 
     @property
-    def input_partnumber(self) -&gt; ttk.Entry:
+    def input_partnumber(self) -&gt; Entry:
         return self._entry_partnumber
 
     @property
-    def button_reload_partnumber(self) -&gt; ttk.Button:
+    def button_reload_partnumber(self) -&gt; Button:
         return self._btn_reload_partnumber
 
     @property
-    def input_revision(self) -&gt; ttk.Entry:
+    def input_revision(self) -&gt; Entry:
         return self._entry_revision
 
     @property
-    def button_reload_revision(self) -&gt; ttk.Button:
+    def button_reload_revision(self) -&gt; Button:
         return self._btn_reload_revision
 
     @property
-    def input_definition(self) -&gt; ttk.Entry:
+    def input_definition(self) -&gt; Entry:
         return self._entry_definition
 
     @property
-    def button_reload_definition(self) -&gt; ttk.Button:
+    def button_reload_definition(self) -&gt; Button:
         return self._btn_reload_definition
 
     @property
-    def input_material(self) -&gt; ttk.Entry:
+    def input_material(self) -&gt; Entry:
         return self._entry_material
 
     @property
-    def button_reload_material(self) -&gt; ttk.Button:
+    def button_reload_material(self) -&gt; Button:
         return self._btn_reload_material
 
     @property
-    def input_base_size(self) -&gt; ttk.Entry:
+    def input_base_size(self) -&gt; Entry:
         return self._entry_base_size
 
     @property
-    def button_reload_base_size(self) -&gt; ttk.Button:
+    def button_reload_base_size(self) -&gt; Button:
         return self._btn_reload_base_size
 
     @property
-    def input_tolerance(self) -&gt; ttk.Combobox:
+    def input_tolerance(self) -&gt; Combobox:
         return self._combo_tolerance
 
     @property
-    def button_reload_tolerance(self) -&gt; ttk.Button:
+    def button_reload_tolerance(self) -&gt; Button:
         return self._btn_reload_tolerance
 
     @property
-    def input_release_date(self) -&gt; ttk.Entry:
+    def input_release_date(self) -&gt; DateEntry:
         return self._entry_date
 
     @property
-    def input_doc_type(self) -&gt; ttk.Combobox:
+    def input_doc_type(self) -&gt; Combobox:
         return self._combo_doc_type
 
     @property
-    def button_save(self) -&gt; ttk.Button:
+    def toggle_symlink(self) -&gt; Checkbutton:
+        return self._symlink_toggle
+
+    @property
+    def button_save(self) -&gt; Button:
         return self._btn_save
 
     @property
-    def button_abort(self) -&gt; ttk.Button:
+    def button_abort(self) -&gt; Button:
         return self._btn_abort</code></pre>
 </details>
 </section>
@@ -686,21 +694,27 @@ class Layout:
         # region MENU
         menubar = Menu(root)
 
+        self._appearance_menu = Menu(menubar, tearoff=False)
+        for style in STYLES:
+            self._appearance_menu.add_command(label=style)
+
         self._tools_menu = Menu(menubar, tearoff=False)
         self._tools_menu.add_command(label=&#34;Tolerance Table&#34;)
         self._tools_menu.add_command(label=&#34;Open File Explorer&#34;)
         self._tools_menu.add_command(label=&#34;Open Linked Document&#34;)
 
         menubar.add_cascade(label=&#34;Help&#34;, command=show_help)
+        menubar.add_cascade(label=&#34;Appearance&#34;, menu=self._appearance_menu)
         menubar.add_cascade(label=&#34;Tools&#34;, menu=self._tools_menu)
+
+        set_appearance_menu(self._appearance_menu)
         root.configure(menu=menubar)
         # endregion
 
-        lbl_linked_doc = ttk.Label(
+        lbl_linked_doc = Label(
             frames.infrastructure,
             text=&#34;Linked document&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_linked_doc.grid(
             row=0,
@@ -710,10 +724,9 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._lbl_linked_doc = ttk.Label(
+        self._lbl_linked_doc = Label(
             frames.infrastructure,
             textvariable=variables.linked_document,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         self._lbl_linked_doc.grid(
             row=0,
@@ -725,11 +738,10 @@ class Layout:
         )
 
         # region CREATOR 3D
-        lbl_creator_3d = ttk.Label(
+        lbl_creator_3d = Label(
             frames.infrastructure,
             text=&#34;Creator 3D&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_creator_3d.grid(
             row=1,
@@ -738,11 +750,10 @@ class Layout:
             pady=(4, 4),
             sticky=&#34;nsew&#34;,
         )
-        self._lbl_creator_3d = ttk.Label(
+        self._lbl_creator_3d = Label(
             frames.infrastructure,
             textvariable=variables.creator_3d,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         self._lbl_creator_3d.grid(
             row=1,
@@ -755,11 +766,10 @@ class Layout:
         # endregion
 
         # region CREATOR 2D
-        lbl_creator_2d = ttk.Label(
+        lbl_creator_2d = Label(
             frames.infrastructure,
             text=&#34;Creator 2D&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_creator_2d.grid(
             row=2,
@@ -768,11 +778,10 @@ class Layout:
             pady=(4, 4),
             sticky=&#34;nsew&#34;,
         )
-        self._lbl_creator_2d = ttk.Label(
+        self._lbl_creator_2d = Label(
             frames.infrastructure,
             textvariable=variables.creator_2d,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         self._lbl_creator_2d.grid(
             row=2,
@@ -785,11 +794,10 @@ class Layout:
         # endregion
 
         # region MACHINE
-        lbl_machine = ttk.Label(
+        lbl_machine = Label(
             frames.infrastructure,
             text=&#34;Machine&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_machine.grid(
             row=4,
@@ -799,7 +807,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_machine = ttk.Entry(
+        self._entry_machine = Entry(
             frames.infrastructure,
             textvariable=variables.machine,
             state=DISABLED,
@@ -809,31 +817,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(Layout.MARGIN_Y * 2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_machine = ttk.Button(
+        self._btn_reload_machine = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_machine.grid(
             row=4,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(Layout.MARGIN_Y * 2 - 1, 1),
+            pady=(Layout.MARGIN_Y * 2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region PARTNUMBER
-        lbl_partnumber = ttk.Label(
+        lbl_partnumber = Label(
             frames.infrastructure,
             text=&#34;Partnumber&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_partnumber.grid(
             row=5,
@@ -843,7 +849,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_partnumber = ttk.Entry(
+        self._entry_partnumber = Entry(
             frames.infrastructure,
             textvariable=variables.partnumber,
             state=DISABLED,
@@ -853,31 +859,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_partnumber = ttk.Button(
+        self._btn_reload_partnumber = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_partnumber.grid(
             row=5,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region REVISION
-        lbl_revision = ttk.Label(
+        lbl_revision = Label(
             frames.infrastructure,
             text=&#34;Revision&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_revision.grid(
             row=6,
@@ -887,7 +891,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_revision = ttk.Entry(
+        self._entry_revision = Entry(
             frames.infrastructure,
             textvariable=variables.revision,
             state=DISABLED,
@@ -897,31 +901,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_revision = ttk.Button(
+        self._btn_reload_revision = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_revision.grid(
             row=6,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region DEFINITION
-        lbl_definition = ttk.Label(
+        lbl_definition = Label(
             frames.infrastructure,
             text=&#34;Definition&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_definition.grid(
             row=7,
@@ -931,7 +933,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_definition = ttk.Entry(
+        self._entry_definition = Entry(
             frames.infrastructure,
             textvariable=variables.definition,
             state=DISABLED,
@@ -941,31 +943,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_definition = ttk.Button(
+        self._btn_reload_definition = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_definition.grid(
             row=7,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region MATERIAL
-        lbl_material = ttk.Label(
+        lbl_material = Label(
             frames.infrastructure,
             text=&#34;Material&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_material.grid(
             row=8,
@@ -975,7 +975,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_material = ttk.Entry(
+        self._entry_material = Entry(
             frames.infrastructure,
             textvariable=variables.material,
             state=DISABLED,
@@ -985,31 +985,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(Layout.MARGIN_Y * 2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_material = ttk.Button(
+        self._btn_reload_material = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_material.grid(
             row=8,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(Layout.MARGIN_Y * 2 - 1, 1),
+            pady=(Layout.MARGIN_Y * 2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region BASE SIZE
-        lbl_base_size = ttk.Label(
+        lbl_base_size = Label(
             frames.infrastructure,
             text=&#34;Base Size&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_base_size.grid(
             row=9,
@@ -1019,7 +1017,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_base_size = ttk.Entry(
+        self._entry_base_size = Entry(
             frames.infrastructure,
             textvariable=variables.base_size,
             state=DISABLED,
@@ -1029,31 +1027,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_base_size = ttk.Button(
+        self._btn_reload_base_size = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_base_size.grid(
             row=9,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region TOLERANCE
-        lbl_tolerance = ttk.Label(
+        lbl_tolerance = Label(
             frames.infrastructure,
             text=&#34;Tolerance&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_tolerance.grid(
             row=10,
@@ -1063,7 +1059,7 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._combo_tolerance = ttk.Combobox(
+        self._combo_tolerance = Combobox(
             frames.infrastructure,
             values=resource.settings.tolerances,
             textvariable=variables.tolerance,
@@ -1074,31 +1070,29 @@ class Layout:
             column=1,
             padx=(5, 2),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_tolerance = ttk.Button(
+        self._btn_reload_tolerance = Button(
             frames.infrastructure,
             image=self.reload_image,
-            style=&#34;Reload.TButton&#34;,
+            style=&#34;outline&#34;,
+            width=3,
             state=DISABLED,
         )
         self._btn_reload_tolerance.grid(
             row=10,
             column=2,
             padx=(2, Layout.MARGIN_X),
-            pady=(1, 1),
+            pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
         # endregion
 
         # region DATE
-        lbl_date = ttk.Label(
+        lbl_date = Label(
             frames.infrastructure,
             text=&#34;Release Date&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_date.grid(
             row=11,
@@ -1108,32 +1102,32 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        # FIXME: The DateEntry flashes a new window on instantiation.
         self._entry_date = DateEntry(
             master=frames.infrastructure,
+            dateformat=&#34;%d.%m.%Y&#34;,
+            startdate=datetime.now(),
+            firstweekday=0,
+        )
+        self._entry_date.entry.configure(
             textvariable=variables.release_date,
-            date_pattern=&#34;dd.mm.yyyy&#34;,
-            mindate=datetime.now(),
             state=DISABLED,
         )
+        self._entry_date.button.configure(state=DISABLED)
         self._entry_date.grid(
             row=11,
             column=1,
             padx=(5, 10),
             pady=(Layout.MARGIN_Y * 2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
             columnspan=2,
         )
         # endregion
 
         # region DOC TYPE
-        lbl_doc_type = ttk.Label(
+        lbl_doc_type = Label(
             frames.infrastructure,
             text=&#34;Document type&#34;,
             width=Layout.LBL_WIDTH,
-            font=(&#34;Segoe UI&#34;, 9),
         )
         lbl_doc_type.grid(
             row=12,
@@ -1142,7 +1136,7 @@ class Layout:
             pady=(2, 2),
             sticky=&#34;nsew&#34;,
         )
-        self._combo_doc_type = ttk.Combobox(
+        self._combo_doc_type = Combobox(
             frames.infrastructure,
             values=resource.settings.doc_types,
             textvariable=variables.document_type,
@@ -1153,29 +1147,36 @@ class Layout:
             column=1,
             padx=(5, 10),
             pady=(2, 2),
-            ipadx=2,
-            ipady=2,
             sticky=&#34;nsew&#34;,
             columnspan=2,
         )
         # endregion
 
         # region FRAME Footer ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        lbl_info = ttk.Label(
-            frames.footer,
-            text=&#34;&#34;,
+        self._symlink_toggle = Checkbutton(
+            master=frames.footer,
+            bootstyle=&#34;round-toggle&#34;,  # type:ignore
+            text=&#34;Set Symlink&#34;,
+            variable=variables.auto_symlink,
+            onvalue=True,
+            offvalue=False,
         )
-        lbl_info.grid(
-            row=0, column=0, padx=(0, 5), pady=0, ipadx=2, ipady=2, sticky=&#34;nsew&#34;
-        )
+        self._symlink_toggle.grid(row=0, column=0, padx=(8, 2), pady=(5, 5), sticky=&#34;w&#34;)
 
-        self._btn_save = ttk.Button(
-            frames.footer, text=&#34;Save&#34;, style=&#34;Footer.TButton&#34;, state=DISABLED
+        self._btn_save = Button(
+            frames.footer,
+            text=&#34;Save&#34;,
+            style=&#34;outline&#34;,
+            width=10,
+            state=DISABLED,
         )
         self._btn_save.grid(row=0, column=1, padx=(5, 2), pady=(5, 5), sticky=&#34;e&#34;)
 
-        self._btn_abort = ttk.Button(
-            frames.footer, text=&#34;Abort&#34;, style=&#34;Footer.TButton&#34;
+        self._btn_abort = Button(
+            frames.footer,
+            text=&#34;Abort&#34;,
+            style=&#34;outline&#34;,
+            width=10,
         )
         self._btn_abort.grid(row=0, column=2, padx=(2, 10), pady=(5, 5), sticky=&#34;e&#34;)
         # endregion
@@ -1185,79 +1186,83 @@ class Layout:
         return self._tools_menu
 
     @property
-    def linked_document(self) -&gt; ttk.Label:
+    def linked_document(self) -&gt; Label:
         return self._lbl_linked_doc
 
     @property
-    def input_machine(self) -&gt; ttk.Entry:
+    def input_machine(self) -&gt; Entry:
         return self._entry_machine
 
     @property
-    def button_reload_machine(self) -&gt; ttk.Button:
+    def button_reload_machine(self) -&gt; Button:
         return self._btn_reload_machine
 
     @property
-    def input_partnumber(self) -&gt; ttk.Entry:
+    def input_partnumber(self) -&gt; Entry:
         return self._entry_partnumber
 
     @property
-    def button_reload_partnumber(self) -&gt; ttk.Button:
+    def button_reload_partnumber(self) -&gt; Button:
         return self._btn_reload_partnumber
 
     @property
-    def input_revision(self) -&gt; ttk.Entry:
+    def input_revision(self) -&gt; Entry:
         return self._entry_revision
 
     @property
-    def button_reload_revision(self) -&gt; ttk.Button:
+    def button_reload_revision(self) -&gt; Button:
         return self._btn_reload_revision
 
     @property
-    def input_definition(self) -&gt; ttk.Entry:
+    def input_definition(self) -&gt; Entry:
         return self._entry_definition
 
     @property
-    def button_reload_definition(self) -&gt; ttk.Button:
+    def button_reload_definition(self) -&gt; Button:
         return self._btn_reload_definition
 
     @property
-    def input_material(self) -&gt; ttk.Entry:
+    def input_material(self) -&gt; Entry:
         return self._entry_material
 
     @property
-    def button_reload_material(self) -&gt; ttk.Button:
+    def button_reload_material(self) -&gt; Button:
         return self._btn_reload_material
 
     @property
-    def input_base_size(self) -&gt; ttk.Entry:
+    def input_base_size(self) -&gt; Entry:
         return self._entry_base_size
 
     @property
-    def button_reload_base_size(self) -&gt; ttk.Button:
+    def button_reload_base_size(self) -&gt; Button:
         return self._btn_reload_base_size
 
     @property
-    def input_tolerance(self) -&gt; ttk.Combobox:
+    def input_tolerance(self) -&gt; Combobox:
         return self._combo_tolerance
 
     @property
-    def button_reload_tolerance(self) -&gt; ttk.Button:
+    def button_reload_tolerance(self) -&gt; Button:
         return self._btn_reload_tolerance
 
     @property
-    def input_release_date(self) -&gt; ttk.Entry:
+    def input_release_date(self) -&gt; DateEntry:
         return self._entry_date
 
     @property
-    def input_doc_type(self) -&gt; ttk.Combobox:
+    def input_doc_type(self) -&gt; Combobox:
         return self._combo_doc_type
 
     @property
-    def button_save(self) -&gt; ttk.Button:
+    def toggle_symlink(self) -&gt; Checkbutton:
+        return self._symlink_toggle
+
+    @property
+    def button_save(self) -&gt; Button:
         return self._btn_save
 
     @property
-    def button_abort(self) -&gt; ttk.Button:
+    def button_abort(self) -&gt; Button:
         return self._btn_abort</code></pre>
 </details>
 <h3>Class variables</h3>
@@ -1285,7 +1290,7 @@ class Layout:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_abort(self) -&gt; ttk.Button:
+def button_abort(self) -&gt; Button:
     return self._btn_abort</code></pre>
 </details>
 </dd>
@@ -1297,7 +1302,7 @@ def button_abort(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_reload_base_size(self) -&gt; ttk.Button:
+def button_reload_base_size(self) -&gt; Button:
     return self._btn_reload_base_size</code></pre>
 </details>
 </dd>
@@ -1309,7 +1314,7 @@ def button_reload_base_size(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_reload_definition(self) -&gt; ttk.Button:
+def button_reload_definition(self) -&gt; Button:
     return self._btn_reload_definition</code></pre>
 </details>
 </dd>
@@ -1321,7 +1326,7 @@ def button_reload_definition(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_reload_machine(self) -&gt; ttk.Button:
+def button_reload_machine(self) -&gt; Button:
     return self._btn_reload_machine</code></pre>
 </details>
 </dd>
@@ -1333,7 +1338,7 @@ def button_reload_machine(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_reload_material(self) -&gt; ttk.Button:
+def button_reload_material(self) -&gt; Button:
     return self._btn_reload_material</code></pre>
 </details>
 </dd>
@@ -1345,7 +1350,7 @@ def button_reload_material(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_reload_partnumber(self) -&gt; ttk.Button:
+def button_reload_partnumber(self) -&gt; Button:
     return self._btn_reload_partnumber</code></pre>
 </details>
 </dd>
@@ -1357,7 +1362,7 @@ def button_reload_partnumber(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_reload_revision(self) -&gt; ttk.Button:
+def button_reload_revision(self) -&gt; Button:
     return self._btn_reload_revision</code></pre>
 </details>
 </dd>
@@ -1369,7 +1374,7 @@ def button_reload_revision(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_reload_tolerance(self) -&gt; ttk.Button:
+def button_reload_tolerance(self) -&gt; Button:
     return self._btn_reload_tolerance</code></pre>
 </details>
 </dd>
@@ -1381,7 +1386,7 @@ def button_reload_tolerance(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def button_save(self) -&gt; ttk.Button:
+def button_save(self) -&gt; Button:
     return self._btn_save</code></pre>
 </details>
 </dd>
@@ -1393,7 +1398,7 @@ def button_save(self) -&gt; ttk.Button:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_base_size(self) -&gt; ttk.Entry:
+def input_base_size(self) -&gt; Entry:
     return self._entry_base_size</code></pre>
 </details>
 </dd>
@@ -1405,7 +1410,7 @@ def input_base_size(self) -&gt; ttk.Entry:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_definition(self) -&gt; ttk.Entry:
+def input_definition(self) -&gt; Entry:
     return self._entry_definition</code></pre>
 </details>
 </dd>
@@ -1417,7 +1422,7 @@ def input_definition(self) -&gt; ttk.Entry:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_doc_type(self) -&gt; ttk.Combobox:
+def input_doc_type(self) -&gt; Combobox:
     return self._combo_doc_type</code></pre>
 </details>
 </dd>
@@ -1429,7 +1434,7 @@ def input_doc_type(self) -&gt; ttk.Combobox:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_machine(self) -&gt; ttk.Entry:
+def input_machine(self) -&gt; Entry:
     return self._entry_machine</code></pre>
 </details>
 </dd>
@@ -1441,7 +1446,7 @@ def input_machine(self) -&gt; ttk.Entry:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_material(self) -&gt; ttk.Entry:
+def input_material(self) -&gt; Entry:
     return self._entry_material</code></pre>
 </details>
 </dd>
@@ -1453,11 +1458,11 @@ def input_material(self) -&gt; ttk.Entry:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_partnumber(self) -&gt; ttk.Entry:
+def input_partnumber(self) -&gt; Entry:
     return self._entry_partnumber</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.app.layout.Layout.input_release_date"><code class="name">var <span class="ident">input_release_date</span> : tkinter.ttk.Entry</code></dt>
+<dt id="pytia_title_block.app.layout.Layout.input_release_date"><code class="name">var <span class="ident">input_release_date</span> : ttkbootstrap.widgets.DateEntry</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -1465,7 +1470,7 @@ def input_partnumber(self) -&gt; ttk.Entry:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_release_date(self) -&gt; ttk.Entry:
+def input_release_date(self) -&gt; DateEntry:
     return self._entry_date</code></pre>
 </details>
 </dd>
@@ -1477,7 +1482,7 @@ def input_release_date(self) -&gt; ttk.Entry:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_revision(self) -&gt; ttk.Entry:
+def input_revision(self) -&gt; Entry:
     return self._entry_revision</code></pre>
 </details>
 </dd>
@@ -1489,7 +1494,7 @@ def input_revision(self) -&gt; ttk.Entry:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def input_tolerance(self) -&gt; ttk.Combobox:
+def input_tolerance(self) -&gt; Combobox:
     return self._combo_tolerance</code></pre>
 </details>
 </dd>
@@ -1501,8 +1506,20 @@ def input_tolerance(self) -&gt; ttk.Combobox:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def linked_document(self) -&gt; ttk.Label:
+def linked_document(self) -&gt; Label:
     return self._lbl_linked_doc</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.app.layout.Layout.toggle_symlink"><code class="name">var <span class="ident">toggle_symlink</span> : tkinter.ttk.Checkbutton</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def toggle_symlink(self) -&gt; Checkbutton:
+    return self._symlink_toggle</code></pre>
 </details>
 </dd>
 <dt id="pytia_title_block.app.layout.Layout.tools_menu"><code class="name">var <span class="ident">tools_menu</span> : tkinter.Menu</code></dt>
@@ -1560,6 +1577,7 @@ def tools_menu(self) -&gt; Menu:
 <li><code><a title="pytia_title_block.app.layout.Layout.input_revision" href="#pytia_title_block.app.layout.Layout.input_revision">input_revision</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_tolerance" href="#pytia_title_block.app.layout.Layout.input_tolerance">input_tolerance</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.linked_document" href="#pytia_title_block.app.layout.Layout.linked_document">linked_document</a></code></li>
+<li><code><a title="pytia_title_block.app.layout.Layout.toggle_symlink" href="#pytia_title_block.app.layout.Layout.toggle_symlink">toggle_symlink</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.tools_menu" href="#pytia_title_block.app.layout.Layout.tools_menu">tools_menu</a></code></li>
 </ul>
 </li>

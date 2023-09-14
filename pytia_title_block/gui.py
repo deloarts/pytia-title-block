@@ -6,8 +6,19 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import font
 from tkinter import messagebox as tkmsg
-from tkinter import ttk
 
+import ttkbootstrap as ttk
+from app.callbacks import Callbacks
+from app.frames import Frames
+from app.layout import Layout
+from app.state_setter import UISetter
+from app.tooltips import ToolTips
+from app.traces import Traces
+from app.vars import Variables
+from const import APP_VERSION, LOG, LOGON, LOGS
+from helper.messages import show_help
+from loader.data_loader import DataLoader
+from loader.doc_loader import DocumentLoader
 from pytia.exceptions import (
     PytiaBodyEmptyError,
     PytiaDifferentDocumentError,
@@ -21,30 +32,19 @@ from pytia_ui_tools.handlers.error_handler import ErrorHandler
 from pytia_ui_tools.handlers.mail_handler import MailHandler
 from pytia_ui_tools.handlers.workspace_handler import Workspace
 from pytia_ui_tools.window_manager import WindowManager
-
-from app.callbacks import Callbacks
-from app.frames import Frames
-from app.layout import Layout
-from app.state_setter import UISetter
-from app.tooltips import ToolTips
-from app.traces import Traces
-from app.vars import Variables
-from const import APP_VERSION, LOG, LOGON, LOGS
-from helper.messages import show_help
-from loader.data_loader import DataLoader
-from loader.doc_loader import DocumentLoader
 from resources import resource
 
 
 class GUI(tk.Tk):
     """The user interface of the app."""
 
-    WIDTH = 400
-    HEIGHT = 480
+    WIDTH = 450
+    HEIGHT = 520
 
     def __init__(self) -> None:
         """Inits the main window."""
-        tk.Tk.__init__(self)
+        ttk.tk.Tk.__init__(self)
+        ttk.Style(theme=resource.appdata.theme)
 
         # CLASS VARS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         self.doc_loader: DocumentLoader  # Instantiate later for performance improvement
@@ -104,11 +104,6 @@ class GUI(tk.Tk):
         y_coordinate = int((screen_height / 2) - (GUI.HEIGHT / 2) - 20)
         self.geometry(f"{GUI.WIDTH}x{GUI.HEIGHT}+{x_coordinate}+{y_coordinate}")
         self.minsize(width=GUI.WIDTH, height=GUI.HEIGHT)
-
-        # STYLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        style = ttk.Style(self)
-        style.configure("Reload.TButton", width=5)
-        style.configure("Footer.TButton", width=14)
 
         self.update()
         self.window_manager.remove_window_buttons()

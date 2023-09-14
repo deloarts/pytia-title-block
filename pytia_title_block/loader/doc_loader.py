@@ -318,7 +318,12 @@ class DocumentLoader:
 
             self.linked_properties.create(
                 name=PROP_DRAWING_PATH,
-                value=str(create_path_symlink(self.path)),
+                value=str(
+                    create_path_symlink(
+                        path=self.path,
+                        alway_apply_symlink=resource.appdata.auto_symlink,
+                    )
+                ),
             )
 
             # FIXME: This loads the linked document as active document, but only if the linked

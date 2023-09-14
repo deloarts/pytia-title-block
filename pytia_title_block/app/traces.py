@@ -2,10 +2,10 @@
     Traces submodule for the app.
 """
 
-from pytia.log import log
-
 from app.state_setter import UISetter
 from app.vars import Variables
+from pytia.log import log
+from resources import resource
 
 
 class Traces:
@@ -27,4 +27,8 @@ class Traces:
 
     def _add_traces(self) -> None:
         """Adds all traces."""
-        ...
+        self.vars.auto_symlink.trace_add("write", self.trace_auto_symlink)
+
+    def trace_auto_symlink(self, *_) -> None:
+        """Trace for the auto-symlink variable."""
+        resource.appdata.auto_symlink = self.vars.auto_symlink.get()

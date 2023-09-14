@@ -31,14 +31,15 @@
     Frames submodule for the main window.
 &#34;&#34;&#34;
 
-from tkinter import Tk, ttk
+from tkinter import Tk
+from ttkbootstrap import Frame, Labelframe
 
 
 class Frames:
     &#34;&#34;&#34;Frames class for the main window. Holds all ttk frames.&#34;&#34;&#34;
 
     def __init__(self, root: Tk) -&gt; None:
-        self._frame_infra = ttk.Frame(
+        self._frame_infra = Frame(
             master=root,
         )
         self._frame_infra.grid(
@@ -50,19 +51,19 @@ class Frames:
         root.grid_columnconfigure(0, weight=1)
         root.grid_rowconfigure(0, weight=1)
 
-        self._frame_footer = ttk.Frame(master=root, height=30, style=&#34;Footer.TFrame&#34;)
+        self._frame_footer = Frame(master=root, height=30)
         self._frame_footer.grid(
             row=1, column=0, sticky=&#34;swe&#34;, padx=10, pady=(5, 10), columnspan=1
         )
         self._frame_footer.grid_columnconfigure(1, weight=1)
 
     @property
-    def infrastructure(self) -&gt; ttk.Frame:
+    def infrastructure(self) -&gt; Frame:
         &#34;&#34;&#34;Returns the infrastructure frame.&#34;&#34;&#34;
         return self._frame_infra
 
     @property
-    def footer(self) -&gt; ttk.Frame:
+    def footer(self) -&gt; Frame:
         &#34;&#34;&#34;Returns the footer frame.&#34;&#34;&#34;
         return self._frame_footer</code></pre>
 </details>
@@ -90,7 +91,7 @@ class Frames:
     &#34;&#34;&#34;Frames class for the main window. Holds all ttk frames.&#34;&#34;&#34;
 
     def __init__(self, root: Tk) -&gt; None:
-        self._frame_infra = ttk.Frame(
+        self._frame_infra = Frame(
             master=root,
         )
         self._frame_infra.grid(
@@ -102,19 +103,19 @@ class Frames:
         root.grid_columnconfigure(0, weight=1)
         root.grid_rowconfigure(0, weight=1)
 
-        self._frame_footer = ttk.Frame(master=root, height=30, style=&#34;Footer.TFrame&#34;)
+        self._frame_footer = Frame(master=root, height=30)
         self._frame_footer.grid(
             row=1, column=0, sticky=&#34;swe&#34;, padx=10, pady=(5, 10), columnspan=1
         )
         self._frame_footer.grid_columnconfigure(1, weight=1)
 
     @property
-    def infrastructure(self) -&gt; ttk.Frame:
+    def infrastructure(self) -&gt; Frame:
         &#34;&#34;&#34;Returns the infrastructure frame.&#34;&#34;&#34;
         return self._frame_infra
 
     @property
-    def footer(self) -&gt; ttk.Frame:
+    def footer(self) -&gt; Frame:
         &#34;&#34;&#34;Returns the footer frame.&#34;&#34;&#34;
         return self._frame_footer</code></pre>
 </details>
@@ -128,7 +129,7 @@ class Frames:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def footer(self) -&gt; ttk.Frame:
+def footer(self) -&gt; Frame:
     &#34;&#34;&#34;Returns the footer frame.&#34;&#34;&#34;
     return self._frame_footer</code></pre>
 </details>
@@ -141,7 +142,7 @@ def footer(self) -&gt; ttk.Frame:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def infrastructure(self) -&gt; ttk.Frame:
+def infrastructure(self) -&gt; Frame:
     &#34;&#34;&#34;Returns the infrastructure frame.&#34;&#34;&#34;
     return self._frame_infra</code></pre>
 </details>

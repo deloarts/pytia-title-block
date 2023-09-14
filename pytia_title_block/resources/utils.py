@@ -41,7 +41,7 @@ def expand_env_vars(value: str) -> str:
     return output
 
 
-def create_path_symlink(path: Path) -> Path:
+def create_path_symlink(path: Path, alway_apply_symlink: bool) -> Path:
     """
     Replaces paths of the given path with the environment variable, if exists
     and the users agrees. Starts with the deepest folder and runs upwards.
@@ -56,8 +56,8 @@ def create_path_symlink(path: Path) -> Path:
         for key, value in os.environ.items():
             if str(parent) == value:
                 symlinked = Path(str(path).replace(str(parent), f"%{key}%"))
-                if tkmsg.askyesno(
-                    title="Symlink has bee found.",
+                if alway_apply_symlink or tkmsg.askyesno(
+                    title="Symlink has been found.",
                     message=(
                         "A symlink has been found for the drawing documents path:\n"
                         f" - Path: {str(parent)!r}.\n"

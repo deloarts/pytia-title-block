@@ -38,10 +38,9 @@ from tkinter import StringVar, ttk
 from app.layout import Layout
 from app.vars import Variables
 from const import APP_NAME, APP_VERSION, LOGON
+from loader.doc_loader import DocumentLoader
 from pytia_ui_tools.widgets.tooltips import ToolTip
 from resources import resource
-
-from loader.doc_loader import DocumentLoader
 
 
 class DataLoader:
@@ -206,7 +205,7 @@ class DataLoader:
 
         self._set_var(
             variable=self.vars.release_date,
-            widget=self.layout.input_release_date,
+            widget=self.layout.input_release_date.entry,
             title_block_item=resource.title_block_items.release_date,
             default_value=datetime.now().strftime(&#34;%d.%m.%Y&#34;),
         )
@@ -473,7 +472,7 @@ class DataLoader:
 
         self._set_var(
             variable=self.vars.release_date,
-            widget=self.layout.input_release_date,
+            widget=self.layout.input_release_date.entry,
             title_block_item=resource.title_block_items.release_date,
             default_value=datetime.now().strftime(&#34;%d.%m.%Y&#34;),
         )
@@ -620,7 +619,7 @@ class DataLoader:
 
     self._set_var(
         variable=self.vars.release_date,
-        widget=self.layout.input_release_date,
+        widget=self.layout.input_release_date.entry,
         title_block_item=resource.title_block_items.release_date,
         default_value=datetime.now().strftime(&#34;%d.%m.%Y&#34;),
     )

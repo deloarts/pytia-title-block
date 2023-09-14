@@ -72,7 +72,7 @@ def expand_env_vars(value: str) -&gt; str:
     return output
 
 
-def create_path_symlink(path: Path) -&gt; Path:
+def create_path_symlink(path: Path, alway_apply_symlink: bool) -&gt; Path:
     &#34;&#34;&#34;
     Replaces paths of the given path with the environment variable, if exists
     and the users agrees. Starts with the deepest folder and runs upwards.
@@ -87,8 +87,8 @@ def create_path_symlink(path: Path) -&gt; Path:
         for key, value in os.environ.items():
             if str(parent) == value:
                 symlinked = Path(str(path).replace(str(parent), f&#34;%{key}%&#34;))
-                if tkmsg.askyesno(
-                    title=&#34;Symlink has bee found.&#34;,
+                if alway_apply_symlink or tkmsg.askyesno(
+                    title=&#34;Symlink has been found.&#34;,
                     message=(
                         &#34;A symlink has been found for the drawing documents path:\n&#34;
                         f&#34; - Path: {str(parent)!r}.\n&#34;
@@ -114,7 +114,7 @@ def create_path_symlink(path: Path) -&gt; Path:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="pytia_title_block.resources.utils.create_path_symlink"><code class="name flex">
-<span>def <span class="ident">create_path_symlink</span></span>(<span>path: pathlib.Path) ‑> pathlib.Path</span>
+<span>def <span class="ident">create_path_symlink</span></span>(<span>path: pathlib.Path, alway_apply_symlink: bool) ‑> pathlib.Path</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Replaces paths of the given path with the environment variable, if exists
@@ -126,7 +126,7 @@ and the users agrees. Starts with the deepest folder and runs upwards.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def create_path_symlink(path: Path) -&gt; Path:
+<pre><code class="python">def create_path_symlink(path: Path, alway_apply_symlink: bool) -&gt; Path:
     &#34;&#34;&#34;
     Replaces paths of the given path with the environment variable, if exists
     and the users agrees. Starts with the deepest folder and runs upwards.
@@ -141,8 +141,8 @@ and the users agrees. Starts with the deepest folder and runs upwards.</p>
         for key, value in os.environ.items():
             if str(parent) == value:
                 symlinked = Path(str(path).replace(str(parent), f&#34;%{key}%&#34;))
-                if tkmsg.askyesno(
-                    title=&#34;Symlink has bee found.&#34;,
+                if alway_apply_symlink or tkmsg.askyesno(
+                    title=&#34;Symlink has been found.&#34;,
                     message=(
                         &#34;A symlink has been found for the drawing documents path:\n&#34;
                         f&#34; - Path: {str(parent)!r}.\n&#34;

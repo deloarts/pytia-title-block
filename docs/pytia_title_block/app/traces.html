@@ -31,10 +31,10 @@
     Traces submodule for the app.
 &#34;&#34;&#34;
 
-from pytia.log import log
-
 from app.state_setter import UISetter
 from app.vars import Variables
+from pytia.log import log
+from resources import resource
 
 
 class Traces:
@@ -56,7 +56,11 @@ class Traces:
 
     def _add_traces(self) -&gt; None:
         &#34;&#34;&#34;Adds all traces.&#34;&#34;&#34;
-        ...</code></pre>
+        self.vars.auto_symlink.trace_add(&#34;write&#34;, self.trace_auto_symlink)
+
+    def trace_auto_symlink(self, *_) -&gt; None:
+        &#34;&#34;&#34;Trace for the auto-symlink variable.&#34;&#34;&#34;
+        resource.appdata.auto_symlink = self.vars.auto_symlink.get()</code></pre>
 </details>
 </section>
 <section>
@@ -105,8 +109,29 @@ class Traces:
 
     def _add_traces(self) -&gt; None:
         &#34;&#34;&#34;Adds all traces.&#34;&#34;&#34;
-        ...</code></pre>
+        self.vars.auto_symlink.trace_add(&#34;write&#34;, self.trace_auto_symlink)
+
+    def trace_auto_symlink(self, *_) -&gt; None:
+        &#34;&#34;&#34;Trace for the auto-symlink variable.&#34;&#34;&#34;
+        resource.appdata.auto_symlink = self.vars.auto_symlink.get()</code></pre>
 </details>
+<h3>Methods</h3>
+<dl>
+<dt id="pytia_title_block.app.traces.Traces.trace_auto_symlink"><code class="name flex">
+<span>def <span class="ident">trace_auto_symlink</span></span>(<span>self, *_) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trace for the auto-symlink variable.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def trace_auto_symlink(self, *_) -&gt; None:
+    &#34;&#34;&#34;Trace for the auto-symlink variable.&#34;&#34;&#34;
+    resource.appdata.auto_symlink = self.vars.auto_symlink.get()</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -126,6 +151,9 @@ class Traces:
 <ul>
 <li>
 <h4><code><a title="pytia_title_block.app.traces.Traces" href="#pytia_title_block.app.traces.Traces">Traces</a></code></h4>
+<ul class="">
+<li><code><a title="pytia_title_block.app.traces.Traces.trace_auto_symlink" href="#pytia_title_block.app.traces.Traces.trace_auto_symlink">trace_auto_symlink</a></code></li>
+</ul>
 </li>
 </ul>
 </li>

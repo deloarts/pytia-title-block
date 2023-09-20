@@ -93,17 +93,13 @@ class ToleranceTools:
             max = f&#34;{(item.value+item.tol_up_d):.4f}&#34;
 
             # Don&#39;t add the same value twice
+            add = True
             for datum in table_data:
                 if datum.base == base:
-                    break
+                    add = False
+            if add:
+                table_data.append(ToleranceTableModel(base=base, min=min, max=max))
 
-            table_data.append(
-                ToleranceTableModel(
-                    base=base,
-                    min=min,
-                    max=max,
-                )
-            )
         return table_data
 
     def get_all_tolerated_dimensions(self) -&gt; List[ToleranceModel]:
@@ -284,17 +280,13 @@ A tolerance table is a collection of all tolerated dimensions of the active shee
             max = f&#34;{(item.value+item.tol_up_d):.4f}&#34;
 
             # Don&#39;t add the same value twice
+            add = True
             for datum in table_data:
                 if datum.base == base:
-                    break
+                    add = False
+            if add:
+                table_data.append(ToleranceTableModel(base=base, min=min, max=max))
 
-            table_data.append(
-                ToleranceTableModel(
-                    base=base,
-                    min=min,
-                    max=max,
-                )
-            )
         return table_data
 
     def get_all_tolerated_dimensions(self) -&gt; List[ToleranceModel]:
@@ -454,17 +446,13 @@ def prepare_table_data(
         max = f&#34;{(item.value+item.tol_up_d):.4f}&#34;
 
         # Don&#39;t add the same value twice
+        add = True
         for datum in table_data:
             if datum.base == base:
-                break
+                add = False
+        if add:
+            table_data.append(ToleranceTableModel(base=base, min=min, max=max))
 
-        table_data.append(
-            ToleranceTableModel(
-                base=base,
-                min=min,
-                max=max,
-            )
-        )
     return table_data</code></pre>
 </details>
 </dd>

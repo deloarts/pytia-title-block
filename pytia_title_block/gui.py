@@ -44,7 +44,7 @@ class GUI(tk.Tk):
     def __init__(self) -> None:
         """Inits the main window."""
         ttk.tk.Tk.__init__(self)
-        ttk.Style(theme=resource.appdata.theme)
+        self.style = ttk.Style(theme=resource.appdata.theme)
 
         # CLASS VARS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         self.doc_loader: DocumentLoader  # Instantiate later for performance improvement
@@ -203,6 +203,7 @@ class GUI(tk.Tk):
             ui_setter=self.set_ui,
             doc_loader=self.doc_loader,
             data_loader=self.data_loader,
+            style=self.style,
         )
 
     def traces(self) -> None:

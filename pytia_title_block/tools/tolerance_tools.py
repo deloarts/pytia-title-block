@@ -64,17 +64,13 @@ class ToleranceTools:
             max = f"{(item.value+item.tol_up_d):.4f}"
 
             # Don't add the same value twice
+            add = True
             for datum in table_data:
                 if datum.base == base:
-                    break
+                    add = False
+            if add:
+                table_data.append(ToleranceTableModel(base=base, min=min, max=max))
 
-            table_data.append(
-                ToleranceTableModel(
-                    base=base,
-                    min=min,
-                    max=max,
-                )
-            )
         return table_data
 
     def get_all_tolerated_dimensions(self) -> List[ToleranceModel]:

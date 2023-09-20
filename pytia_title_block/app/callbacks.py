@@ -14,8 +14,9 @@ from loader.doc_loader import DocumentLoader
 from pytia.log import log
 from pytia_ui_tools.widgets.tooltips import ToolTip
 from resources import resource
-from tools.tolerance_tools import ToleranceTools
 from tools.explorer import explorer
+from tools.tolerance_tools import ToleranceTools
+from ttkbootstrap import Style
 
 
 class Callbacks:
@@ -29,6 +30,7 @@ class Callbacks:
         ui_setter: UISetter,
         doc_loader: DocumentLoader,
         data_loader: DataLoader,
+        style: Style,
     ) -> None:
         """
         Initializes the callbacks class.
@@ -40,6 +42,7 @@ class Callbacks:
             ui_setter (UISetter): The ui setter instance of the main window.
             doc_loader (DocumentLoader): The document loader instance.
             data_loader (DataLoader): The data loader instance.
+            style (Style): The ttkbootstrap style instance.
         """
         self.root = root
         self.vars = variables
@@ -47,6 +50,7 @@ class Callbacks:
         self.set_ui = ui_setter
         self.doc_loader = doc_loader
         self.data_loader = data_loader
+        self.style = style
         self.readonly = bool(
             not resource.logon_exists()
             and not resource.settings.restrictions.allow_all_users
@@ -104,7 +108,7 @@ class Callbacks:
         Reloads the value from a catia property to a tkinter variable.
 
         Args:
-            variable (StringVar): The tkinter variable will be reloaded.
+            variable (StringVar): The tkinter variable that will be reloaded.
             widget (ttk.Entry): The widget to which the variable is linked.
             property_name (str): The name of the catia property, from which to load the data.
         """
@@ -112,7 +116,7 @@ class Callbacks:
             value = self.doc_loader.get_property_from_linked_doc(property_name)
             if value is not None:
                 variable.set(value)
-                widget.configure(foreground="black")
+                widget.configure(foreground=self.style.colors.fg)  # type: ignore
                 ToolTip(
                     widget=widget,
                     text="This text has been manually loaded from the linked document.",

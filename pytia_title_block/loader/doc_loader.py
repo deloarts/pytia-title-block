@@ -305,7 +305,8 @@ class DocumentLoader:
                     "A drawing file already exists for the linked document at "
                     f"{existing_path!r}.\n\n"
                     "Do you want to overwrite the drawing file path in the linked document "
-                    "with the path of the current drawing?"
+                    "with the path of the current drawing?\n\n"
+                    f"The current drawing path is: {str(self.path)!r}"
                 ),
             ):
                 self._save_path_to_linked_document()

@@ -334,7 +334,8 @@ class DocumentLoader:
                     &#34;A drawing file already exists for the linked document at &#34;
                     f&#34;{existing_path!r}.\n\n&#34;
                     &#34;Do you want to overwrite the drawing file path in the linked document &#34;
-                    &#34;with the path of the current drawing?&#34;
+                    &#34;with the path of the current drawing?\n\n&#34;
+                    f&#34;The current drawing path is: {str(self.path)!r}&#34;
                 ),
             ):
                 self._save_path_to_linked_document()
@@ -677,7 +678,8 @@ class DocumentLoader:
                     &#34;A drawing file already exists for the linked document at &#34;
                     f&#34;{existing_path!r}.\n\n&#34;
                     &#34;Do you want to overwrite the drawing file path in the linked document &#34;
-                    &#34;with the path of the current drawing?&#34;
+                    &#34;with the path of the current drawing?\n\n&#34;
+                    f&#34;The current drawing path is: {str(self.path)!r}&#34;
                 ),
             ):
                 self._save_path_to_linked_document()
@@ -1093,7 +1095,8 @@ Searches for the name in all views.</p>
                 &#34;A drawing file already exists for the linked document at &#34;
                 f&#34;{existing_path!r}.\n\n&#34;
                 &#34;Do you want to overwrite the drawing file path in the linked document &#34;
-                &#34;with the path of the current drawing?&#34;
+                &#34;with the path of the current drawing?\n\n&#34;
+                f&#34;The current drawing path is: {str(self.path)!r}&#34;
             ),
         ):
             self._save_path_to_linked_document()

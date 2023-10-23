@@ -18,9 +18,9 @@ import sys
 import tkinter as tk
 import tkinter.messagebox as tkmsg
 from dataclasses import dataclass
-from distutils.version import (
+from distutils.version import (  # FIXME: Module will be removed in Python 3.12
     LooseVersion,
-)  # FIXME: Module will be removed in Python 3.12
+)
 from http.client import HTTPSConnection
 from importlib import metadata
 from socket import gaierror

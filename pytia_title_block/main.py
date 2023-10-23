@@ -22,9 +22,8 @@ def main() -> None:
     # Afterwards import those modules which depend on third party modules.
     deps.install_dependencies()
 
-    from pytia.log import log  # pylint: disable=C0415
-
     from gui import GUI  # pylint: disable=C0415
+    from pytia.log import log  # pylint: disable=C0415
 
     with open(PID_FILE, "w") as f:
         f.write(str(PID))

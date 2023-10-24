@@ -18,8 +18,8 @@ import sys
 import tkinter as tk
 import tkinter.messagebox as tkmsg
 from dataclasses import dataclass
-from distutils.version import (  # FIXME: Module will be removed in Python 3.12
-    LooseVersion,
+from distutils.version import (
+    LooseVersion,  # FIXME: Module will be removed in Python 3.12
 )
 from http.client import HTTPSConnection
 from importlib import metadata
@@ -28,7 +28,10 @@ from tkinter import ttk
 from typing import List
 from urllib.parse import urlparse
 
-from const import CONFIG_DEPS, VENV_PYTHON, VENV_PYTHONW, WEB_PIP
+from const import CONFIG_DEPS
+from const import VENV_PYTHON
+from const import VENV_PYTHONW
+from const import WEB_PIP
 from resources import resource
 
 

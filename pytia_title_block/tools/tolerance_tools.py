@@ -5,14 +5,13 @@
 from tkinter import messagebox as tkmsg
 from typing import List
 
-from const import (
-    TOLERANCE_TABLE_CELL_HEIGHT,
-    TOLERANCE_TABLE_CELL_WIDTH,
-    TOLERANCE_TABLE_NAME,
-)
+from const import TOLERANCE_TABLE_CELL_HEIGHT
+from const import TOLERANCE_TABLE_CELL_WIDTH
+from const import TOLERANCE_TABLE_NAME
 from helper.translators import translate_paper_size
 from loader.doc_loader import DocumentLoader
-from models.tolerance_model import ToleranceModel, ToleranceTableModel
+from models.tolerance_model import ToleranceModel
+from models.tolerance_model import ToleranceTableModel
 from resources import resource
 
 

@@ -15,18 +15,19 @@ from app.state_setter import UISetter
 from app.tooltips import ToolTips
 from app.traces import Traces
 from app.vars import Variables
-from const import APP_VERSION, LOG, LOGON, LOGS
+from const import APP_VERSION
+from const import LOG
+from const import LOGON
+from const import LOGS
 from helper.messages import show_help
 from loader.data_loader import DataLoader
 from loader.doc_loader import DocumentLoader
-from pytia.exceptions import (
-    PytiaBodyEmptyError,
-    PytiaDifferentDocumentError,
-    PytiaDocumentNotSavedError,
-    PytiaNoDocumentOpenError,
-    PytiaPropertyNotFoundError,
-    PytiaWrongDocumentTypeError,
-)
+from pytia.exceptions import PytiaBodyEmptyError
+from pytia.exceptions import PytiaDifferentDocumentError
+from pytia.exceptions import PytiaDocumentNotSavedError
+from pytia.exceptions import PytiaNoDocumentOpenError
+from pytia.exceptions import PytiaPropertyNotFoundError
+from pytia.exceptions import PytiaWrongDocumentTypeError
 from pytia_ui_tools.exceptions import PytiaUiToolsOutsideWorkspaceError
 from pytia_ui_tools.handlers.error_handler import ErrorHandler
 from pytia_ui_tools.handlers.mail_handler import MailHandler

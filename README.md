@@ -1,11 +1,11 @@
 # pytia title block
 
 ![state](https://img.shields.io/badge/State-beta-brown.svg?style=for-the-badge)
-![version](https://img.shields.io/badge/Version-0.4.2-orange.svg?style=for-the-badge)
+![version](https://img.shields.io/github/v/release/deloarts/pytia-title-block?style=for-the-badge&color=orange)
 
 [![python](https://img.shields.io/badge/Python-3.10-blue.svg?style=for-the-badge)](https://www.python.org/downloads/)
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
-![OS](https://img.shields.io/badge/OS-WIN10%20|%20WIN11-blue.svg?style=for-the-badge)
+![OS](https://img.shields.io/badge/OS-WIN11-blue.svg?style=for-the-badge)
 
 > ⚠️ The layout of this app is heavily biased towards the workflow and needs of my companies' engineering team. Although almost everything can be changed via config files and presets, the apps basic functionality is built to work in the environment of said company.
 
@@ -319,18 +319,18 @@ On a new revision, do the following:
 
 ## 7 changelog
 
-**v0.4.2**: Show current drawing path.  
-**v0.4.1**: Fix tolerance table issue. Fix visual issue.  
-**v0.4.0**: Add themes.  
-**v0.3.3**: Symlink for linked doc path.  
-**v0.3.2**: Fix launcher path.  
-**v0.3.1**: Expand environment variables in path settings.  
-**v0.3.0**: Remove local dependencies.  
-**v0.2.2**: Fix unresolved path.  
-**v0.2.1**: Disable app lock & update deps.  
-**v0.2.0**: Add tolerance table tool.  
-**v0.1.1**: Fix installer bug. Add locked view restriction.  
-**v0.1.0**: Initial commit.  
+[**v0.4.2**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.4.2): Show current drawing path.  
+[**v0.4.1**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.4.1): Fix tolerance table issue. Fix visual issue.  
+[**v0.4.0**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.4.0): Add themes.  
+[**v0.3.3**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.3.3): Symlink for linked doc path.  
+[**v0.3.2**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.3.2): Fix launcher path.  
+[**v0.3.1**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.3.1): Expand environment variables in path settings.  
+[**v0.3.0**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.3.0): Remove local dependencies.  
+[**v0.2.2**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.2.2): Fix unresolved path.  
+[**v0.2.1**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.2.1): Disable app lock & update deps.  
+[**v0.2.0**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.2.0): Add tolerance table tool.  
+[**v0.1.1**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.1.1): Fix installer bug. Add locked view restriction.  
+[**v0.1.0**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.1.0): Initial commit.  
 
 ## 8 to dos
 

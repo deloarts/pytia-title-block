@@ -4,7 +4,7 @@ classifiers = ["Operating System :: Microsoft :: Windows :: Windows 10", "Operat
 description = "A visual tool for managing CATIA V5 properties."
 name = "pytia-title-block"
 readme = "README.md"
-version = "0.4.2"
+version = "0.4.3"
 
 [tool.poetry.dependencies]
 python = "^3.10"

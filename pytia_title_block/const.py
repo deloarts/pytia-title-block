@@ -13,7 +13,7 @@ PYTIA_TITLE_BLOCK = "pytia_title_block"
 APP_NAME = "PYTIA Title Block"
 APP_VERSION = __version__
 
-LOGON = str(os.environ.get("USERNAME"))
+LOGON = str(os.environ.get("USERNAME")).lower()
 CNEXT = "win_b64\\code\\bin\\CNEXT.exe"
 TEMP = str(os.environ.get("TEMP"))
 APPDATA = f"{str(os.environ.get('APPDATA'))}\\{PYTIA}\\{PYTIA_TITLE_BLOCK}"

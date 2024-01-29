@@ -31,7 +31,9 @@
     The layout of the app.
 &#34;&#34;&#34;
 from datetime import datetime
-from tkinter import DISABLED, Menu, Tk
+from tkinter import DISABLED
+from tkinter import Menu
+from tkinter import Tk
 
 from app.frames import Frames
 from app.vars import Variables
@@ -39,16 +41,14 @@ from const import STYLES
 from helper.appearance import set_appearance_menu
 from helper.messages import show_help
 from resources import resource
-from ttkbootstrap import (
-    Button,
-    Checkbutton,
-    Combobox,
-    DateEntry,
-    Entry,
-    Label,
-    Menu,
-    PhotoImage,
-)
+from ttkbootstrap import Button
+from ttkbootstrap import Checkbutton
+from ttkbootstrap import Combobox
+from ttkbootstrap import DateEntry
+from ttkbootstrap import Entry
+from ttkbootstrap import Label
+from ttkbootstrap import Menu
+from ttkbootstrap import PhotoImage
 
 
 class Layout:

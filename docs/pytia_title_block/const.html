@@ -34,7 +34,7 @@
 import os
 from pathlib import Path
 
-__version__ = &#34;0.4.2&#34;
+__version__ = &#34;0.4.3&#34;
 
 PYTIA = &#34;pytia&#34;
 PYTIA_TITLE_BLOCK = &#34;pytia_title_block&#34;
@@ -42,7 +42,7 @@ PYTIA_TITLE_BLOCK = &#34;pytia_title_block&#34;
 APP_NAME = &#34;PYTIA Title Block&#34;
 APP_VERSION = __version__
 
-LOGON = str(os.environ.get(&#34;USERNAME&#34;))
+LOGON = str(os.environ.get(&#34;USERNAME&#34;)).lower()
 CNEXT = &#34;win_b64\\code\\bin\\CNEXT.exe&#34;
 TEMP = str(os.environ.get(&#34;TEMP&#34;))
 APPDATA = f&#34;{str(os.environ.get(&#39;APPDATA&#39;))}\\{PYTIA}\\{PYTIA_TITLE_BLOCK}&#34;

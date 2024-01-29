@@ -2,7 +2,8 @@
     The callbacks submodule for the main window.
 """
 
-from tkinter import StringVar, Tk
+from tkinter import StringVar
+from tkinter import Tk
 from tkinter import messagebox as tkmsg
 from tkinter import ttk
 

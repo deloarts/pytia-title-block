@@ -299,14 +299,13 @@ class DocumentLoader:
             return
 
         if self.linked_document and self.linked_properties:
-            linked_drawing_path = self.linked_properties.get_by_name(
-                PROP_DRAWING_PATH
-            ).value
-
             if not self.linked_properties.exists(PROP_DRAWING_PATH):
                 self._save_path_to_linked_document(document_path)
                 return
 
+            linked_drawing_path = self.linked_properties.get_by_name(
+                PROP_DRAWING_PATH
+            ).value
             if linked_drawing_path != document_path and tkmsg.askyesno(
                 title=resource.settings.title,
                 message=(

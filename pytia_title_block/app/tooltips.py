@@ -74,5 +74,5 @@ class ToolTips:
 
         ToolTip(
             widget=layout.toggle_symlink,
-            text="Automatically uses symlinks to write the document path.",
+            text="Automatically uses relative workspace paths or symlinks to write the document path.",
         )

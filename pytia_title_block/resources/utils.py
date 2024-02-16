@@ -41,7 +41,7 @@ def expand_env_vars(value: str) -> str:
     return output
 
 
-def create_path_symlink(path: Path, alway_apply_symlink: bool) -> Path:
+def create_path_symlink(path: Path, alway_apply_symlink: bool) -> str:
     """
     Replaces paths of the given path with the environment variable, if exists
     and the users agrees. Starts with the deepest folder and runs upwards.
@@ -52,10 +52,12 @@ def create_path_symlink(path: Path, alway_apply_symlink: bool) -> Path:
 
     Return the original path if no symlink is found.
     """
+    path_str = str(path)
+
     for parent in path.parents:
         for key, value in os.environ.items():
             if str(parent) == value:
-                symlinked = Path(str(path).replace(str(parent), f"%{key}%"))
+                symlinked = path_str.replace(str(parent), f"%{key}%")
                 if alway_apply_symlink or tkmsg.askyesno(
                     title="Symlink has been found.",
                     message=(
@@ -65,11 +67,39 @@ def create_path_symlink(path: Path, alway_apply_symlink: bool) -> Path:
                         "Do you want to save the symlink to the linked documents path?\n\n"
                         "Depending on your choice, the following path will be written "
                         "to the linked document:\n"
-                        f" - Yes: {str(symlinked)!r}\n"
-                        f" - No:  {str(path)!r}"
+                        f" - Yes: {symlinked!r}\n"
+                        f" - No:  {path_str!r}"
                     ),
                 ):
                     return symlinked
                 else:
-                    return path
-    return path
+                    return path_str
+    return path_str
+
+
+def create_path_workspace_level(
+    path: Path, workspace_folder: Path, always_apply_relative: bool
+) -> str:
+    path_str = str(path)
+    workspace_folder_str = str(workspace_folder)
+
+    if workspace_folder_str in path_str:
+        relative_path = "." + path_str.split(workspace_folder_str)[-1]
+        if always_apply_relative or tkmsg.askyesno(
+            title="Workspace has been found.",
+            message=(
+                "A workspace file has been found for the drawing documents path:\n"
+                f" - Workspace: {workspace_folder_str!r}.\n"
+                f" - Relative path: {relative_path!r}.\n\n"
+                "Do you want to save the relative path to the linked documents path?\n\n"
+                "Depending on your choice, the following path will be written "
+                "to the linked document:\n"
+                f" - Yes: {relative_path!r}\n"
+                f" - No:  {path_str!r}"
+            ),
+        ):
+            return relative_path
+        else:
+            return path_str
+
+    return path_str

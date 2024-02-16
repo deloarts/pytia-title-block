@@ -126,6 +126,8 @@ class GUI(tk.Tk):
             allow_outside_workspace=resource.settings.restrictions.allow_outside_workspace,
         )
         self.workspace.read_yaml()
+        self.doc_loader.set_workspace(self.workspace)
+
         if ws_title := self.workspace.elements.title:
             self.title(f"{self.title()}  -  {ws_title} (Workspace)")
 

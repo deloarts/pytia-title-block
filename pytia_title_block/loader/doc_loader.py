@@ -19,8 +19,10 @@ from pytia.framework import framework
 from pytia.log import log
 from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
 from pytia.wrapper.properties import PyProperties
+from pytia_ui_tools.handlers.workspace_handler import Workspace
 from resources import resource
 from resources.utils import create_path_symlink
+from resources.utils import create_path_workspace_level
 
 
 class DocumentLoader:
@@ -29,6 +31,7 @@ class DocumentLoader:
     def __init__(self, variables: Variables) -> None:
         """Initialize the document loader."""
         self.vars = variables
+        self.workspace: Workspace | None = None
         self.active_document = framework.catia.active_document
 
         # FIXME: Locking CATIA prevents the ability to detect changes on the document.
@@ -95,6 +98,10 @@ class DocumentLoader:
     def linked_properties(self) -> PyProperties | None:
         """Returns the properties of the linked document."""
         return self._linked_properties
+
+    def set_workspace(self, workspace: Workspace) -> None:
+        """Takes the workspace object and stores it in the class"""
+        self.workspace = workspace
 
     def _lock_catia(self, value: bool) -> None:
         """
@@ -286,45 +293,63 @@ class DocumentLoader:
 
     def save_drawing_path_to_linked_document(self) -> None:
         """Writes the drawing path to the linked document."""
-        if self.linked_document is None or self.linked_properties is None:
-            log.warning("No linked document, skipping saving drawing path.")
+        document_path = self._get_linked_document_save_path()
+
+        if document_path is None:
             return
 
-        if not self.linked_properties.exists(PROP_DRAWING_PATH):
-            self._save_path_to_linked_document()
-            return
+        if self.linked_document and self.linked_properties:
+            linked_drawing_path = self.linked_properties.get_by_name(
+                PROP_DRAWING_PATH
+            ).value
 
-        if (
-            existing_path := str(
-                Path(self.linked_properties.get_by_name(PROP_DRAWING_PATH).value)
-            )
-        ) != str(self.path):
-            if tkmsg.askyesno(
+            if not self.linked_properties.exists(PROP_DRAWING_PATH):
+                self._save_path_to_linked_document(document_path)
+                return
+
+            if linked_drawing_path != document_path and tkmsg.askyesno(
                 title=resource.settings.title,
                 message=(
                     "A drawing file already exists for the linked document at "
-                    f"{existing_path!r}.\n\n"
+                    f"{linked_drawing_path!r}.\n\n"
                     "Do you want to overwrite the drawing file path in the linked document "
                     "with the path of the current drawing?\n\n"
-                    f"The current drawing path is: {str(self.path)!r}"
+                    f"The current drawing path is: {str(document_path)!r}"
                 ),
             ):
-                self._save_path_to_linked_document()
+                self._save_path_to_linked_document(document_path)
                 return
 
-    def _save_path_to_linked_document(self) -> None:
-        if self.path.is_absolute() and self.linked_document and self.linked_properties:
+    def _get_linked_document_save_path(self) -> str | None:
+        if self.path.is_absolute():
+            if self.workspace and self.workspace.workspace_folder:
+                return create_path_workspace_level(
+                    path=self.path,
+                    workspace_folder=self.workspace.workspace_folder,
+                    always_apply_relative=resource.appdata.auto_symlink,
+                )
+            else:
+                return create_path_symlink(
+                    path=self.path,
+                    alway_apply_symlink=resource.appdata.auto_symlink,
+                )
+        else:
+            tkmsg.showwarning(
+                title=resource.settings.title,
+                message=(
+                    "Could not get the filepath from this document: "
+                    "The current drawing document is not saved. Please save the document first."
+                ),
+            )
+
+    def _save_path_to_linked_document(self, drawing_path: str) -> None:
+        if self.linked_document and self.linked_properties:
             if self.linked_properties.exists(PROP_DRAWING_PATH):
                 self.linked_properties.delete(PROP_DRAWING_PATH)
 
             self.linked_properties.create(
                 name=PROP_DRAWING_PATH,
-                value=str(
-                    create_path_symlink(
-                        path=self.path,
-                        alway_apply_symlink=resource.appdata.auto_symlink,
-                    )
-                ),
+                value=drawing_path,
             )
 
             # FIXME: This loads the linked document as active document, but only if the linked
@@ -335,13 +360,13 @@ class DocumentLoader:
             self.linked_document.close()
 
             log.info(
-                f"Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}."
+                f"Wrote drawing path {drawing_path!r} to linked document {self.linked_document.name!r}."
             )
         else:
             tkmsg.showwarning(
                 title=resource.settings.title,
                 message=(
                     "Could not save the drawing path to the linked document: "
-                    "The current drawing document is not saved. Please save the document first."
+                    "No linked document found."
                 ),
             )

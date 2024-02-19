@@ -48,8 +48,10 @@ from pytia.framework import framework
 from pytia.log import log
 from pytia.wrapper.documents.drawing_documents import PyDrawingDocument
 from pytia.wrapper.properties import PyProperties
+from pytia_ui_tools.handlers.workspace_handler import Workspace
 from resources import resource
 from resources.utils import create_path_symlink
+from resources.utils import create_path_workspace_level
 
 
 class DocumentLoader:
@@ -58,6 +60,7 @@ class DocumentLoader:
     def __init__(self, variables: Variables) -&gt; None:
         &#34;&#34;&#34;Initialize the document loader.&#34;&#34;&#34;
         self.vars = variables
+        self.workspace: Workspace | None = None
         self.active_document = framework.catia.active_document
 
         # FIXME: Locking CATIA prevents the ability to detect changes on the document.
@@ -124,6 +127,10 @@ class DocumentLoader:
     def linked_properties(self) -&gt; PyProperties | None:
         &#34;&#34;&#34;Returns the properties of the linked document.&#34;&#34;&#34;
         return self._linked_properties
+
+    def set_workspace(self, workspace: Workspace) -&gt; None:
+        &#34;&#34;&#34;Takes the workspace object and stores it in the class&#34;&#34;&#34;
+        self.workspace = workspace
 
     def _lock_catia(self, value: bool) -&gt; None:
         &#34;&#34;&#34;
@@ -223,14 +230,16 @@ class DocumentLoader:
 
     def get_text_by_name(self, name: str) -&gt; DrawingText | None:
         &#34;&#34;&#34;
-        Returns the drawing text item of the document, which component name matches the given name.
+        Returns the drawing text item of the document, which component name matches \
+            the given name.
         Searches for the name in all views.
 
         Args:
             name (str): The name of the drawing text item.
 
         Returns:
-            DrawingText | None: The item or None, if the given name does not exist as drawing text.
+            DrawingText | None: The item or None, if the given name does not exist as \
+                drawing text.
         &#34;&#34;&#34;
         for view_index in range(1, self.views.count + 1):
             for _ in range(1, self.views.item(view_index).texts.count + 1):
@@ -255,7 +264,8 @@ class DocumentLoader:
             name (str): The name of the drawing text, from which the value is retrieved.
 
         Returns:
-            str | None: The value or None, if the given name does not exist as drawing text.
+            str | None: The value or None, if the given name does not exist as drawing \
+                text.
         &#34;&#34;&#34;
         text = self.get_text_by_name(name)
         return text.text if text is not None and text.text != &#34;-&#34; else None
@@ -278,19 +288,20 @@ class DocumentLoader:
 
     def get_property_from_linked_doc(self, name: str | None) -&gt; str | None:
         &#34;&#34;&#34;
-        Returns a properties&#39; value from the linked document. Returns None if one of the 
-        following conditions are met:
+        Returns a properties&#39; value from the linked document. Returns None if one of \
+            the following conditions are met:
          - No linked document available
          - No properties available
          - The property does not exist
 
         Args:
-            name (str): The name of the property. Returns the CATIA standard properties when the \
-                name is `partnumber`, `definition`, `revision`, `nomenclature`, `source`, or \
-                `description`.
+            name (str): The name of the property. Returns the CATIA standard \
+                properties when the name is `partnumber`, `definition`, `revision`, \
+                `nomenclature`, `source`, or `description`.
 
         Returns:
-            str | None: The value of the property. Returns None if the property does not exist.
+            str | None: The value of the property. Returns None if the property does \
+                not exist.
         &#34;&#34;&#34;
         if name is None:
             return None
@@ -315,63 +326,94 @@ class DocumentLoader:
 
     def save_drawing_path_to_linked_document(self) -&gt; None:
         &#34;&#34;&#34;Writes the drawing path to the linked document.&#34;&#34;&#34;
-        if self.linked_document is None or self.linked_properties is None:
-            log.warning(&#34;No linked document, skipping saving drawing path.&#34;)
+        document_path = self._get_linked_document_save_path()
+
+        if document_path is None:
             return
 
-        if not self.linked_properties.exists(PROP_DRAWING_PATH):
-            self._save_path_to_linked_document()
-            return
+        if self.linked_document and self.linked_properties:
+            if not self.linked_properties.exists(PROP_DRAWING_PATH):
+                self._save_path_to_linked_document(document_path)
+                return
 
-        if (
-            existing_path := str(
-                Path(self.linked_properties.get_by_name(PROP_DRAWING_PATH).value)
-            )
-        ) != str(self.path):
-            if tkmsg.askyesno(
+            linked_drawing_path = self.linked_properties.get_by_name(
+                PROP_DRAWING_PATH
+            ).value
+            if linked_drawing_path != document_path and tkmsg.askyesno(
                 title=resource.settings.title,
                 message=(
                     &#34;A drawing file already exists for the linked document at &#34;
-                    f&#34;{existing_path!r}.\n\n&#34;
-                    &#34;Do you want to overwrite the drawing file path in the linked document &#34;
-                    &#34;with the path of the current drawing?\n\n&#34;
-                    f&#34;The current drawing path is: {str(self.path)!r}&#34;
+                    f&#34;{linked_drawing_path!r}.\n\n&#34;
+                    &#34;Do you want to overwrite the drawing file path in the linked &#34;
+                    &#34;document with the path of the current drawing?\n\n&#34;
+                    f&#34;The current drawing path is: {str(document_path)!r}&#34;
                 ),
             ):
-                self._save_path_to_linked_document()
+                self._save_path_to_linked_document(document_path)
                 return
 
-    def _save_path_to_linked_document(self) -&gt; None:
-        if self.path.is_absolute() and self.linked_document and self.linked_properties:
+    def _get_linked_document_save_path(self) -&gt; str | None:
+        &#34;&#34;&#34;Returns the path of the drawing document, that will be written to the \
+            CATPart or CATProduct. The path can be the absolute path, a symlinked or a \
+            workspace level path (a workspace level path starts with a dot).
+
+        Returns:
+            str | None: The path as string.
+        &#34;&#34;&#34;
+        if self.path.is_absolute():
+            if self.workspace and self.workspace.workspace_folder:
+                return create_path_workspace_level(
+                    path=self.path,
+                    workspace_folder=self.workspace.workspace_folder,
+                    always_apply_relative=resource.appdata.auto_symlink,
+                )
+            else:
+                return create_path_symlink(
+                    path=self.path,
+                    alway_apply_symlink=resource.appdata.auto_symlink,
+                )
+        else:
+            tkmsg.showwarning(
+                title=resource.settings.title,
+                message=(
+                    &#34;Could not get the filepath from this document: &#34;
+                    &#34;The current drawing document is not saved. &#34;
+                    &#34;Please save the document first.&#34;
+                ),
+            )
+
+    def _save_path_to_linked_document(self, drawing_path: str) -&gt; None:
+        &#34;&#34;&#34;Saves the given drawing_path to the CATPart or CATProduct.
+
+        Args:
+            drawing_path (str): The path value that will be written to the linked doc.
+        &#34;&#34;&#34;
+        if self.linked_document and self.linked_properties:
             if self.linked_properties.exists(PROP_DRAWING_PATH):
                 self.linked_properties.delete(PROP_DRAWING_PATH)
 
             self.linked_properties.create(
                 name=PROP_DRAWING_PATH,
-                value=str(
-                    create_path_symlink(
-                        path=self.path,
-                        alway_apply_symlink=resource.appdata.auto_symlink,
-                    )
-                ),
+                value=drawing_path,
             )
 
-            # FIXME: This loads the linked document as active document, but only if the linked
-            #        document is already open. If the linked document isn&#39;t open, this works
-            #        perfectly fine.
+            # FIXME: This loads the linked document as active document, but only if
+            #        the linked document is already open. If the linked document isn&#39;t
+            #        open, this works perfectly fine.
             #        Temporary fix: Close the linked document.
             self.linked_document.save()
             self.linked_document.close()
 
             log.info(
-                f&#34;Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}.&#34;
+                f&#34;Wrote drawing path {drawing_path!r} to linked document &#34;
+                f&#34;{self.linked_document.name!r}.&#34;
             )
         else:
             tkmsg.showwarning(
                 title=resource.settings.title,
                 message=(
                     &#34;Could not save the drawing path to the linked document: &#34;
-                    &#34;The current drawing document is not saved. Please save the document first.&#34;
+                    &#34;No linked document found.&#34;
                 ),
             )</code></pre>
 </details>
@@ -402,6 +444,7 @@ class DocumentLoader:
     def __init__(self, variables: Variables) -&gt; None:
         &#34;&#34;&#34;Initialize the document loader.&#34;&#34;&#34;
         self.vars = variables
+        self.workspace: Workspace | None = None
         self.active_document = framework.catia.active_document
 
         # FIXME: Locking CATIA prevents the ability to detect changes on the document.
@@ -468,6 +511,10 @@ class DocumentLoader:
     def linked_properties(self) -&gt; PyProperties | None:
         &#34;&#34;&#34;Returns the properties of the linked document.&#34;&#34;&#34;
         return self._linked_properties
+
+    def set_workspace(self, workspace: Workspace) -&gt; None:
+        &#34;&#34;&#34;Takes the workspace object and stores it in the class&#34;&#34;&#34;
+        self.workspace = workspace
 
     def _lock_catia(self, value: bool) -&gt; None:
         &#34;&#34;&#34;
@@ -567,14 +614,16 @@ class DocumentLoader:
 
     def get_text_by_name(self, name: str) -&gt; DrawingText | None:
         &#34;&#34;&#34;
-        Returns the drawing text item of the document, which component name matches the given name.
+        Returns the drawing text item of the document, which component name matches \
+            the given name.
         Searches for the name in all views.
 
         Args:
             name (str): The name of the drawing text item.
 
         Returns:
-            DrawingText | None: The item or None, if the given name does not exist as drawing text.
+            DrawingText | None: The item or None, if the given name does not exist as \
+                drawing text.
         &#34;&#34;&#34;
         for view_index in range(1, self.views.count + 1):
             for _ in range(1, self.views.item(view_index).texts.count + 1):
@@ -599,7 +648,8 @@ class DocumentLoader:
             name (str): The name of the drawing text, from which the value is retrieved.
 
         Returns:
-            str | None: The value or None, if the given name does not exist as drawing text.
+            str | None: The value or None, if the given name does not exist as drawing \
+                text.
         &#34;&#34;&#34;
         text = self.get_text_by_name(name)
         return text.text if text is not None and text.text != &#34;-&#34; else None
@@ -622,19 +672,20 @@ class DocumentLoader:
 
     def get_property_from_linked_doc(self, name: str | None) -&gt; str | None:
         &#34;&#34;&#34;
-        Returns a properties&#39; value from the linked document. Returns None if one of the 
-        following conditions are met:
+        Returns a properties&#39; value from the linked document. Returns None if one of \
+            the following conditions are met:
          - No linked document available
          - No properties available
          - The property does not exist
 
         Args:
-            name (str): The name of the property. Returns the CATIA standard properties when the \
-                name is `partnumber`, `definition`, `revision`, `nomenclature`, `source`, or \
-                `description`.
+            name (str): The name of the property. Returns the CATIA standard \
+                properties when the name is `partnumber`, `definition`, `revision`, \
+                `nomenclature`, `source`, or `description`.
 
         Returns:
-            str | None: The value of the property. Returns None if the property does not exist.
+            str | None: The value of the property. Returns None if the property does \
+                not exist.
         &#34;&#34;&#34;
         if name is None:
             return None
@@ -659,63 +710,94 @@ class DocumentLoader:
 
     def save_drawing_path_to_linked_document(self) -&gt; None:
         &#34;&#34;&#34;Writes the drawing path to the linked document.&#34;&#34;&#34;
-        if self.linked_document is None or self.linked_properties is None:
-            log.warning(&#34;No linked document, skipping saving drawing path.&#34;)
+        document_path = self._get_linked_document_save_path()
+
+        if document_path is None:
             return
 
-        if not self.linked_properties.exists(PROP_DRAWING_PATH):
-            self._save_path_to_linked_document()
-            return
+        if self.linked_document and self.linked_properties:
+            if not self.linked_properties.exists(PROP_DRAWING_PATH):
+                self._save_path_to_linked_document(document_path)
+                return
 
-        if (
-            existing_path := str(
-                Path(self.linked_properties.get_by_name(PROP_DRAWING_PATH).value)
-            )
-        ) != str(self.path):
-            if tkmsg.askyesno(
+            linked_drawing_path = self.linked_properties.get_by_name(
+                PROP_DRAWING_PATH
+            ).value
+            if linked_drawing_path != document_path and tkmsg.askyesno(
                 title=resource.settings.title,
                 message=(
                     &#34;A drawing file already exists for the linked document at &#34;
-                    f&#34;{existing_path!r}.\n\n&#34;
-                    &#34;Do you want to overwrite the drawing file path in the linked document &#34;
-                    &#34;with the path of the current drawing?\n\n&#34;
-                    f&#34;The current drawing path is: {str(self.path)!r}&#34;
+                    f&#34;{linked_drawing_path!r}.\n\n&#34;
+                    &#34;Do you want to overwrite the drawing file path in the linked &#34;
+                    &#34;document with the path of the current drawing?\n\n&#34;
+                    f&#34;The current drawing path is: {str(document_path)!r}&#34;
                 ),
             ):
-                self._save_path_to_linked_document()
+                self._save_path_to_linked_document(document_path)
                 return
 
-    def _save_path_to_linked_document(self) -&gt; None:
-        if self.path.is_absolute() and self.linked_document and self.linked_properties:
+    def _get_linked_document_save_path(self) -&gt; str | None:
+        &#34;&#34;&#34;Returns the path of the drawing document, that will be written to the \
+            CATPart or CATProduct. The path can be the absolute path, a symlinked or a \
+            workspace level path (a workspace level path starts with a dot).
+
+        Returns:
+            str | None: The path as string.
+        &#34;&#34;&#34;
+        if self.path.is_absolute():
+            if self.workspace and self.workspace.workspace_folder:
+                return create_path_workspace_level(
+                    path=self.path,
+                    workspace_folder=self.workspace.workspace_folder,
+                    always_apply_relative=resource.appdata.auto_symlink,
+                )
+            else:
+                return create_path_symlink(
+                    path=self.path,
+                    alway_apply_symlink=resource.appdata.auto_symlink,
+                )
+        else:
+            tkmsg.showwarning(
+                title=resource.settings.title,
+                message=(
+                    &#34;Could not get the filepath from this document: &#34;
+                    &#34;The current drawing document is not saved. &#34;
+                    &#34;Please save the document first.&#34;
+                ),
+            )
+
+    def _save_path_to_linked_document(self, drawing_path: str) -&gt; None:
+        &#34;&#34;&#34;Saves the given drawing_path to the CATPart or CATProduct.
+
+        Args:
+            drawing_path (str): The path value that will be written to the linked doc.
+        &#34;&#34;&#34;
+        if self.linked_document and self.linked_properties:
             if self.linked_properties.exists(PROP_DRAWING_PATH):
                 self.linked_properties.delete(PROP_DRAWING_PATH)
 
             self.linked_properties.create(
                 name=PROP_DRAWING_PATH,
-                value=str(
-                    create_path_symlink(
-                        path=self.path,
-                        alway_apply_symlink=resource.appdata.auto_symlink,
-                    )
-                ),
+                value=drawing_path,
             )
 
-            # FIXME: This loads the linked document as active document, but only if the linked
-            #        document is already open. If the linked document isn&#39;t open, this works
-            #        perfectly fine.
+            # FIXME: This loads the linked document as active document, but only if
+            #        the linked document is already open. If the linked document isn&#39;t
+            #        open, this works perfectly fine.
             #        Temporary fix: Close the linked document.
             self.linked_document.save()
             self.linked_document.close()
 
             log.info(
-                f&#34;Wrote drawing path {str(self.path)!r} to linked document {self.linked_document.name!r}.&#34;
+                f&#34;Wrote drawing path {drawing_path!r} to linked document &#34;
+                f&#34;{self.linked_document.name!r}.&#34;
             )
         else:
             tkmsg.showwarning(
                 title=resource.settings.title,
                 message=(
                     &#34;Could not save the drawing path to the linked document: &#34;
-                    &#34;The current drawing document is not saved. Please save the document first.&#34;
+                    &#34;No linked document found.&#34;
                 ),
             )</code></pre>
 </details>
@@ -910,39 +992,41 @@ def path(self) -&gt; Path:
 <span>def <span class="ident">get_property_from_linked_doc</span></span>(<span>self, name: str | None) ‑> str | None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns a properties' value from the linked document. Returns None if one of the
-following conditions are met:
+<div class="desc"><p>Returns a properties' value from the linked document. Returns None if one of
+the following conditions are met:
 - No linked document available
 - No properties available
 - The property does not exist</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
-<dd>The name of the property. Returns the CATIA standard properties when the
-name is <code>partnumber</code>, <code>definition</code>, <code>revision</code>, <code>nomenclature</code>, <code>source</code>, or
-<code>description</code>.</dd>
+<dd>The name of the property. Returns the CATIA standard
+properties when the name is <code>partnumber</code>, <code>definition</code>, <code>revision</code>,
+<code>nomenclature</code>, <code>source</code>, or <code>description</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>str | None: The value of the property. Returns None if the property does not exist.</p></div>
+<p>str | None: The value of the property. Returns None if the property does
+not exist.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_property_from_linked_doc(self, name: str | None) -&gt; str | None:
     &#34;&#34;&#34;
-    Returns a properties&#39; value from the linked document. Returns None if one of the 
-    following conditions are met:
+    Returns a properties&#39; value from the linked document. Returns None if one of \
+        the following conditions are met:
      - No linked document available
      - No properties available
      - The property does not exist
 
     Args:
-        name (str): The name of the property. Returns the CATIA standard properties when the \
-            name is `partnumber`, `definition`, `revision`, `nomenclature`, `source`, or \
-            `description`.
+        name (str): The name of the property. Returns the CATIA standard \
+            properties when the name is `partnumber`, `definition`, `revision`, \
+            `nomenclature`, `source`, or `description`.
 
     Returns:
-        str | None: The value of the property. Returns None if the property does not exist.
+        str | None: The value of the property. Returns None if the property does \
+            not exist.
     &#34;&#34;&#34;
     if name is None:
         return None
@@ -970,7 +1054,8 @@ name is <code>partnumber</code>, <code>definition</code>, <code>revision</code>,
 <span>def <span class="ident">get_text_by_name</span></span>(<span>self, name: str) ‑> pycatia.drafting_interfaces.drawing_text.DrawingText | None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns the drawing text item of the document, which component name matches the given name.
+<div class="desc"><p>Returns the drawing text item of the document, which component name matches
+the given name.
 Searches for the name in all views.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -978,21 +1063,24 @@ Searches for the name in all views.</p>
 <dd>The name of the drawing text item.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>DrawingText | None: The item or None, if the given name does not exist as drawing text.</p></div>
+<p>DrawingText | None: The item or None, if the given name does not exist as
+drawing text.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_text_by_name(self, name: str) -&gt; DrawingText | None:
     &#34;&#34;&#34;
-    Returns the drawing text item of the document, which component name matches the given name.
+    Returns the drawing text item of the document, which component name matches \
+        the given name.
     Searches for the name in all views.
 
     Args:
         name (str): The name of the drawing text item.
 
     Returns:
-        DrawingText | None: The item or None, if the given name does not exist as drawing text.
+        DrawingText | None: The item or None, if the given name does not exist as \
+            drawing text.
     &#34;&#34;&#34;
     for view_index in range(1, self.views.count + 1):
         for _ in range(1, self.views.item(view_index).texts.count + 1):
@@ -1021,7 +1109,8 @@ Searches for the name in all views.</p>
 <dd>The name of the drawing text, from which the value is retrieved.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>str | None: The value or None, if the given name does not exist as drawing text.</p></div>
+<p>str | None: The value or None, if the given name does not exist as drawing
+text.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1034,7 +1123,8 @@ Searches for the name in all views.</p>
         name (str): The name of the drawing text, from which the value is retrieved.
 
     Returns:
-        str | None: The value or None, if the given name does not exist as drawing text.
+        str | None: The value or None, if the given name does not exist as drawing \
+            text.
     &#34;&#34;&#34;
     text = self.get_text_by_name(name)
     return text.text if text is not None and text.text != &#34;-&#34; else None</code></pre>
@@ -1076,30 +1166,30 @@ Searches for the name in all views.</p>
 </summary>
 <pre><code class="python">def save_drawing_path_to_linked_document(self) -&gt; None:
     &#34;&#34;&#34;Writes the drawing path to the linked document.&#34;&#34;&#34;
-    if self.linked_document is None or self.linked_properties is None:
-        log.warning(&#34;No linked document, skipping saving drawing path.&#34;)
+    document_path = self._get_linked_document_save_path()
+
+    if document_path is None:
         return
 
-    if not self.linked_properties.exists(PROP_DRAWING_PATH):
-        self._save_path_to_linked_document()
-        return
+    if self.linked_document and self.linked_properties:
+        if not self.linked_properties.exists(PROP_DRAWING_PATH):
+            self._save_path_to_linked_document(document_path)
+            return
 
-    if (
-        existing_path := str(
-            Path(self.linked_properties.get_by_name(PROP_DRAWING_PATH).value)
-        )
-    ) != str(self.path):
-        if tkmsg.askyesno(
+        linked_drawing_path = self.linked_properties.get_by_name(
+            PROP_DRAWING_PATH
+        ).value
+        if linked_drawing_path != document_path and tkmsg.askyesno(
             title=resource.settings.title,
             message=(
                 &#34;A drawing file already exists for the linked document at &#34;
-                f&#34;{existing_path!r}.\n\n&#34;
-                &#34;Do you want to overwrite the drawing file path in the linked document &#34;
-                &#34;with the path of the current drawing?\n\n&#34;
-                f&#34;The current drawing path is: {str(self.path)!r}&#34;
+                f&#34;{linked_drawing_path!r}.\n\n&#34;
+                &#34;Do you want to overwrite the drawing file path in the linked &#34;
+                &#34;document with the path of the current drawing?\n\n&#34;
+                f&#34;The current drawing path is: {str(document_path)!r}&#34;
             ),
         ):
-            self._save_path_to_linked_document()
+            self._save_path_to_linked_document(document_path)
             return</code></pre>
 </details>
 </dd>
@@ -1134,6 +1224,20 @@ Searches for the name in all views.</p>
     if text is not None:
         text.text = value
         log.info(f&#34;Wrote value {value!r} to text element {name!r}.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.loader.doc_loader.DocumentLoader.set_workspace"><code class="name flex">
+<span>def <span class="ident">set_workspace</span></span>(<span>self, workspace: pytia_ui_tools.handlers.workspace_handler.Workspace) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes the workspace object and stores it in the class</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_workspace(self, workspace: Workspace) -&gt; None:
+    &#34;&#34;&#34;Takes the workspace object and stores it in the class&#34;&#34;&#34;
+    self.workspace = workspace</code></pre>
 </details>
 </dd>
 </dl>
@@ -1173,6 +1277,7 @@ Searches for the name in all views.</p>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.path" href="#pytia_title_block.loader.doc_loader.DocumentLoader.path">path</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.save_drawing_path_to_linked_document" href="#pytia_title_block.loader.doc_loader.DocumentLoader.save_drawing_path_to_linked_document">save_drawing_path_to_linked_document</a></code></li>
 <li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.set_text_value" href="#pytia_title_block.loader.doc_loader.DocumentLoader.set_text_value">set_text_value</a></code></li>
+<li><code><a title="pytia_title_block.loader.doc_loader.DocumentLoader.set_workspace" href="#pytia_title_block.loader.doc_loader.DocumentLoader.set_workspace">set_workspace</a></code></li>
 </ul>
 </li>
 </ul>

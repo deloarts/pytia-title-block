@@ -30,6 +30,7 @@
 <pre><code class="python">&#34;&#34;&#34;
     The layout of the app.
 &#34;&#34;&#34;
+
 from datetime import datetime
 from tkinter import DISABLED
 from tkinter import Menu
@@ -534,7 +535,7 @@ class Layout:
         self._symlink_toggle = Checkbutton(
             master=frames.footer,
             bootstyle=&#34;round-toggle&#34;,  # type:ignore
-            text=&#34;Set Symlink&#34;,
+            text=&#34;Auto path&#34;,
             variable=variables.auto_symlink,
             onvalue=True,
             offvalue=False,
@@ -1156,7 +1157,7 @@ class Layout:
         self._symlink_toggle = Checkbutton(
             master=frames.footer,
             bootstyle=&#34;round-toggle&#34;,  # type:ignore
-            text=&#34;Set Symlink&#34;,
+            text=&#34;Auto path&#34;,
             variable=variables.auto_symlink,
             onvalue=True,
             offvalue=False,

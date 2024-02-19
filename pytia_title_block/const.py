@@ -5,7 +5,7 @@
 import os
 from pathlib import Path
 
-__version__ = "0.4.3"
+__version__ = "0.4.4"
 
 PYTIA = "pytia"
 PYTIA_TITLE_BLOCK = "pytia_title_block"

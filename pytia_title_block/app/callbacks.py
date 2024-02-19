@@ -52,6 +52,7 @@ class Callbacks:
         self.doc_loader = doc_loader
         self.data_loader = data_loader
         self.style = style
+
         self.readonly = bool(
             not resource.logon_exists()
             and not resource.settings.restrictions.allow_all_users

@@ -1,6 +1,7 @@
 """
     The layout of the app.
 """
+
 from datetime import datetime
 from tkinter import DISABLED
 from tkinter import Menu
@@ -505,7 +506,7 @@ class Layout:
         self._symlink_toggle = Checkbutton(
             master=frames.footer,
             bootstyle="round-toggle",  # type:ignore
-            text="Set Symlink",
+            text="Auto path",
             variable=variables.auto_symlink,
             onvalue=True,
             offvalue=False,

@@ -115,7 +115,7 @@ class DataLoader:
         """Returns the first view's scale as fraction (1:1, 1:5, ...)."""
         if not self.doc_loader.linked_view:
             return "-"
-        f_scale = Fraction(self.doc_loader.linked_view.scale)
+        f_scale = Fraction(self.doc_loader.linked_view.scale).limit_denominator()
         return f"{f_scale.numerator}:{f_scale.denominator}"
 
     def load_into_app(self) -> None:

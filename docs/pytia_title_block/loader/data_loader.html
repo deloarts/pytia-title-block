@@ -144,7 +144,7 @@ class DataLoader:
         &#34;&#34;&#34;Returns the first view&#39;s scale as fraction (1:1, 1:5, ...).&#34;&#34;&#34;
         if not self.doc_loader.linked_view:
             return &#34;-&#34;
-        f_scale = Fraction(self.doc_loader.linked_view.scale)
+        f_scale = Fraction(self.doc_loader.linked_view.scale).limit_denominator()
         return f&#34;{f_scale.numerator}:{f_scale.denominator}&#34;
 
     def load_into_app(self) -&gt; None:
@@ -411,7 +411,7 @@ class DataLoader:
         &#34;&#34;&#34;Returns the first view&#39;s scale as fraction (1:1, 1:5, ...).&#34;&#34;&#34;
         if not self.doc_loader.linked_view:
             return &#34;-&#34;
-        f_scale = Fraction(self.doc_loader.linked_view.scale)
+        f_scale = Fraction(self.doc_loader.linked_view.scale).limit_denominator()
         return f&#34;{f_scale.numerator}:{f_scale.denominator}&#34;
 
     def load_into_app(self) -&gt; None:

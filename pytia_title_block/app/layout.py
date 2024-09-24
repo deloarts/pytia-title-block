@@ -143,13 +143,13 @@ class Layout:
         )
         # endregion
 
-        # region MACHINE
-        lbl_machine = Label(
+        # region PRODUCT NUMBER
+        lbl_product = Label(
             frames.infrastructure,
-            text="Machine",
+            text="Product",
             width=Layout.LBL_WIDTH,
         )
-        lbl_machine.grid(
+        lbl_product.grid(
             row=4,
             column=0,
             padx=(Layout.MARGIN_X, 5),
@@ -157,26 +157,26 @@ class Layout:
             sticky="nsew",
         )
 
-        self._entry_machine = Entry(
+        self._entry_product = Entry(
             frames.infrastructure,
-            textvariable=variables.machine,
+            textvariable=variables.product,
             state=DISABLED,
         )
-        self._entry_machine.grid(
+        self._entry_product.grid(
             row=4,
             column=1,
             padx=(5, 2),
             pady=(Layout.MARGIN_Y * 2, 2),
             sticky="nsew",
         )
-        self._btn_reload_machine = Button(
+        self._btn_reload_product = Button(
             frames.infrastructure,
             image=self.reload_image,
             style="outline",
             width=3,
             state=DISABLED,
         )
-        self._btn_reload_machine.grid(
+        self._btn_reload_product.grid(
             row=4,
             column=2,
             padx=(2, Layout.MARGIN_X),
@@ -540,12 +540,12 @@ class Layout:
         return self._lbl_linked_doc
 
     @property
-    def input_machine(self) -> Entry:
-        return self._entry_machine
+    def input_product(self) -> Entry:
+        return self._entry_product
 
     @property
-    def button_reload_machine(self) -> Button:
-        return self._btn_reload_machine
+    def button_reload_product(self) -> Button:
+        return self._btn_reload_product
 
     @property
     def input_partnumber(self) -> Entry:

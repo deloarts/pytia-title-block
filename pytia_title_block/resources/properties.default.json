@@ -2,7 +2,7 @@
     "partnumber": "partnumber",
     "revision": "revision",
     "definition": "definition",
-    "machine": "pytia.machine",
+    "product": "pytia.product",
     "material": "pytia.material",
     "base_size": "pytia.base_size",
     "tolerance": "pytia.tolerance",

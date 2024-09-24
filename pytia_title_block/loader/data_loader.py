@@ -129,10 +129,10 @@ class DataLoader:
             )
 
         self._set_var(
-            variable=self.vars.machine,
-            widget=self.layout.input_machine,
-            title_block_item=resource.title_block_items.machine,
-            property_name=resource.props.machine,
+            variable=self.vars.product,
+            widget=self.layout.input_product,
+            title_block_item=resource.title_block_items.product,
+            property_name=resource.props.product,
         )
 
         self._set_var(
@@ -206,7 +206,7 @@ class DataLoader:
     def load_into_title_block(self) -> None:
         """Loads (writes) all data into the title block."""
         self.doc_loader.set_text_value(
-            value=self.vars.machine.get(), name=resource.title_block_items.machine
+            value=self.vars.product.get(), name=resource.title_block_items.product
         )
         self.doc_loader.set_text_value(
             value=self.vars.partnumber.get(), name=resource.title_block_items.partnumber

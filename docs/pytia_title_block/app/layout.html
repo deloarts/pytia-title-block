@@ -172,13 +172,13 @@ class Layout:
         )
         # endregion
 
-        # region MACHINE
-        lbl_machine = Label(
+        # region PRODUCT NUMBER
+        lbl_product = Label(
             frames.infrastructure,
-            text=&#34;Machine&#34;,
+            text=&#34;Product&#34;,
             width=Layout.LBL_WIDTH,
         )
-        lbl_machine.grid(
+        lbl_product.grid(
             row=4,
             column=0,
             padx=(Layout.MARGIN_X, 5),
@@ -186,26 +186,26 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_machine = Entry(
+        self._entry_product = Entry(
             frames.infrastructure,
-            textvariable=variables.machine,
+            textvariable=variables.product,
             state=DISABLED,
         )
-        self._entry_machine.grid(
+        self._entry_product.grid(
             row=4,
             column=1,
             padx=(5, 2),
             pady=(Layout.MARGIN_Y * 2, 2),
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_machine = Button(
+        self._btn_reload_product = Button(
             frames.infrastructure,
             image=self.reload_image,
             style=&#34;outline&#34;,
             width=3,
             state=DISABLED,
         )
-        self._btn_reload_machine.grid(
+        self._btn_reload_product.grid(
             row=4,
             column=2,
             padx=(2, Layout.MARGIN_X),
@@ -569,12 +569,12 @@ class Layout:
         return self._lbl_linked_doc
 
     @property
-    def input_machine(self) -&gt; Entry:
-        return self._entry_machine
+    def input_product(self) -&gt; Entry:
+        return self._entry_product
 
     @property
-    def button_reload_machine(self) -&gt; Button:
-        return self._btn_reload_machine
+    def button_reload_product(self) -&gt; Button:
+        return self._btn_reload_product
 
     @property
     def input_partnumber(self) -&gt; Entry:
@@ -794,13 +794,13 @@ class Layout:
         )
         # endregion
 
-        # region MACHINE
-        lbl_machine = Label(
+        # region PRODUCT NUMBER
+        lbl_product = Label(
             frames.infrastructure,
-            text=&#34;Machine&#34;,
+            text=&#34;Product&#34;,
             width=Layout.LBL_WIDTH,
         )
-        lbl_machine.grid(
+        lbl_product.grid(
             row=4,
             column=0,
             padx=(Layout.MARGIN_X, 5),
@@ -808,26 +808,26 @@ class Layout:
             sticky=&#34;nsew&#34;,
         )
 
-        self._entry_machine = Entry(
+        self._entry_product = Entry(
             frames.infrastructure,
-            textvariable=variables.machine,
+            textvariable=variables.product,
             state=DISABLED,
         )
-        self._entry_machine.grid(
+        self._entry_product.grid(
             row=4,
             column=1,
             padx=(5, 2),
             pady=(Layout.MARGIN_Y * 2, 2),
             sticky=&#34;nsew&#34;,
         )
-        self._btn_reload_machine = Button(
+        self._btn_reload_product = Button(
             frames.infrastructure,
             image=self.reload_image,
             style=&#34;outline&#34;,
             width=3,
             state=DISABLED,
         )
-        self._btn_reload_machine.grid(
+        self._btn_reload_product.grid(
             row=4,
             column=2,
             padx=(2, Layout.MARGIN_X),
@@ -1191,12 +1191,12 @@ class Layout:
         return self._lbl_linked_doc
 
     @property
-    def input_machine(self) -&gt; Entry:
-        return self._entry_machine
+    def input_product(self) -&gt; Entry:
+        return self._entry_product
 
     @property
-    def button_reload_machine(self) -&gt; Button:
-        return self._btn_reload_machine
+    def button_reload_product(self) -&gt; Button:
+        return self._btn_reload_product
 
     @property
     def input_partnumber(self) -&gt; Entry:
@@ -1319,18 +1319,6 @@ def button_reload_definition(self) -&gt; Button:
     return self._btn_reload_definition</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.app.layout.Layout.button_reload_machine"><code class="name">var <span class="ident">button_reload_machine</span> : tkinter.ttk.Button</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def button_reload_machine(self) -&gt; Button:
-    return self._btn_reload_machine</code></pre>
-</details>
-</dd>
 <dt id="pytia_title_block.app.layout.Layout.button_reload_material"><code class="name">var <span class="ident">button_reload_material</span> : tkinter.ttk.Button</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1353,6 +1341,18 @@ def button_reload_material(self) -&gt; Button:
 <pre><code class="python">@property
 def button_reload_partnumber(self) -&gt; Button:
     return self._btn_reload_partnumber</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.app.layout.Layout.button_reload_product"><code class="name">var <span class="ident">button_reload_product</span> : tkinter.ttk.Button</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def button_reload_product(self) -&gt; Button:
+    return self._btn_reload_product</code></pre>
 </details>
 </dd>
 <dt id="pytia_title_block.app.layout.Layout.button_reload_revision"><code class="name">var <span class="ident">button_reload_revision</span> : tkinter.ttk.Button</code></dt>
@@ -1427,18 +1427,6 @@ def input_doc_type(self) -&gt; Combobox:
     return self._combo_doc_type</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.app.layout.Layout.input_machine"><code class="name">var <span class="ident">input_machine</span> : tkinter.ttk.Entry</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def input_machine(self) -&gt; Entry:
-    return self._entry_machine</code></pre>
-</details>
-</dd>
 <dt id="pytia_title_block.app.layout.Layout.input_material"><code class="name">var <span class="ident">input_material</span> : tkinter.ttk.Entry</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1461,6 +1449,18 @@ def input_material(self) -&gt; Entry:
 <pre><code class="python">@property
 def input_partnumber(self) -&gt; Entry:
     return self._entry_partnumber</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.app.layout.Layout.input_product"><code class="name">var <span class="ident">input_product</span> : tkinter.ttk.Entry</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def input_product(self) -&gt; Entry:
+    return self._entry_product</code></pre>
 </details>
 </dd>
 <dt id="pytia_title_block.app.layout.Layout.input_release_date"><code class="name">var <span class="ident">input_release_date</span> : ttkbootstrap.widgets.DateEntry</code></dt>
@@ -1562,18 +1562,18 @@ def tools_menu(self) -&gt; Menu:
 <li><code><a title="pytia_title_block.app.layout.Layout.button_abort" href="#pytia_title_block.app.layout.Layout.button_abort">button_abort</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.button_reload_base_size" href="#pytia_title_block.app.layout.Layout.button_reload_base_size">button_reload_base_size</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.button_reload_definition" href="#pytia_title_block.app.layout.Layout.button_reload_definition">button_reload_definition</a></code></li>
-<li><code><a title="pytia_title_block.app.layout.Layout.button_reload_machine" href="#pytia_title_block.app.layout.Layout.button_reload_machine">button_reload_machine</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.button_reload_material" href="#pytia_title_block.app.layout.Layout.button_reload_material">button_reload_material</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.button_reload_partnumber" href="#pytia_title_block.app.layout.Layout.button_reload_partnumber">button_reload_partnumber</a></code></li>
+<li><code><a title="pytia_title_block.app.layout.Layout.button_reload_product" href="#pytia_title_block.app.layout.Layout.button_reload_product">button_reload_product</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.button_reload_revision" href="#pytia_title_block.app.layout.Layout.button_reload_revision">button_reload_revision</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.button_reload_tolerance" href="#pytia_title_block.app.layout.Layout.button_reload_tolerance">button_reload_tolerance</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.button_save" href="#pytia_title_block.app.layout.Layout.button_save">button_save</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_base_size" href="#pytia_title_block.app.layout.Layout.input_base_size">input_base_size</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_definition" href="#pytia_title_block.app.layout.Layout.input_definition">input_definition</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_doc_type" href="#pytia_title_block.app.layout.Layout.input_doc_type">input_doc_type</a></code></li>
-<li><code><a title="pytia_title_block.app.layout.Layout.input_machine" href="#pytia_title_block.app.layout.Layout.input_machine">input_machine</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_material" href="#pytia_title_block.app.layout.Layout.input_material">input_material</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_partnumber" href="#pytia_title_block.app.layout.Layout.input_partnumber">input_partnumber</a></code></li>
+<li><code><a title="pytia_title_block.app.layout.Layout.input_product" href="#pytia_title_block.app.layout.Layout.input_product">input_product</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_release_date" href="#pytia_title_block.app.layout.Layout.input_release_date">input_release_date</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_revision" href="#pytia_title_block.app.layout.Layout.input_revision">input_revision</a></code></li>
 <li><code><a title="pytia_title_block.app.layout.Layout.input_tolerance" href="#pytia_title_block.app.layout.Layout.input_tolerance">input_tolerance</a></code></li>

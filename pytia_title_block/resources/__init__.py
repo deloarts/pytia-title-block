@@ -138,7 +138,7 @@ class Props:
     revision: str
     definition: str
 
-    machine: str
+    product: str
     material: str
     base_size: str
     tolerance: str
@@ -153,7 +153,7 @@ class TitleBlockItems:
     revision: str
     definition: str
 
-    machine: str
+    product: str
     material: str
     base_size: str
     tolerance: str

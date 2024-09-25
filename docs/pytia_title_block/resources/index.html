@@ -169,7 +169,7 @@ class Props:
     revision: str
     definition: str
 
-    machine: str
+    product: str
     material: str
     base_size: str
     tolerance: str
@@ -184,7 +184,7 @@ class TitleBlockItems:
     revision: str
     definition: str
 
-    machine: str
+    product: str
     material: str
     base_size: str
     tolerance: str
@@ -465,7 +465,7 @@ resource = Resources()</code></pre>
 <dl>
 <dt id="pytia_title_block.resources.AppData"><code class="flex name class">
 <span>class <span class="ident">AppData</span></span>
-<span>(</span><span>*, version: str = '0.4.5', counter: int = 0, theme: str = 'cosmo', auto_symlink: bool = False)</span>
+<span>(</span><span>*, version: str = '0.5.0', counter: int = 0, theme: str = 'cosmo', auto_symlink: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for appdata settings.</p></div>
@@ -539,7 +539,7 @@ class Info:
 </dd>
 <dt id="pytia_title_block.resources.Props"><code class="flex name class">
 <span>class <span class="ident">Props</span></span>
-<span>(</span><span>*, partnumber: str, revision: str, definition: str, machine: str, material: str, base_size: str, tolerance: str, creator_3d: str)</span>
+<span>(</span><span>*, partnumber: str, revision: str, definition: str, product: str, material: str, base_size: str, tolerance: str, creator_3d: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for properties on the part (properties.json).</p></div>
@@ -555,7 +555,7 @@ class Props:
     revision: str
     definition: str
 
-    machine: str
+    product: str
     material: str
     base_size: str
     tolerance: str
@@ -575,15 +575,15 @@ class Props:
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
-<dt id="pytia_title_block.resources.Props.machine"><code class="name">var <span class="ident">machine</span> : str</code></dt>
-<dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
-</dd>
 <dt id="pytia_title_block.resources.Props.material"><code class="name">var <span class="ident">material</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 <dt id="pytia_title_block.resources.Props.partnumber"><code class="name">var <span class="ident">partnumber</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.Props.product"><code class="name">var <span class="ident">product</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
@@ -1373,7 +1373,7 @@ class SettingsUrls:
 </dd>
 <dt id="pytia_title_block.resources.TitleBlockItems"><code class="flex name class">
 <span>class <span class="ident">TitleBlockItems</span></span>
-<span>(</span><span>*, partnumber: str, revision: str, definition: str, machine: str, material: str, base_size: str, tolerance: str, release_date: str, document_type: str, scale: str, creator_3d: str, creator_2d: str, notes: str, version: str, path: str)</span>
+<span>(</span><span>*, partnumber: str, revision: str, definition: str, product: str, material: str, base_size: str, tolerance: str, release_date: str, document_type: str, scale: str, creator_3d: str, creator_2d: str, notes: str, version: str, path: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dataclass for all possible title block items.</p></div>
@@ -1389,7 +1389,7 @@ class TitleBlockItems:
     revision: str
     definition: str
 
-    machine: str
+    product: str
     material: str
     base_size: str
     tolerance: str
@@ -1451,10 +1451,6 @@ def keys(self) -&gt; List[str]:
     return [f.name for f in fields(self)]</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.resources.TitleBlockItems.machine"><code class="name">var <span class="ident">machine</span> : str</code></dt>
-<dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
-</dd>
 <dt id="pytia_title_block.resources.TitleBlockItems.material"><code class="name">var <span class="ident">material</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
@@ -1468,6 +1464,10 @@ def keys(self) -&gt; List[str]:
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 <dt id="pytia_title_block.resources.TitleBlockItems.path"><code class="name">var <span class="ident">path</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="pytia_title_block.resources.TitleBlockItems.product"><code class="name">var <span class="ident">product</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
@@ -1624,9 +1624,9 @@ def values(self) -&gt; List[str]:
 <li><code><a title="pytia_title_block.resources.Props.base_size" href="#pytia_title_block.resources.Props.base_size">base_size</a></code></li>
 <li><code><a title="pytia_title_block.resources.Props.creator_3d" href="#pytia_title_block.resources.Props.creator_3d">creator_3d</a></code></li>
 <li><code><a title="pytia_title_block.resources.Props.definition" href="#pytia_title_block.resources.Props.definition">definition</a></code></li>
-<li><code><a title="pytia_title_block.resources.Props.machine" href="#pytia_title_block.resources.Props.machine">machine</a></code></li>
 <li><code><a title="pytia_title_block.resources.Props.material" href="#pytia_title_block.resources.Props.material">material</a></code></li>
 <li><code><a title="pytia_title_block.resources.Props.partnumber" href="#pytia_title_block.resources.Props.partnumber">partnumber</a></code></li>
+<li><code><a title="pytia_title_block.resources.Props.product" href="#pytia_title_block.resources.Props.product">product</a></code></li>
 <li><code><a title="pytia_title_block.resources.Props.revision" href="#pytia_title_block.resources.Props.revision">revision</a></code></li>
 <li><code><a title="pytia_title_block.resources.Props.tolerance" href="#pytia_title_block.resources.Props.tolerance">tolerance</a></code></li>
 </ul>
@@ -1731,11 +1731,11 @@ def values(self) -&gt; List[str]:
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.definition" href="#pytia_title_block.resources.TitleBlockItems.definition">definition</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.document_type" href="#pytia_title_block.resources.TitleBlockItems.document_type">document_type</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.keys" href="#pytia_title_block.resources.TitleBlockItems.keys">keys</a></code></li>
-<li><code><a title="pytia_title_block.resources.TitleBlockItems.machine" href="#pytia_title_block.resources.TitleBlockItems.machine">machine</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.material" href="#pytia_title_block.resources.TitleBlockItems.material">material</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.notes" href="#pytia_title_block.resources.TitleBlockItems.notes">notes</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.partnumber" href="#pytia_title_block.resources.TitleBlockItems.partnumber">partnumber</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.path" href="#pytia_title_block.resources.TitleBlockItems.path">path</a></code></li>
+<li><code><a title="pytia_title_block.resources.TitleBlockItems.product" href="#pytia_title_block.resources.TitleBlockItems.product">product</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.release_date" href="#pytia_title_block.resources.TitleBlockItems.release_date">release_date</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.revision" href="#pytia_title_block.resources.TitleBlockItems.revision">revision</a></code></li>
 <li><code><a title="pytia_title_block.resources.TitleBlockItems.scale" href="#pytia_title_block.resources.TitleBlockItems.scale">scale</a></code></li>

@@ -36,8 +36,8 @@ class UISetter:
         if not self.vars.locked.get():
             log.debug("Setting main UI to state 'normal'.")
 
-            self.layout.input_machine.configure(state=tk.NORMAL)
-            self.layout.button_reload_machine.configure(state=tk.NORMAL)
+            self.layout.input_product.configure(state=tk.NORMAL)
+            self.layout.button_reload_product.configure(state=tk.NORMAL)
 
             self.layout.input_partnumber.configure(state=tk.NORMAL)
             self.layout.button_reload_partnumber.configure(state=tk.NORMAL)
@@ -74,8 +74,8 @@ class UISetter:
         """
         log.debug("Setting main UI to state 'disabled'.")
 
-        self.layout.input_machine.configure(state=tk.DISABLED)
-        self.layout.button_reload_machine.configure(state=tk.DISABLED)
+        self.layout.input_product.configure(state=tk.DISABLED)
+        self.layout.button_reload_product.configure(state=tk.DISABLED)
 
         self.layout.input_partnumber.configure(state=tk.DISABLED)
         self.layout.button_reload_partnumber.configure(state=tk.DISABLED)

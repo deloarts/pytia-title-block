@@ -2,7 +2,7 @@
     "partnumber": "value.partnumber",
     "revision": "value.revision",
     "definition": "value.definition",
-    "machine": "value.machine",
+    "product": "value.product",
     "material": "value.material",
     "base_size": "value.base_size",
     "tolerance": "value.tolerance",

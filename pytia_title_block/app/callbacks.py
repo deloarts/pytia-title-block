@@ -65,7 +65,9 @@ class Callbacks:
 
     def _bind_button_callbacks(self) -> None:
         """Binds all callbacks to the main windows buttons."""
-        self.layout.button_reload_machine.configure(command=self.on_btn_reload_machine)
+        self.layout.button_reload_product.configure(
+            command=self.on_btn_reload_product_number
+        )
         self.layout.button_reload_partnumber.configure(
             command=self.on_btn_reload_partnumber
         )
@@ -134,12 +136,12 @@ class Callbacks:
                 message=f"Cannot load {str(property_name)!r}: No linked document available.",
             )
 
-    def on_btn_reload_machine(self) -> None:
-        """Callback function for the reload machine button."""
+    def on_btn_reload_product_number(self) -> None:
+        """Callback function for the reload product button."""
         self._on_btn_reload(
-            variable=self.vars.machine,
-            widget=self.layout.input_machine,
-            property_name=resource.props.machine,
+            variable=self.vars.product,
+            widget=self.layout.input_product,
+            property_name=resource.props.product,
         )
 
     def on_btn_reload_partnumber(self) -> None:

@@ -22,7 +22,7 @@ class Variables:
     creator_3d: StringVar
     creator_2d: StringVar
 
-    machine: StringVar
+    product: StringVar
     partnumber: StringVar
     revision: StringVar
     definition: StringVar
@@ -51,7 +51,7 @@ class Variables:
         self.creator_3d = StringVar(master=root, name="creator_3d", value="-")
         self.creator_2d = StringVar(master=root, name="creator_2d", value="-")
 
-        self.machine = StringVar(master=root, name="machine")
+        self.product = StringVar(master=root, name="product")
         self.partnumber = StringVar(master=root, name="partnumber")
         self.revision = StringVar(master=root, name="revision")
         self.definition = StringVar(master=root, name="definition")

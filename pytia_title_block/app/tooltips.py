@@ -28,8 +28,8 @@ class ToolTips:
         )
 
         ToolTip(
-            widget=layout.button_reload_machine,
-            text="Reloads the machine number from the linked document.",
+            widget=layout.button_reload_product,
+            text="Reloads the product number from the linked document.",
         )
 
         ToolTip(

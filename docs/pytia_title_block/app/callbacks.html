@@ -94,7 +94,9 @@ class Callbacks:
 
     def _bind_button_callbacks(self) -&gt; None:
         &#34;&#34;&#34;Binds all callbacks to the main windows buttons.&#34;&#34;&#34;
-        self.layout.button_reload_machine.configure(command=self.on_btn_reload_machine)
+        self.layout.button_reload_product.configure(
+            command=self.on_btn_reload_product_number
+        )
         self.layout.button_reload_partnumber.configure(
             command=self.on_btn_reload_partnumber
         )
@@ -163,12 +165,12 @@ class Callbacks:
                 message=f&#34;Cannot load {str(property_name)!r}: No linked document available.&#34;,
             )
 
-    def on_btn_reload_machine(self) -&gt; None:
-        &#34;&#34;&#34;Callback function for the reload machine button.&#34;&#34;&#34;
+    def on_btn_reload_product_number(self) -&gt; None:
+        &#34;&#34;&#34;Callback function for the reload product button.&#34;&#34;&#34;
         self._on_btn_reload(
-            variable=self.vars.machine,
-            widget=self.layout.input_machine,
-            property_name=resource.props.machine,
+            variable=self.vars.product,
+            widget=self.layout.input_product,
+            property_name=resource.props.product,
         )
 
     def on_btn_reload_partnumber(self) -&gt; None:
@@ -333,7 +335,9 @@ class Callbacks:
 
     def _bind_button_callbacks(self) -&gt; None:
         &#34;&#34;&#34;Binds all callbacks to the main windows buttons.&#34;&#34;&#34;
-        self.layout.button_reload_machine.configure(command=self.on_btn_reload_machine)
+        self.layout.button_reload_product.configure(
+            command=self.on_btn_reload_product_number
+        )
         self.layout.button_reload_partnumber.configure(
             command=self.on_btn_reload_partnumber
         )
@@ -402,12 +406,12 @@ class Callbacks:
                 message=f&#34;Cannot load {str(property_name)!r}: No linked document available.&#34;,
             )
 
-    def on_btn_reload_machine(self) -&gt; None:
-        &#34;&#34;&#34;Callback function for the reload machine button.&#34;&#34;&#34;
+    def on_btn_reload_product_number(self) -&gt; None:
+        &#34;&#34;&#34;Callback function for the reload product button.&#34;&#34;&#34;
         self._on_btn_reload(
-            variable=self.vars.machine,
-            widget=self.layout.input_machine,
-            property_name=resource.props.machine,
+            variable=self.vars.product,
+            widget=self.layout.input_product,
+            property_name=resource.props.product,
         )
 
     def on_btn_reload_partnumber(self) -&gt; None:
@@ -543,24 +547,6 @@ class Callbacks:
     )</code></pre>
 </details>
 </dd>
-<dt id="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_machine"><code class="name flex">
-<span>def <span class="ident">on_btn_reload_machine</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Callback function for the reload machine button.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_btn_reload_machine(self) -&gt; None:
-    &#34;&#34;&#34;Callback function for the reload machine button.&#34;&#34;&#34;
-    self._on_btn_reload(
-        variable=self.vars.machine,
-        widget=self.layout.input_machine,
-        property_name=resource.props.machine,
-    )</code></pre>
-</details>
-</dd>
 <dt id="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_material"><code class="name flex">
 <span>def <span class="ident">on_btn_reload_material</span></span>(<span>self) ‑> None</span>
 </code></dt>
@@ -594,6 +580,24 @@ class Callbacks:
         variable=self.vars.partnumber,
         widget=self.layout.input_partnumber,
         property_name=resource.props.partnumber,
+    )</code></pre>
+</details>
+</dd>
+<dt id="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_product_number"><code class="name flex">
+<span>def <span class="ident">on_btn_reload_product_number</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Callback function for the reload product button.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_btn_reload_product_number(self) -&gt; None:
+    &#34;&#34;&#34;Callback function for the reload product button.&#34;&#34;&#34;
+    self._on_btn_reload(
+        variable=self.vars.product,
+        widget=self.layout.input_product,
+        property_name=resource.props.product,
     )</code></pre>
 </details>
 </dd>
@@ -723,9 +727,9 @@ documents properties.</p></div>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_abort" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_abort">on_btn_abort</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_base_size" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_base_size">on_btn_reload_base_size</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_definition" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_definition">on_btn_reload_definition</a></code></li>
-<li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_machine" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_machine">on_btn_reload_machine</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_material" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_material">on_btn_reload_material</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_partnumber" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_partnumber">on_btn_reload_partnumber</a></code></li>
+<li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_product_number" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_product_number">on_btn_reload_product_number</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_revision" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_revision">on_btn_reload_revision</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_reload_tolerance" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_reload_tolerance">on_btn_reload_tolerance</a></code></li>
 <li><code><a title="pytia_title_block.app.callbacks.Callbacks.on_btn_save" href="#pytia_title_block.app.callbacks.Callbacks.on_btn_save">on_btn_save</a></code></li>

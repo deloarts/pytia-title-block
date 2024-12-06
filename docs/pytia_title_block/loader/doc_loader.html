@@ -221,7 +221,7 @@ class DocumentLoader:
                 log.info(f&#34;User opened linked document (window).&#34;)
                 sys.exit()
             if self.linked_document.path().is_file():
-                framework.catia.documents.open(str(self.linked_document.path()))
+                framework.catia.documents.open(self.linked_document.path())
                 log.info(f&#34;User opened linked document (file).&#34;)
                 sys.exit()
         tkmsg.showinfo(
@@ -605,7 +605,7 @@ class DocumentLoader:
                 log.info(f&#34;User opened linked document (window).&#34;)
                 sys.exit()
             if self.linked_document.path().is_file():
-                framework.catia.documents.open(str(self.linked_document.path()))
+                framework.catia.documents.open(self.linked_document.path())
                 log.info(f&#34;User opened linked document (file).&#34;)
                 sys.exit()
         tkmsg.showinfo(
@@ -1147,7 +1147,7 @@ text.</p></div>
             log.info(f&#34;User opened linked document (window).&#34;)
             sys.exit()
         if self.linked_document.path().is_file():
-            framework.catia.documents.open(str(self.linked_document.path()))
+            framework.catia.documents.open(self.linked_document.path())
             log.info(f&#34;User opened linked document (file).&#34;)
             sys.exit()
     tkmsg.showinfo(

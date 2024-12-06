@@ -192,7 +192,7 @@ class DocumentLoader:
                 log.info(f"User opened linked document (window).")
                 sys.exit()
             if self.linked_document.path().is_file():
-                framework.catia.documents.open(str(self.linked_document.path()))
+                framework.catia.documents.open(self.linked_document.path())
                 log.info(f"User opened linked document (file).")
                 sys.exit()
         tkmsg.showinfo(

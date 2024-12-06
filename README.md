@@ -321,6 +321,7 @@ On a new revision, do the following:
 
 ## 7 changelog
 
+[**v0.5.1**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.5.1): Update deps and docs.  
 [**v0.5.0**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.5.0): Rename machine to product number.  
 [**v0.4.5**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.4.5): Fix issue with scale.  
 [**v0.4.4**](https://github.com/deloarts/pytia-title-block/releases/tag/v0.4.4): Save drawing path at workspace level.  

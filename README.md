@@ -7,18 +7,28 @@
 ![catia](https://img.shields.io/badge/CATIA-V5%206R2017-blue.svg?style=for-the-badge)
 ![OS](https://img.shields.io/badge/OS-WIN11-blue.svg?style=for-the-badge)
 
+*Link your CATIA drawings with your parts and products.*
+
+The title block editor allows you to:
+
+- Inject the properties from the 3D part or product to a CATIA drawing
+- Automatically add a tolerance table
+- Link the drawing file to the parent file
+
+![Banner](assets/images/banner.png)
+
 > ⚠️ The layout of this app is heavily biased towards the workflow and needs of my companies' engineering team. Although almost everything can be changed via config files and presets, the apps basic functionality is built to work in the environment of said company.
 
 Check out the pytia ecosystem:
 
-- **pytia** ([web](https://pytia.deloarts.com/), [repo](https://github.com/deloarts/pytia)): The heart of this project.
-- **pytia-property-manager** ([web](https://pytia.deloarts.com/property-manager/v0.html), [repo](https://github.com/deloarts/pytia-property-manager)) : An app to edit part and product properties.
-- **pytia-bounding-box** ([web](https://pytia.deloarts.com/bounding-box/v0.html), [repo](https://github.com/deloarts/pytia-bounding-box)): For retrieving the bounding box of a part.
-- **pytia-bill-of-material** ([web](https://pytia.deloarts.com/bill-of-material/v0.html), [repo](https://github.com/deloarts/pytia-bill-of-material)): Exports the bill of material and data of a product.
-- **pytia-title-block** ([web](https://pytia.deloarts.com/title-block/v0.html), [repo](https://github.com/deloarts/pytia-title-block)): An app to edit a drawing's title block.
-- **pytia-quick-export** ([web](https://pytia.deloarts.com/quick-export/v0.html), [repo](https://github.com/deloarts/pytia-quick-export)): Single file export with useful features.
-- **pytia-reorder-tree** ([web](https://pytia.deloarts.com/reorder-tree/v0.html), [repo](https://github.com/deloarts/pytia-reorder-tree)): Brings order in your product graph tree.
-- **pytia-ui-tools** ([web](https://pytia.deloarts.com/), [repo](https://github.com/deloarts/pytia-ui-tools)): A toolbox for all pytia apps.
+- **[pytia](https://github.com/deloarts/pytia)**: The heart of this project
+- **[pytia-property-manager](https://github.com/deloarts/pytia-property-manager)**: An app to edit part and product properties
+- **[pytia-bounding-box](https://github.com/deloarts/pytia-bounding-box)**: For retrieving the bounding box of a part
+- **[pytia-bill-of-material](https://github.com/deloarts/pytia-bill-of-material)**: Exports the bill of material and data of a product
+- **[pytia-title-block](https://github.com/deloarts/pytia-title-block)**: An app to edit a drawing's title block
+- **[pytia-quick-export](https://github.com/deloarts/pytia-quick-export)**: Single file export with useful features
+- **[pytia-reorder-tree](https://github.com/deloarts/pytia-reorder-tree)**: Brings order in your product graph tree
+- **[pytia-ui-tools](https://github.com/deloarts/pytia-ui-tools)**: A toolbox for all pytia apps
 
 Table of contents:
 
@@ -55,25 +65,22 @@ Table of contents:
 
 ## 1 installation
 
-> ✏️ For a guided installation visit [https://pytia.deloarts.com](https://pytia.deloarts.com/installation/v0.html)
->
+For a guided installation visit the [installation guide](/docs/INSTALLATION.md).
+
 > ⚠️ Do not manually install any dependencies. The app installs all required packages on its own.
 
 On the users machine you need to install the following:
 
 - CATIA
 - [Python](https://www.python.org/downloads/)
-- [Git](https://gitforwindows.org/)
 
-When the user starts the app it will automatically install all its requirements. Further the app also updates outdated dependencies if needed. The apps environment will be created in the users appdata-folder: `C:\Users\User\AppData\Roaming\pytia\pytia_title_block`
+When the user starts the app it will automatically install all its requirements. Further the app also updates outdated dependencies if needed. The apps environment will be created in the users appdata-folder: `C:\Users\User\AppData\Roaming\pytia\pytia_bounding_box`
 
 Recommended python install options for the user:
 
 ```powershell
 python-installer.exe /passive PrependPath=1 Include_doc=0 Include_test=0 SimpleInstall=1 SimpleInstallDescription="python for pytia"
 ```
-
-For convenience there is a powershell script that will install the required python version for you, see [assets/python_installer.ps1](assets/python_installer.ps1).
 
 ## 2 setup
 
@@ -139,23 +146,9 @@ You can find the documentation in the [docs folder](/docs).
 
 ## 3 usage
 
-Use the launcher (a.k.a the catvbs-file) to launch the app. On the first run all required dependencies will be installed:
-
-![Installer](assets/images/installer.png)
-
-After the installation the app starts automatically:
+For a complete overview of the apps functionality see the [usage](/docs/USAGE.md) readme file.
 
 ![App](assets/images/app.png)
-
-The app retrieves all information from the documents properties and writes it to the title block. The user has the option to alter those properties via the app.
-
-If the user runs the app on an existing title block, all data will be fetched from the title block, not from the linked document's properties. If a datum doesn't match (a title block item has a different value than the corresponding property) the corresponding widget will render the text red.
-
-The usage itself is pretty straight forward, as long as all config files are setup properly.
-
-In the assets folder is a [catia drawing file](assets/title_block_templates/A4_ISO_H_EN.CATDrawing), which works with the app straight away.
-
-![Example](assets/images/example.png)
 
 ## 4 workspace
 
